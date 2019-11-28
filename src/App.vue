@@ -1,33 +1,39 @@
-<template>
+<template xmlns="http://www.w3.org/1999/html">
   <div id="app">
     <!--    侧边栏-->
-    <div id="info">
-      <userInfo></userInfo>
-<!--      <teamOperate></teamOperate>-->
-    </div>
-
-    <!--    right = nav + view-->
-    <div id="right">
-
-      <!--      导航栏-->
-      <div id="nav">
-        <navbar></navbar>
+    <template v-if="userInfoToOpe">
+      <div id="info">
+        <userInfo :user-info-prop=this.userInfoToOpe></userInfo>
+        <teamOperate :user-info-prop=this.userInfoToOpe></teamOperate>
+        <el-input
+          placeholder="请输入内容"
+          v-model.lazy="loginUser"
+          clearable>
+        </el-input>
       </div>
-
-      <!--      信息显示栏-->
-      <div id="view">
-        <router-view></router-view>
+      <!--    right = nav + view-->
+      <div id="right">
+        <!--      导航栏-->
+        <div id="nav">
+          <navbar></navbar>
+        </div>
+        <!--      信息显示栏-->
+        <div id="view">
+          <router-view></router-view>
+        </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
 
 <script>
+
   import navbar from "./components/navbar";
   import userInfo from "./components/userInfo";
   import teamOperate from "./components/teamOperate";
   import store from './store/store'
+  import {mapState, mapMutations} from 'vuex'
 
   export default {
     name: 'App',
@@ -35,8 +41,94 @@
     store,
     data() {
       return {
+        userInfoToOpe: null,//传给组件的值,通过create钩子函数初始化,这里要写成null,不能写成{},否则会被判为true
+        loginUser: "16010410030",
       }
-    }
+    },
+    watch:{
+      loginUser(){
+        var self = this
+
+        function getUserInfo() {
+          return self.axios({
+            method: "post",
+            url: "/userInfo",
+            params: {
+              userId: self.loginUser//得改
+              // userId: "1601"//得改
+            }
+          })
+        }
+
+        function getTeamInfo() {
+          return self.axios({
+            method: "get",
+            url: "/search",
+            params: {
+              leader: self.loginUser//得改
+            }
+          })
+        }
+
+        self.axios.all([getUserInfo(), getTeamInfo()])
+          .then(self.axios.spread(function (acct, perms) {
+            //当这两个请求都完成的时候会触发这个函数，两个参数分别代表返回的结果
+            self.initUserInfo(acct.data);
+            if (perms.data) {
+              self.updateTeam(perms.data);
+            }
+            console.log(perms.data)
+            self.userInfoToOpe = self.userInfoData
+          }))
+          .catch(err => {
+            console.log(err)
+          })
+      }
+    },
+    computed: {
+      ...mapState(['userInfoData'])
+    },
+    methods: {
+      ...mapMutations(['initUserInfo', "updateTeam"])
+    },
+    mounted() {
+      var self = this
+
+      function getUserInfo() {
+        return self.axios({
+          method: "post",
+          url: "/userInfo",
+          params: {
+            userId: self.loginUser//得改
+            // userId: "1601"//得改
+          }
+        })
+      }
+
+      function getTeamInfo() {
+        return self.axios({
+          method: "get",
+          url: "/search",
+          params: {
+            leader: self.loginUser//得改
+          }
+        })
+      }
+
+      self.axios.all([getUserInfo(), getTeamInfo()])
+        .then(self.axios.spread(function (acct, perms) {
+          //当这两个请求都完成的时候会触发这个函数，两个参数分别代表返回的结果
+          self.initUserInfo(acct.data);
+          if (perms.data) {
+            self.updateTeam(perms.data);
+          }
+          console.log(perms.data)
+          self.userInfoToOpe = self.userInfoData
+        }))
+        .catch(err => {
+          console.log(err)
+        })
+    },
   }
 </script>
 
@@ -56,7 +148,7 @@
   }
 
   #info {
-    background-color: #a4e6e9;
+    background-color: #5b5a57;
     width: 240px;
     padding: 20px;
   }

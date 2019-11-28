@@ -2,10 +2,11 @@
   <div>
     <template>
       <el-table :data="teamListInfo" stripe style="width: 100%">
-        <el-table-column prop="leader" label="姓名" width="180"></el-table-column>
+        <el-table-column prop="user.name" label="队长姓名" width="180"></el-table-column>
+        <el-table-column prop="leader" label="队长学号" width="180"></el-table-column>
         <el-table-column prop="user.qq" label="qq" width="180"></el-table-column>
-        <el-table-column prop="user.school" label="学院"></el-table-column>
-        <el-table-column prop="current_num" label="现成员数"></el-table-column>
+        <el-table-column prop="user.school" label="学院" width="180"></el-table-column>
+        <el-table-column prop="current_num" label="现成员数" width="180"></el-table-column>
         <el-table-column fixed="right" label="操作" width="120">
           <template slot-scope="scope">
             <el-button @click.native.prevent="sendApplication(scope.row)" type="text" size="small">申请加入</el-button>

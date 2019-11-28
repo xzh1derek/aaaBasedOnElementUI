@@ -11,21 +11,24 @@
       placeholder="请输入内容"
       v-model="input"
       clearable
-      v-if="!this.userInfoProp.teamleader">
+      v-if="!this.userInfoProp.teamleader"
+    style="margin-bottom: 10px">
     </el-input>
-
+    <!--是队长才显示-->
     <el-button round type="primary" @click="invite" v-if="this.userInfoProp.leader">邀请</el-button>
-    <el-button round type="primary" @click="searchTeam" v-if="!this.userInfoProp.teamleader">搜索队伍</el-button>
-    <el-button round type="primary" @click="creatTeam" v-if="!this.userInfoProp.teamleader">创建队伍</el-button>
-    <br>
+    <!--    未组队才显示-->
+    <template  v-if="!this.userInfoProp.teamleader">
+    <el-button round type="primary" @click="searchTeam">搜索队伍</el-button>
+    <el-button round type="primary" @click="creatTeam" >创建队伍</el-button>
+    </template>
 
-    <el-dialog title="是否申请加入队伍" :visible.sync="dialogVisible" width="80%">
+    <el-dialog title="是否申请加入队伍" :visible.sync="dialogVisible" width="40%">
       <div>
         <el-table :data="dialogInfo" style="width: 100%">
-          <el-table-column prop="user.name" label="队长" width="180"></el-table-column>
-          <el-table-column prop="user.qq" label="qq" width="180"></el-table-column>
-          <el-table-column prop="user.school" label="学院"></el-table-column>
-          <el-table-column prop="current_num" label="当前人数"></el-table-column>
+          <el-table-column prop="user.name" label="队长" width="100"></el-table-column>
+          <el-table-column prop="user.qq" label="qq" width="150"></el-table-column>
+          <el-table-column prop="current_num" label="当前人数" width="100"></el-table-column>
+          <el-table-column prop="user.school" label="队长学院" width="180"></el-table-column>
         </el-table>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -34,26 +37,44 @@
       </span>
     </el-dialog>
 
+    <br>
+    <el-badge value="1" class="item"  v-if="this.userInfoProp.invitation_id">
+      <el-popover
+        placement="bottom"
+        width="200"
+        v-model="inviteDia"
+      size="small">
+        <p>
+          队长: <span style="font-weight: bold">{{userInfoProp.invitation_id}}</span> 邀请你加入他的队伍
+        </p>
+        <div style="text-align: right; margin: 0">
+          <el-button type="primary" size="mini" @click="answerInvite($event)" value="0">拒绝</el-button>
+          <el-button type="primary" size="mini" @click="answerInvite($event)" value="1">同意</el-button>
+        </div>
+        <el-button slot="reference">邀请信息</el-button>
+      </el-popover>
+    </el-badge>
 
-    <el-switch
-      v-model="show"
-      active-text="展示队伍"
-      inactive-text="隐藏队伍"
-      active-value="1"
-      inactive-value="0"
-      @change="showTeam"
-      v-if="this.userInfoProp.leader">
-    </el-switch>
-
-    <el-switch
-      v-model="available"
-      active-text="接受申请"
-      inactive-text="拒绝申请"
-      active-value="1"
-      inactive-value="0"
-      @change="teamAvailable"
-      v-if="this.userInfoProp.leader">
-    </el-switch>
+    <template v-if="this.userInfoProp.leader">
+      <el-divider></el-divider>
+      <el-switch
+        v-model="show"
+        active-text="展示队伍"
+        inactive-text="隐藏队伍"
+        active-value="1"
+        inactive-value="0"
+        @change="showTeam">
+      </el-switch>
+      <el-divider></el-divider>
+      <el-switch
+        v-model="available"
+        active-text="接受申请"
+        inactive-text="拒绝申请"
+        active-value="1"
+        inactive-value="0"
+        @change="teamAvailable">
+      </el-switch>
+    </template>
   </div>
 </template>
 
@@ -88,10 +109,13 @@
         applyRes: {
           msg: "",
           type: ""
-        }
+        },
+        inviteDia: false,
       }
     },
-    // computed: mapState(["userInfoData"]),
+    computed: {
+      ...mapState(["userInfoData"])
+    },
     methods: {
       invite() {
         this.axios({
@@ -288,16 +312,26 @@
           this.dialogVisible = false;
         }
       },
+      answerInvite(event) {
+        this.inviteDia = false;
+        this.axios({
+          url: '/answerInvite',
+          params: {
+            userId: this.userInfoData.username,
+            answer:event.currentTarget.value
+          }
+        })
+          .then((res) => {
+            console.log(res)
+          })
+          .catch(err => {
+            console.log(err)
+
+          })
+      },
       ...mapMutations(["teamInfo", "beingLeader", "updateTeam"])
     },
-    mounted() {
-      // console.log("====================")
-      // console.log(this.userInfoProp.display)
-      // console.log(this.userInfoProp.available)
-      console.log("====================")
-
-      console.log(this.userInfoProp)
-
+    created() {
       if (this.userInfoProp.display === true) {
         this.show = "1"
       } else {
@@ -305,6 +339,7 @@
       }
       if (this.userInfoProp.available === true) {
         this.available = "1"
+
       } else {
         this.available = "0"
       }

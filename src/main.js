@@ -5,6 +5,7 @@ import Vuex from 'vuex'
 import App from './App'
 import router from './router'
 import axios from 'axios'
+import util from './util/util'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css';
 // import bootstrap from 'bootstrap/dist/css/bootstrap.min.css'
@@ -16,6 +17,7 @@ Vue.use(ElementUI);
 
 Vue.config.productionTip = false;
 Vue.prototype.axios = axios;
+Vue.prototype.util = util;
 axios.defaults.baseURL = '/api'
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 

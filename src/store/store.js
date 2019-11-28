@@ -14,7 +14,7 @@ export default new Vuex.Store({
       applicationStatus: null,//application_status为"0"时显示“申请未处理”，为其他非空字符串时显示“申请未通过：”+该字符串。（为空时不显示）
       invitation_id: 0,
       leader: false,
-      available: false,
+      available: true,
       display:false
     },
 

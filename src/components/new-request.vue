@@ -14,40 +14,34 @@
 </template>
 <script>
   import {mapState} from "vuex"
+
   export default {
     name: "new-request",
     data() {
       return {
-        newRequest: [
-        ]
+        newRequest: []
       }
     },
     methods: {
-      alertMen(row){
-        console.log(row.username)
-      },
       approveReq(row) {
         this.axios({
           url: '/approve',
           params: {
-            sender: row.username,//使用scope.row拿到每一行的数据
-            receiver: this.userInfoData.username
+            sender: row.username,//使用scope.row拿到每一行的数据,申请人
+            receiver: this.userInfoData.username//队长
           }
         })
-          .then((res) => {
-            this.$message({
-              message:"操作成功,已同意成员加入",
-              type:"successful",
-              duration:1500,
-              showClose:true
-            })
+          .then((response) => {
+            var self = this;
+            this.util.getNewReq(self);
+            this.util.feedbackInfo(self, response.data)
           })
           .catch(err => {
             this.$message({
-              message:"操作失败,请稍后再试",
-              type:"error",
-              duration:1500,
-              showClose:true
+              message: "操作失败,请稍后再试",
+              type: "error",
+              duration: 1500,
+              showClose: true
             })
           })
       },
@@ -56,23 +50,20 @@
           url: '/reject',
           params: {
             sender: row.username,////使用scope.row拿到每一行的数据
-            reason: "kaixin"
+            reason: ""
           }
         })
-          .then((res) => {
-            this.$message({
-              message:"操作成功,已拒绝成员加入",
-              type:"successful",
-              duration:1500,
-              showClose:true
-            })
+          .then((response) => {
+            var self = this;
+            this.util.getNewReq(self);
+            this.util.feedbackInfo(self, response.data)
           })
           .catch(err => {
             this.$message({
-              message:"操作失败,请稍后再试",
-              type:"error",
-              duration:1500,
-              showClose:true
+              message: "操作失败,请稍后再试",
+              type: "error",
+              duration: 1500,
+              showClose: true
             })
           })
       }
@@ -81,26 +72,8 @@
       ...mapState(["userInfoData"])
     },
     mounted() {
-      this.axios({
-        method: "get",
-        url: "/mail",
-        params: {
-          userId: this.userInfoData.username//得改
-        }
-      })
-      //如果查询成功,本地缓存用户信息
-        .then((res) => {
-          this.newRequest = res.data
-        })
-        //如果查询失败,提醒用户重新登录
-        .catch(err => {
-          this.$message({
-            message:"信息加载失败,请稍后再试",
-            type:"error",
-            duration:1500,
-            showClose:true
-          })
-        })
+      var self = this;
+      this.util.getNewReq(self)
     }
   }
 </script>

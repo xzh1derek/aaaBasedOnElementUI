@@ -6,9 +6,9 @@ const routes =
   [
     {
       path: '/',
-      component: myTeam,
+      component: teamList,
       meta:{
-        text:"我的队伍",
+        text:"队伍列表",
         teamleader:false
       }
     },
@@ -21,10 +21,10 @@ const routes =
       }
     },
     {
-      path: '/list',
-      component: teamList,
+      path: '/my_team',
+      component: myTeam,
       meta:{
-        text:"所有队伍",
+        text:"我的队伍",
         teamleader:false
       }
     }
