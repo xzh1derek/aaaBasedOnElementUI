@@ -1,15 +1,19 @@
-import myTeam from '../components/my-team'
-import teamList from '../components/team-list'
-import newRequest from '../components/new-request'
-import navbar from "../components/navbar";
+import myTeam from '../components/teamModule/my-team'
+import teamList from '../components/teamModule/team-list'
+import newRequest from '../components/teamModule/new-request'
+import navbar from "../components/teamModule/navbar";
+import Team from "../components/Team";
+import Login from "../components/Login";
+import CompleteInfo from "../components/CompleteInfo";
 const routes =
   [
     {
       path: '/',
-      component: teamList,
+      component: myTeam,
       meta:{
-        text:"队伍列表",
-        teamleader:false
+        text:"我的队伍",
+        teamleader:false,
+        key:3
       }
     },
     {
@@ -17,15 +21,44 @@ const routes =
       component: newRequest,
       meta:{
         text:"入队申请",
-        teamleader:false
+        teamleader:true,
+        key:2
       }
     },
     {
-      path: '/my_team',
-      component: myTeam,
+      path: '/list',
+      component: teamList,
       meta:{
-        text:"我的队伍",
-        teamleader:false
+        text:"队伍大厅",
+        teamleader:false,
+        key:1
+      }
+    },
+    {
+      path: '/team',
+      component: Team,
+      meta:{
+        text:"组队",
+        teamleader:false,
+        key:4
+      }
+    },
+    {
+      path: '/login',
+      component: Login,
+      meta:{
+        text:"登录",
+        teamleader:false,
+        key:5
+      }
+    },
+    {
+      path: '/complete',
+      component: CompleteInfo,
+      meta:{
+        text:"完善个人信息",
+        teamleader:false,
+        key:6
       }
     }
   ];

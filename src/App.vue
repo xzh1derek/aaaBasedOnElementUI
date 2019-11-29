@@ -1,3 +1,23 @@
+<!--<template>-->
+
+<!--<div>-->
+<!--<div id="header">-->
+<!--<MainNavBar></MainNavBar>-->
+<!--</div>-->
+<!--<div id="content">-->
+<!--  <userInfo ></userInfo>-->
+<!--&lt;!&ndash;  <userInfo :user-info-prop=this.userInfoToOpe v-if="userInfoToOpe"></userInfo>&ndash;&gt;-->
+<!--&lt;!&ndash;  <router-view></router-view>&ndash;&gt;-->
+
+
+<!--</div>-->
+<!--<div id="footer"></div>-->
+<!--</div>-->
+
+
+<!--</template>-->
+
+
 <template xmlns="http://www.w3.org/1999/html">
   <div id="app">
     <!--    侧边栏-->
@@ -15,6 +35,7 @@
       <div id="right">
         <!--      导航栏-->
         <div id="nav">
+
           <navbar></navbar>
         </div>
         <!--      信息显示栏-->
@@ -25,19 +46,18 @@
     </template>
   </div>
 </template>
-
-
 <script>
 
-  import navbar from "./components/navbar";
+  import navbar from "./components/teamModule/navbar";
   import userInfo from "./components/userInfo";
-  import teamOperate from "./components/teamOperate";
+  import teamOperate from "./components/teamModule/teamOperate";
   import store from './store/store'
   import {mapState, mapMutations} from 'vuex'
+  import MainNavBar from "./components/MainNavBar";
 
   export default {
     name: 'App',
-    components: {navbar, userInfo, teamOperate},
+    components: {navbar, userInfo, teamOperate,MainNavBar},
     store,
     data() {
       return {
@@ -122,7 +142,6 @@
           if (perms.data) {
             self.updateTeam(perms.data);
           }
-          console.log(perms.data)
           self.userInfoToOpe = self.userInfoData
         }))
         .catch(err => {

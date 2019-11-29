@@ -25,6 +25,7 @@
     methods: {
       approveReq(row) {
         this.axios({
+          method:"post",
           url: '/approve',
           params: {
             sender: row.username,//使用scope.row拿到每一行的数据,申请人
@@ -47,6 +48,7 @@
       },
       rejectReq(row) {
         this.axios({
+          method:"post",
           url: '/reject',
           params: {
             sender: row.username,////使用scope.row拿到每一行的数据

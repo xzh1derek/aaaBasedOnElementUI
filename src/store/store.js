@@ -11,7 +11,7 @@ export default new Vuex.Store({
       school: "通信",//学院
       qq: "---",
       teamleader: "",//队长学号
-      applicationStatus: null,//application_status为"0"时显示“申请未处理”，为其他非空字符串时显示“申请未通过：”+该字符串。（为空时不显示）
+      applicationStatus: 0,//application_status为"0"时显示“申请未处理”，为其他非空字符串时显示“申请未通过：”+该字符串。（为空时不显示）
       invitation_id: 0,
       leader: false,
       available: true,
@@ -40,6 +40,9 @@ export default new Vuex.Store({
     beingLeader(state){
       state.userInfoData.teamleader=state.userInfoData.username;
       state.userInfoData.leader=true;
+    },
+    updateStatus(state){
+      state.userInfoData.applicationStatus=0
     }
   }
 })

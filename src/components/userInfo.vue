@@ -10,10 +10,12 @@
   </div>
 </template>
 
+
+
 <script>
   import store from '../store/store'
   import {mapState, mapMutations} from 'vuex'
-  import teamOperate from './teamOperate'
+  import teamOperate from './teamModule/teamOperate'
   import test from './test'
 
   export default {
@@ -42,8 +44,8 @@
   }
 
   dd {
-    color: #ffffff;
-    border-bottom: 1px solid white;
+    color: #090909;
+    border-bottom: 1px solid #5b5a57;
     margin-bottom: 10px;
   }
 </style>

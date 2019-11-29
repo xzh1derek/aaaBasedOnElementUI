@@ -4,7 +4,6 @@ export default {
     console.log("hello world")
   },
 
-
   feedbackInfo(self, data) {
     let applyRes = {
       text: "",

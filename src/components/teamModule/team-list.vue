@@ -38,7 +38,7 @@
     methods: {
       sendApplication(row) {//发送申请加入请求
           this.axios({
-            method: "get",
+            method: "post",
             url: "/apply",
             params: {
               receiver: row.leader, //队长,在生成dom时,顺便把队长学号加到a标签的id上

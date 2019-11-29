@@ -1,25 +1,26 @@
 <template>
   <div>
     <el-input
-      placeholder="请输入内容"
+      placeholder="请输入被邀学号"
       v-model="input"
       clearable
-      v-if="this.userInfoProp.leader">
+      v-if="this.userInfoProp.leader"
+      style="margin-bottom: 10px">
     </el-input>
 
     <el-input
-      placeholder="请输入内容"
+      placeholder="请输入队长学号"
       v-model="input"
       clearable
       v-if="!this.userInfoProp.teamleader"
-    style="margin-bottom: 10px">
+      style="margin-bottom: 10px">
     </el-input>
     <!--是队长才显示-->
     <el-button round type="primary" @click="invite" v-if="this.userInfoProp.leader">邀请</el-button>
     <!--    未组队才显示-->
-    <template  v-if="!this.userInfoProp.teamleader">
-    <el-button round type="primary" @click="searchTeam">搜索队伍</el-button>
-    <el-button round type="primary" @click="creatTeam" >创建队伍</el-button>
+    <template v-if="!this.userInfoProp.teamleader">
+      <el-button round type="primary" @click="searchTeam">搜索队伍</el-button>
+      <el-button round type="primary" @click="creatTeam">创建队伍</el-button>
     </template>
 
     <el-dialog title="是否申请加入队伍" :visible.sync="dialogVisible" width="40%">
@@ -38,12 +39,12 @@
     </el-dialog>
 
     <br>
-    <el-badge value="1" class="item"  v-if="this.userInfoProp.invitation_id">
+    <el-badge value="1" class="item" v-if="!this.userInfoProp.teamleader&&this.userInfoProp.invitation_id">
       <el-popover
         placement="bottom"
         width="200"
         v-model="inviteDia"
-      size="small">
+        size="small">
         <p>
           队长: <span style="font-weight: bold">{{userInfoProp.invitation_id}}</span> 邀请你加入他的队伍
         </p>
@@ -52,6 +53,23 @@
           <el-button type="primary" size="mini" @click="answerInvite($event)" value="1">同意</el-button>
         </div>
         <el-button slot="reference">邀请信息</el-button>
+      </el-popover>
+    </el-badge>
+
+<!--    尚未组队,而且有过申请-->
+    <el-badge value="1" class="item" v-if="!this.userInfoProp.teamleader&&this.userInfoProp.applicationStatus">
+      <el-popover
+        placement="bottom"
+        width="200"
+        v-model="applyDia"
+        size="small">
+        <p>
+          我的申请状态: <span style="font-weight: bold">{{this.userInfoProp.applicationStatus==0?"未处理":this.userInfoProp.applicationStatus}}</span>
+        </p>
+        <div style="text-align: right; margin: 0">
+          <el-button type="primary" size="mini" @click="withdrawApply" value="1" v-if="this.userInfoProp.applicationStatus==0">撤回申请</el-button>
+        </div>
+        <el-button slot="reference">我的申请</el-button>
       </el-popover>
     </el-badge>
 
@@ -98,19 +116,20 @@
           qq: "",
           current_num: ""
         }],
-        searchRes: {
-          msg: "",
-          type: ""
-        },
-        inviteRes: {
-          msg: "",
-          type: ""
-        },
-        applyRes: {
-          msg: "",
-          type: ""
-        },
+        // searchRes: {
+        //   msg: "",
+        //   type: ""
+        // },
+        // inviteRes: {
+        //   msg: "",
+        //   type: ""
+        // },
+        // applyRes: {
+        //   msg: "",
+        //   type: ""
+        // },
         inviteDia: false,
+        applyDia: false,
       }
     },
     computed: {
@@ -127,35 +146,13 @@
           }
         })
           .then((response) => {
-            switch (response.data) {
-              case 0:
-                this.inviteRes.text = "操作成功";
-                this.inviteRes.type = "successful";
-                break;
-              case 1:
-                this.inviteRes.text = "用户不存在";
-                this.inviteRes.type = "warning";
-                break;
-              case 6:
-                this.inviteRes.text = "操作失败,该用户已经组队";
-                this.inviteRes.type = "error";
-                break;
-              case 7:
-                this.inviteRes.text = "队伍已经满员,不能再发送邀请";
-                this.inviteRes.type = "warning";
-                break;
-            }
-            this.$message({
-              message: this.inviteRes.text,
-              type: this.inviteRes.type,
-              duration: 1500,
-              showClose: true
-            });
+            let self = this
+            this.util.feedbackInfo(self, response.data)
           })
           //解析服务器返回的response,并且做出相应的处理
           .catch(error => {
             this.$message({
-              message: '操作失败!,请稍后再试',
+              message: '请输入学号!',
               type: 'error',
               duration: 1500,
               showClose: true
@@ -219,7 +216,7 @@
       },
       showTeam(data) {//是否展示队伍
         this.axios({
-          method: "get",
+          method: "post",
           url: "/team/setDisplay",
           params: {
             leader: this.userInfoProp.teamleader,
@@ -236,7 +233,7 @@
       },
       teamAvailable(data) {
         this.axios({
-          method: "get",
+          method: "post",
           url: "/team/setAvailable",
           params: {
             leader: this.userInfoProp.teamleader,
@@ -244,8 +241,6 @@
           }
         })
           .then((response) => {
-            console.log(this.available)
-            console.log(response)
           })
           //解析服务器返回的response,并且做出相应的处理
           .catch(error => {
@@ -253,84 +248,82 @@
           })
       },
       sendApply() {
-        if (!this.userInfoProp.teamleader) {
-          this.axios({
-            method: "get",
-            url: "/apply",
-            params: {
-              receiver: this.dialogInfo[0].leader, //队长,在生成dom时,顺便把队长学号加到a标签的id上
-              sender: this.userInfoProp.username//申请人,取vuex中的username
-            }
+        // if (!this.userInfoProp.teamleader) {
+        this.axios({
+          method: "post",
+          url: "/apply",
+          params: {
+            receiver: this.dialogInfo[0].leader, //队长,在生成dom时,顺便把队长学号加到a标签的id上
+            sender: this.userInfoProp.username//申请人,取vuex中的username
+          }
+        })
+          .then((response) => {//判断res的结果,给用户相应的反馈
+            let self = this
+            this.util.feedbackInfo(self, response.data)
+            this.dialogVisible = false
           })
-            .then((response) => {//判断res的结果,给用户相应的反馈
-
-              switch (response.data) {
-                case 0:
-                  this.applyRes.text = "操作成功";
-                  this.applyRes.type = "successful";
-                  break;
-                case 2:
-                  this.applyRes.text = "你已经在队伍里了,请勿二次组队";
-                  this.applyRes.type = "warning";
-                  break;
-                case 3:
-                  this.applyRes.text = "操作失败,该队伍不接受申请";
-                  this.applyRes.type = "error";
-                  break;
-                case 4:
-                  this.applyRes.text = "尚有未被处理的申请,不能继续申请";
-                  this.applyRes.type = "warning";
-                  break;
-              }
+          //解析服务器返回的response,并且做出相应的处理
+          .catch(error => {
+              console.log(this.dialogInfo)
               this.$message({
-                message: this.applyRes.text,
-                type: this.applyRes.type,
+                message: '操作失败!,请稍后再试',
+                type: 'error',
                 duration: 1500,
                 showClose: true
               });
               this.dialogVisible = false
-            })
-            //解析服务器返回的response,并且做出相应的处理
-            .catch(error => {
-                console.log(this.dialogInfo)
-                this.$message({
-                  message: '操作失败!,请稍后再试',
-                  type: 'error',
-                  duration: 1500,
-                  showClose: true
-                });
-                this.dialogVisible = false
-              }
-            )
-        } else {
-          this.$message({
-            message: '您已经组队,请勿重复组队',
-            type: 'warning',
-            duration: 1500,
-            showClose: true
-          })
-          this.dialogVisible = false;
-        }
+            }
+          )
       },
       answerInvite(event) {
         this.inviteDia = false;
         this.axios({
+          method:"post",
           url: '/answerInvite',
           params: {
             userId: this.userInfoData.username,
-            answer:event.currentTarget.value
+            answer: event.currentTarget.value
           }
         })
-          .then((res) => {
-            console.log(res)
+          .then((response) => {
+            let self = this
+            this.util.feedbackInfo(self, response.data)
           })
-          .catch(err => {
-            console.log(err)
-
+          .catch(error => {
+            this.$message({
+              message: '操作失败!,请稍后再试',
+              type: 'error',
+              duration: 1500,
+              showClose: true
+            });
           })
       },
-      ...mapMutations(["teamInfo", "beingLeader", "updateTeam"])
+      withdrawApply() {
+        this.inviteDia = false;
+        this.axios({
+          method:"post",
+          url: '/withdraw',
+          params: {
+            userId: this.userInfoData.username,
+          }
+        })
+          .then((response) => {
+            let self = this;
+            this.updateStatus();
+            this.util.feedbackInfo(self, response.data)
+          })
+          .catch(error => {
+            this.$message({
+              message: '操作失败!,请稍后再试',
+              type: 'error',
+              duration: 1500,
+              showClose: true
+            });
+          })
+      },
+      ...mapMutations(["teamInfo", "beingLeader", "updateTeam","updateStatus"])
     },
+
     created() {
       if (this.userInfoProp.display === true) {
         this.show = "1"
