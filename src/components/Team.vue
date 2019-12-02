@@ -1,177 +1,75 @@
-<template xmlns="http://www.w3.org/1999/html">
-  <div id="app">
-    <!--    侧边栏-->
-    <template v-if="userInfoToOpe">
-      <div id="info">
-        <userInfo :user-info-prop=this.userInfoToOpe></userInfo>
-        <teamOperate :user-info-prop=this.userInfoToOpe></teamOperate>
-        <el-input
-          placeholder="请输入内容"
-          v-model.lazy="loginUser"
-          clearable>
-        </el-input>
-      </div>
-      <!--    right = nav + view-->
-      <div id="right">
-        <!--      导航栏-->
-        <div id="nav">
-
-          <navbar></navbar>
-        </div>
-        <!--      信息显示栏-->
-        <div id="view">
-          <router-view></router-view>
-        </div>
-      </div>
-    </template>
+<template>
+  <div id="container">
+    <div id="side">
+      <userInfo :user-info-prop=this.userInfoProp v-if="userInfoProp"></userInfo>
+      <teamOperate :user-info-prop=this.userInfoProp v-if="userInfoProp"></teamOperate>
+    </div>
+    <div id="view">
+<!--      <router-view style="margin: 0 auto"></router-view>-->
+      <template v-if="userInfoProp">
+      <h2>我的队伍</h2>
+      <myTeam :user-info-prop=this.userInfoProp > </myTeam>
+        <el-divider></el-divider>
+      <h2>队伍大厅</h2>
+      <teamList :user-info-prop=this.userInfoProp ></teamList>
+        <el-divider></el-divider>
+      <h2>入队申请</h2>
+      <newRequest :user-info-prop=this.userInfoProp ></newRequest>
+      </template>
+    </div>
   </div>
 </template>
 
 
 <script>
 
-  import navbar from "./teamModule/navbar";
-  import userInfo from "./userInfo";
   import teamOperate from "./teamModule/teamOperate";
-  import store from '../store/store'
-  import {mapState, mapMutations} from 'vuex'
+  import myTeam from "./teamModule/my-team";
+  import newRequest from "./teamModule/new-request";
+  import teamList from "./teamModule/team-list";
+  import userInfo from "./userInfo";
+  import {mapState} from "vuex"
+  import store from "../store/store";
 
   export default {
     name: 'Team',
-    components: {navbar, userInfo, teamOperate},
-    store,
-    data() {
+    data(){
       return {
-        userInfoToOpe: null,//传给组件的值,通过create钩子函数初始化,这里要写成null,不能写成{},否则会被判为true
-        loginUser: "16010410030",
+        userInfoProp:null
+
       }
     },
-    watch:{
-      loginUser(){
-        var self = this
+    store,
+    components: {
+      teamOperate,
+      userInfo,
+      myTeam,
+      newRequest,
+      teamList
 
-        function getUserInfo() {
-          return self.axios({
-            method: "post",
-            url: "/userInfo",
-            params: {
-              userId: self.loginUser//得改
-              // userId: "1601"//得改
-            }
-          })
-        }
-
-        function getTeamInfo() {
-          return self.axios({
-            method: "get",
-            url: "/search",
-            params: {
-              leader: self.loginUser//得改
-            }
-          })
-        }
-
-        self.axios.all([getUserInfo(), getTeamInfo()])
-          .then(self.axios.spread(function (acct, perms) {
-            //当这两个请求都完成的时候会触发这个函数，两个参数分别代表返回的结果
-            self.initUserInfo(acct.data);
-            if (perms.data) {
-              self.updateTeam(perms.data);
-            }
-            console.log(perms.data)
-            self.userInfoToOpe = self.userInfoData
-          }))
-          .catch(err => {
-            console.log(err)
-          })
-      }
     },
     computed: {
       ...mapState(['userInfoData'])
     },
-    methods: {
-      ...mapMutations(['initUserInfo', "updateTeam"])
-    },
     mounted() {
-      var self = this
-
-      function getUserInfo() {
-        return self.axios({
-          method: "post",
-          url: "/userInfo",
-          params: {
-            userId: self.loginUser//得改
-            // userId: "1601"//得改
-          }
-        })
-      }
-
-      function getTeamInfo() {
-        return self.axios({
-          method: "get",
-          url: "/search",
-          params: {
-            leader: self.loginUser//得改
-          }
-        })
-      }
-
-      self.axios.all([getUserInfo(), getTeamInfo()])
-        .then(self.axios.spread(function (acct, perms) {
-          //当这两个请求都完成的时候会触发这个函数，两个参数分别代表返回的结果
-          self.initUserInfo(acct.data);
-          if (perms.data) {
-            self.updateTeam(perms.data);
-          }
-          self.userInfoToOpe = self.userInfoData
-        }))
-        .catch(err => {
-          console.log(err)
-        })
-    },
+      this.userInfoProp=this.userInfoData
+      console.log(this.userInfoProp)
+    }
   }
 </script>
 
-<style>
-  * {
-    margin: 0;
-    padding: 0;
-  }
-
-
-  #app {
-    width: 100%;
-    height: 500px;
+<style scoped>
+  #container {
+    padding-left: 50px;
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
   }
 
-  #info {
-    background-color: #5b5a57;
-    width: 240px;
-    padding: 20px;
-  }
-
-  #right {
-    overflow: hidden;
-    flex: 1;
-  }
-
-  #nav {
-    /*background-color: #0bfffc;*/
-    /*height: 50px;*/
+  #side {
+    width: 250px;
   }
 
   #view {
-    overflow: auto;
-  }
-
-  .formInput {
-    margin-bottom: 10px;
-  }
-
-  thead {
-    font-weight: bold;
+    flex: 1;
   }
 </style>

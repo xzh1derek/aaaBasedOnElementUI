@@ -57,7 +57,8 @@ export default {
         method: "get",
         url: "/mail",
         params: {
-          userId: self.userInfoData.username//得改
+          // userId: self.userInfoData.username//得改
+          userId: localStorage.token//得改
         }
       })
       //如果查询成功,本地缓存用户信息

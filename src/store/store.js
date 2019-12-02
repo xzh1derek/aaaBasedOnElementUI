@@ -43,6 +43,9 @@ export default new Vuex.Store({
     },
     updateStatus(state){
       state.userInfoData.applicationStatus=0
+    },
+    updateInvitationId(state){
+      state.userInfoData.invitation_id=0
     }
   }
 })

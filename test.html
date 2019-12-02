@@ -1,21 +1,176 @@
+
+
+
+
+
+
 <!DOCTYPE html>
-<html>
 <head>
-  <meta charset="UTF-8">
-  <!-- import CSS -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+  <title>智慧实验室</title>
+  <link rel="stylesheet" type="text/css" href="/labhtml/css/login/common.css">
+  <link rel="stylesheet" type="text/css" href="/labhtml/css/login/login.css">
+
+  <script src="/hrbust_lab_platform/js/jquery.min.js"></script>
+  <script src="/labhtml/css/login/jquery.cookie.js"></script>
+
+  <link href="/labhtml/css/login/loginButton.css" type="text/css" rel="stylesheet">
 </head>
 
-<body>
-<div id="app">
-  <form action="http://192.168.43.158:8080/registry" method="post">
-    <input type="text" name="username">
-    <input type="text" name="name">
-    <input type="text" name="school">
-    <input type="text" name="qq">
-    <input type="text" name="password">
-    <input type="submit" value="提交">
-  </form>
-</div>
 
+<body onload="window.scrollTo((document.body.scrollWidth-document.body.offsetWidth),0)">
+
+<div class="menubox w1170-center clearfix">
+  <a href="javascript:#" class="logo fl"></a>
+  <div class="fl" style="margin-top:24px; margin-left:20px; line-height:28px; font-size:20px; color:#999;">西安电子科技大学</div>
+</div>
+<div class="login-bg">
+  <div class="w1170-center">
+    <div class="register-box login-box" style="width:320px; height:350px; margin:30px 0; float:right;border-radius: 0px">
+      <!-- william start
+            <div class="register-nav">
+                <span>用户登录</span><div class="register-login">没有账号，<a class="tc" href="/labhtml/html/portal/selfservice/index.html?menuId=register">立即注册 &gt;</a></div>
+            </div>
+            william end---->
+      <div class="register-nav">
+        <span>用户登录</span>
+      </div>
+      <form id="jvForm" id="sform" name="sform"  method="post" novalidate="novalidate">
+        <div class="inf-message">
+          <font id="loginError" style="color: red; font-size: 12px"></font>
+
+
+          <input type="hidden" name="returnUrl" value="/">
+        </div>
+        <div class="username-con"><i></i><input id="userLoginName" name="username" class="required login-input" type="text" placeholder="用户名"></div>
+        <div class="password-con"><i></i><input id="userPass" name="userPass" class="required password-input" type="password" placeholder="密码"></div>
+        <div class="yzm-con"><i></i><input id="loginCode" name="yzm" class="required yzm-input" type="text" placeholder="验证码">
+          <a id='codeimg' href="javascript:changePicture('codepic')" style="float: right;overflow:hidden"> </a>
+
+
+
+        </div>
+
+
+        <div class="login-rem clearfix">
+          <div class="next-day"><input type="checkbox" class="login-checkbox"  name="rememberMe" id="rememberMe">下次自动登录</div>
+          <!-- william start	<a href="/labhtml/html/portal/selfservice/index.html">忘记密码</a> william end---->
+        </div>
+        <input type="button" onclick="login();" class="login-btn" value="登 录">
+      </form>
+    </div>
+  </div>
+</div>
+<div style="text-align:center; line-height:50px;">
+  Copyright © 2018-2020 北京精仪达盛科技有限公司
+</div>
+<script type="text/javascript">
+
+
+  //页面回车事件
+  document.onkeydown=keyDownSearch;
+  function keyDownSearch(e) {
+    // 兼容FF和IE和Opera
+    //var theEvent = e || window.event;
+    /*  var theEvent = arguments.callee.caller.arguments[0] || window.event; //解决firefox不支持
+
+     var code = theEvent.keyCode || theEvent.which || theEvent.charCode; */
+    if (e.keyCode == 13) {
+      login();
+    }
+    return true;
+  }
+
+  //输入框回车事件
+  function keyDown(){
+    if (event.keyCode == 13){
+      event.returnValue=false;
+      event.cancel = true;
+      login();
+    }
+  }
+  //登录
+  function login(){
+    var userLoginName = $("#userLoginName").val().trim();
+    var userPass = $("#userPass").val();
+    var loginCode = $("#loginCode").val();
+    if(userLoginName =='' || userLoginName ==null){
+      $("#loginError").html("请输入用户名");
+      changePicture("codepic");
+    }else{
+      if(userPass =='' || userPass ==null){
+        $("#loginError").html("请输入密码");
+        changePicture("codepic");
+      }else{
+        if(loginCode =='' || loginCode ==null){
+          $("#loginError").html("请输入验证码");
+          changePicture("codepic");
+        }else{
+          $.ajax({
+            type:'post',
+            data:{
+              userLoginName:userLoginName,
+              userPass:userPass,
+              loginCode:loginCode
+            },
+            url:'/hrbust_lab_platform/main/login',
+            success:function(data){
+              if(data.status ==200){
+                $.cookie('Authorization', data.userId, { path: '/' });
+                $.cookie('userId', data.userId, { path: '/' });
+
+                if ($("#rememberMe").is(":checked")) {
+                  $.cookie("rmbUser", "true", { expires: 7 }); //存储一个带7天期限的cookie
+                  $.cookie("username", userLoginName, { expires: 7 });
+                  $.cookie("password", userPass, { expires: 7 });
+                }
+                else {
+                  $.cookie("rmbUser", "false", { expire: -1 });
+                  $.cookie("username", "", { expires: -1 });
+                  $.cookie("password", "", { expires: -1 });
+                }
+
+                window.location.href="/hrbust_lab_platform/";
+
+              }else{
+                $("#loginError").html(data.msg);
+                changePicture("codepic");
+              }
+            }
+          });
+        }
+      }
+    }
+  };
+
+
+  $(function(){
+    var username = $.cookie('username');
+    var password = $.cookie('password');
+
+    //将获取的值填充入输入框中
+    $('#userLoginName').val(username);
+    $('#userPass').val(password);
+
+    if(username != null && username != '' && password != null && password != ''){
+      //选中保存秘密的复选框
+      $("#rememberMe").attr('checked',true);
+    }
+    //动态生成img，验证码图片
+    $("<img id='codepic' src='/hrbust_lab_platform/imageCode/createLoginCode?width=120&height=30&time=0.5484099897921104' style='height: 33px;position:relative;width:100px;top:0px;left:0px;margin-left:5px; ' align='bottom'/>").appendTo("#codeimg");
+  });
+  /**
+   * 获取验证码图片
+   */
+  function changePicture(obj) {
+    $("#" + obj).attr("src","/hrbust_lab_platform/imageCode/createLoginCode?width=120&height=30&time="+ Math.random());
+  };
+
+
+
+
+
+</script>
 </body>
 </html>

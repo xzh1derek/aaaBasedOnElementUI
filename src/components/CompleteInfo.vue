@@ -62,11 +62,12 @@
             let self = this
             //缺个跳转
             self.$message({
-              message: "操作成功",
+              message: "操作成功,请重新登录",
               type: "successful",
               duration: 1500,
               showClose: true
             })
+            location.href="#/login"
           })
           .catch((err) => {
             self.$message({

@@ -1,50 +1,20 @@
-<!--<template>-->
-
-<!--<div>-->
-<!--<div id="header">-->
-<!--<MainNavBar></MainNavBar>-->
-<!--</div>-->
-<!--<div id="content">-->
-<!--  <userInfo ></userInfo>-->
-<!--&lt;!&ndash;  <userInfo :user-info-prop=this.userInfoToOpe v-if="userInfoToOpe"></userInfo>&ndash;&gt;-->
-<!--&lt;!&ndash;  <router-view></router-view>&ndash;&gt;-->
-
-
-<!--</div>-->
-<!--<div id="footer"></div>-->
-<!--</div>-->
-
-
-<!--</template>-->
-
-
-<template xmlns="http://www.w3.org/1999/html">
-  <div id="app">
-    <!--    侧边栏-->
-    <template v-if="userInfoToOpe">
-      <div id="info">
-        <userInfo :user-info-prop=this.userInfoToOpe></userInfo>
-        <teamOperate :user-info-prop=this.userInfoToOpe></teamOperate>
-        <el-input
-          placeholder="请输入内容"
-          v-model.lazy="loginUser"
-          clearable>
-        </el-input>
-      </div>
-      <!--    right = nav + view-->
-      <div id="right">
-        <!--      导航栏-->
-        <div id="nav">
-
-          <navbar></navbar>
+<template>
+  <div>
+    <template></template>
+    <div id="container" >
+      <SideBar v-if="this.loginUser"></SideBar>
+      <div id="rightSide">
+        <div id="header" v-if="this.loginUser">
+          <MainNavBar></MainNavBar>
         </div>
-        <!--      信息显示栏-->
-        <div id="view">
+        <div id="content">
           <router-view></router-view>
         </div>
       </div>
-    </template>
+    </div>
   </div>
+
+
 </template>
 <script>
 
@@ -54,20 +24,22 @@
   import store from './store/store'
   import {mapState, mapMutations} from 'vuex'
   import MainNavBar from "./components/MainNavBar";
+  import SideBar from "./components/SideBar";
+  import Login from "./components/Login";
 
   export default {
     name: 'App',
-    components: {navbar, userInfo, teamOperate,MainNavBar},
+    components: {navbar, userInfo, teamOperate, MainNavBar, SideBar, Login},
     store,
     data() {
       return {
         userInfoToOpe: null,//传给组件的值,通过create钩子函数初始化,这里要写成null,不能写成{},否则会被判为true
-        loginUser: "16010410030",
+        loginUser: "",
       }
     },
-    watch:{
-      loginUser(){
-        var self = this
+    watch: {
+      loginUser() {
+        var self = this;
 
         function getUserInfo() {
           return self.axios({
@@ -112,42 +84,47 @@
       ...mapMutations(['initUserInfo', "updateTeam"])
     },
     mounted() {
+      this.loginUser = localStorage.token
       var self = this
+      if (this.loginUser) {
+        function getUserInfo() {
+          return self.axios({
+            method: "post",
+            url: "/userInfo",
+            params: {
+              userId: self.loginUser//得改
+              // userId: "1601"//得改
+            }
+          })
+        }
 
-      function getUserInfo() {
-        return self.axios({
-          method: "post",
-          url: "/userInfo",
-          params: {
-            userId: self.loginUser//得改
-            // userId: "1601"//得改
-          }
-        })
+        function getTeamInfo() {
+          return self.axios({
+            method: "get",
+            url: "/search",
+            params: {
+              leader: self.loginUser//得改
+            }
+          })
+        }
+
+        self.axios.all([getUserInfo(), getTeamInfo()])
+          .then(self.axios.spread(function (acct, perms) {
+            //当这两个请求都完成的时候会触发这个函数，两个参数分别代表返回的结果
+            self.initUserInfo(acct.data);
+            if (perms.data) {
+              self.updateTeam(perms.data);
+            }
+            localStorage.teamleader= self.userInfoData.teamleader
+            self.userInfoToOpe = self.userInfoData//更改vuex里面的数据据
+          }))
+          .catch(err => {
+            localStorage.token=""
+          })
+      }else {
+        location.href="#/login"
       }
-
-      function getTeamInfo() {
-        return self.axios({
-          method: "get",
-          url: "/search",
-          params: {
-            leader: self.loginUser//得改
-          }
-        })
-      }
-
-      self.axios.all([getUserInfo(), getTeamInfo()])
-        .then(self.axios.spread(function (acct, perms) {
-          //当这两个请求都完成的时候会触发这个函数，两个参数分别代表返回的结果
-          self.initUserInfo(acct.data);
-          if (perms.data) {
-            self.updateTeam(perms.data);
-          }
-          self.userInfoToOpe = self.userInfoData
-        }))
-        .catch(err => {
-          console.log(err)
-        })
-    },
+    }
   }
 </script>
 
@@ -182,9 +159,9 @@
     /*height: 50px;*/
   }
 
-  #view {
-    overflow: auto;
-  }
+  /*#view {*/
+  /*  overflow: auto;*/
+  /*}*/
 
   .formInput {
     margin-bottom: 10px;
@@ -192,5 +169,19 @@
 
   thead {
     font-weight: bold;
+  }
+
+  #container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  #sidebar {
+    max-width: 250px;
+  }
+
+  #rightSide {
+    height: 850px;
+    flex: 1;
   }
 </style>

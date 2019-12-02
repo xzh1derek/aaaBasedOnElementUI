@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="newRequest" stripe style="width: 100%">
+  <el-table :data="newRequest" stripe style="width: 80%">
     <el-table-column prop="name" label="姓名" width="180"></el-table-column>
     <el-table-column prop="username" label="学号" width="180"></el-table-column>
     <el-table-column prop="qq" label="qq"></el-table-column>

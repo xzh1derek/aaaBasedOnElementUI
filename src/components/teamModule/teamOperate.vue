@@ -38,41 +38,7 @@
       </span>
     </el-dialog>
 
-    <br>
-    <el-badge value="1" class="item" v-if="!this.userInfoProp.teamleader&&this.userInfoProp.invitation_id">
-      <el-popover
-        placement="bottom"
-        width="200"
-        v-model="inviteDia"
-        size="small">
-        <p>
-          队长: <span style="font-weight: bold">{{userInfoProp.invitation_id}}</span> 邀请你加入他的队伍
-        </p>
-        <div style="text-align: right; margin: 0">
-          <el-button type="primary" size="mini" @click="answerInvite($event)" value="0">拒绝</el-button>
-          <el-button type="primary" size="mini" @click="answerInvite($event)" value="1">同意</el-button>
-        </div>
-        <el-button slot="reference">邀请信息</el-button>
-      </el-popover>
-    </el-badge>
-
-<!--    尚未组队,而且有过申请-->
-    <el-badge value="1" class="item" v-if="!this.userInfoProp.teamleader&&this.userInfoProp.applicationStatus">
-      <el-popover
-        placement="bottom"
-        width="200"
-        v-model="applyDia"
-        size="small">
-        <p>
-          我的申请状态: <span style="font-weight: bold">{{this.userInfoProp.applicationStatus==0?"未处理":this.userInfoProp.applicationStatus}}</span>
-        </p>
-        <div style="text-align: right; margin: 0">
-          <el-button type="primary" size="mini" @click="withdrawApply" value="1" v-if="this.userInfoProp.applicationStatus==0">撤回申请</el-button>
-        </div>
-        <el-button slot="reference">我的申请</el-button>
-      </el-popover>
-    </el-badge>
-
+    <!--    <template >-->
     <template v-if="this.userInfoProp.leader">
       <el-divider></el-divider>
       <el-switch
@@ -116,20 +82,6 @@
           qq: "",
           current_num: ""
         }],
-        // searchRes: {
-        //   msg: "",
-        //   type: ""
-        // },
-        // inviteRes: {
-        //   msg: "",
-        //   type: ""
-        // },
-        // applyRes: {
-        //   msg: "",
-        //   type: ""
-        // },
-        inviteDia: false,
-        applyDia: false,
       }
     },
     computed: {
@@ -264,7 +216,8 @@
           })
           //解析服务器返回的response,并且做出相应的处理
           .catch(error => {
-              console.log(this.dialogInfo)
+              console.log(this.userInfoProp)
+              // console.log(this.dialogInfo)
               this.$message({
                 message: '操作失败!,请稍后再试',
                 type: 'error',
@@ -275,53 +228,7 @@
             }
           )
       },
-      answerInvite(event) {
-        this.inviteDia = false;
-        this.axios({
-          method:"post",
-          url: '/answerInvite',
-          params: {
-            userId: this.userInfoData.username,
-            answer: event.currentTarget.value
-          }
-        })
-          .then((response) => {
-            let self = this
-            this.util.feedbackInfo(self, response.data)
-          })
-          .catch(error => {
-            this.$message({
-              message: '操作失败!,请稍后再试',
-              type: 'error',
-              duration: 1500,
-              showClose: true
-            });
-          })
-      },
-      withdrawApply() {
-        this.inviteDia = false;
-        this.axios({
-          method:"post",
-          url: '/withdraw',
-          params: {
-            userId: this.userInfoData.username,
-          }
-        })
-          .then((response) => {
-            let self = this;
-            this.updateStatus();
-            this.util.feedbackInfo(self, response.data)
-          })
-          .catch(error => {
-            this.$message({
-              message: '操作失败!,请稍后再试',
-              type: 'error',
-              duration: 1500,
-              showClose: true
-            });
-          })
-      },
-      ...mapMutations(["teamInfo", "beingLeader", "updateTeam","updateStatus"])
+      ...mapMutations(["teamInfo", "beingLeader", "updateTeam", "updateStatus"])
     },
 
     created() {
