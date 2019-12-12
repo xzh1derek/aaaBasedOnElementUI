@@ -51,7 +51,7 @@ export default {
     });
   },
 
-  getNewReq(self) {
+  getNewReq(self,payload) {
     setTimeout(function () {
       self.axios({
         method: "get",
@@ -63,7 +63,9 @@ export default {
       })
       //如果查询成功,本地缓存用户信息
         .then((res) => {
-          self.newRequest = res.data
+          // console.log(123465)
+          // console.log(res)
+         self.payload =  res.data
         })
         //如果查询失败,提醒用户重新登录
         .catch(err => {

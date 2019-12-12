@@ -2,11 +2,14 @@
   <div>
       <el-table :data="teamListInfo" stripe style="width: 80%" >
 
-        <el-table-column prop="user.name" label="队长姓名" width="180"></el-table-column>
+        <el-table-column prop="id" label="队伍编号" width="180"></el-table-column>
+        <el-table-column prop="courseId" label="课程编号" width="180"></el-table-column>
+        <el-table-column prop="course.course_name" label="课程名称" width="180"></el-table-column>
+        <el-table-column prop="leaderDetail.name" label="队长姓名" width="180"></el-table-column>
         <el-table-column prop="leader" label="队长学号" width="180"></el-table-column>
-        <el-table-column prop="user.qq" label="qq" width="180"></el-table-column>
-        <el-table-column prop="user.school" label="学院" width="180"></el-table-column>
-        <el-table-column prop="current_num" label="现成员数" width="180"></el-table-column>
+        <el-table-column prop="leaderDetail.qq" label="qq" width="180"></el-table-column>
+        <el-table-column prop="leaderDetail.school" label="学院" width="180"></el-table-column>
+        <el-table-column prop="currentNum" label="现成员数" width="180"></el-table-column>
         <el-table-column fixed="right" label="操作" >
           <template slot-scope="scope">
             <el-button @click.native.prevent="sendApplication(scope.row)" type="text" size="small">申请加入</el-button>
@@ -35,13 +38,19 @@
       ...mapState(["searchTeamInfo", "userInfoData"])
     },
     methods: {
+      matchCourse(id){
+        switch (id) {
+          case 1:return "A测";
+          case 0:return "B测";
+        }
+      },
       sendApplication(row) {//发送申请加入请求
           this.axios({
             method: "post",
             url: "/apply",
             params: {
-              receiver: row.leader, //队长,在生成dom时,顺便把队长学号加到a标签的id上
-              sender: this.userInfoData.username//申请人,取vuex中的username
+              teamId: row.id, //队长,在生成dom时,顺便把队长学号加到a标签的id上
+              sender: localStorage.token//申请人,取vuex中的username
             }
           })
             .then((response) => {//判断res的结果,给用户相应的反馈
@@ -77,7 +86,7 @@
         })
           .then((res) => {//把返回的所有队伍信息存起来用来显示.
             this.teamListInfo = res.data;
-            // console.log(res.data)
+            console.log(res)
           })
           .catch(error => {
             this.$message({

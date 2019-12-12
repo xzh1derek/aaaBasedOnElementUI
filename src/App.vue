@@ -1,7 +1,7 @@
 <template>
   <div>
     <template></template>
-    <div id="container" >
+    <div id="container">
       <SideBar v-if="this.loginUser"></SideBar>
       <div id="rightSide">
         <div id="header" v-if="this.loginUser">
@@ -62,14 +62,11 @@
           })
         }
 
-        self.axios.all([getUserInfo(), getTeamInfo()])
-          .then(self.axios.spread(function (acct, perms) {
+        self.axios.all([getUserInfo()])
+          .then(self.axios.spread(function (acct) {
             //当这两个请求都完成的时候会触发这个函数，两个参数分别代表返回的结果
             self.initUserInfo(acct.data);
-            if (perms.data) {
-              self.updateTeam(perms.data);
-            }
-            console.log(perms.data)
+
             self.userInfoToOpe = self.userInfoData
           }))
           .catch(err => {
@@ -86,43 +83,31 @@
     mounted() {
       this.loginUser = localStorage.token
       var self = this
+
+      //当用户登陆后
       if (this.loginUser) {
+
         function getUserInfo() {
           return self.axios({
             method: "post",
             url: "/userInfo",
             params: {
-              userId: self.loginUser//得改
-              // userId: "1601"//得改
+              userId: self.loginUser
             }
           })
         }
 
-        function getTeamInfo() {
-          return self.axios({
-            method: "get",
-            url: "/search",
-            params: {
-              leader: self.loginUser//得改
-            }
-          })
-        }
-
-        self.axios.all([getUserInfo(), getTeamInfo()])
-          .then(self.axios.spread(function (acct, perms) {
+        self.axios.all([getUserInfo()])
+          .then(self.axios.spread(function (acct) {
             //当这两个请求都完成的时候会触发这个函数，两个参数分别代表返回的结果
             self.initUserInfo(acct.data);
-            if (perms.data) {
-              self.updateTeam(perms.data);
-            }
-            localStorage.teamleader= self.userInfoData.teamleader
-            self.userInfoToOpe = self.userInfoData//更改vuex里面的数据据
           }))
           .catch(err => {
-            localStorage.token=""
+            console.log(err)
           })
-      }else {
-        location.href="#/login"
+      } else {
+        //如果用户没有登录,那么直接返回登录界面
+        location.href = "#/login"
       }
     }
   }

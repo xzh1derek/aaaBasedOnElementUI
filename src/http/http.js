@@ -7,7 +7,7 @@ axios.defaults.timeout = 5000;
 // http request 拦截器
 axios.interceptors.request.use(
   config => {
-    console.log(config);
+    // console.log(config);
     return config;  //添加这一行
   },
   err => {

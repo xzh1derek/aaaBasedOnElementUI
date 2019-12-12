@@ -1,15 +1,23 @@
 <template>
   <div>
     <dl>
-      <dt><h1>{{userInfoProp.name}}</h1></dt>
+      <dt><h1>{{info.name}}</h1></dt>
       <el-divider></el-divider>
-      <dd>学号:{{userInfoProp.username}}</dd>
-      <dd>学院:{{userInfoProp.school}}</dd>
-      <dd>组长:{{userInfoProp.teamleader}}</dd>
+      <dd>学号:{{info.username}}</dd>
+      <dd>学院:{{info.school}}</dd>
+      <dd>班级:{{info.class_id}}</dd>
+      <dd>qq:{{info.qq}}</dd>
+      <dd><a href="javascript:void(0)">修改密码</a></dd>
+      <dd><a href="javascript:void(0)">完善QQ</a></dd>
     </dl>
   </div>
-</template>
 
+
+
+
+
+
+</template>
 
 
 <script>
@@ -20,10 +28,12 @@
 
   export default {
     name: "userInfo",
-    props: ['userInfoProp'],
+    // props: ['userInfoProp'],
     store,
     data() {
-      return {}
+      return {
+        info: JSON.parse(localStorage.getItem("userInfo"))
+      }
     },
     components: {teamOperate, test},
     computed: {

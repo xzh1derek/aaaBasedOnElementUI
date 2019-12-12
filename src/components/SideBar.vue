@@ -1,37 +1,60 @@
 <template>
-    <el-menu default-active="1-4-1"
-             class="el-menu-vertical-demo"
-             @open="handleOpen"
-             @close="handleClose"
-             :collapse="isCollapse"
-             background-color="#2a3f54"
-             text-color="#fff"
-             active-text-color="#ffd04b">
+  <el-menu default-active="1-4-1"
+           class="el-menu-vertical-demo"
+           :collapse="isCollapse"
+           background-color="#2a3f54"
+           text-color="#fff"
+           active-text-color="#ffd04b"
+           router>
 
-      <el-menu-item index="1">
-          <div @click="isCollapse=!isCollapse">
-            <i class="el-icon-d-arrow-right" ></i>
-            <span slot="title">展开/关闭菜单</span>
-          </div>
-      </el-menu-item>
-      <el-menu-item index="2">
-        <i class="el-icon-s-custom"></i>
-        <span slot="title">我的</span>
-      </el-menu-item>
-      <el-menu-item index="6" @click="logOut">
-        <i class="el-icon-circle-close"></i>
-        <span slot="title">退出登录</span>
-      </el-menu-item>
-    </el-menu>
+
+    <el-menu-item>
+      <div @click="isCollapse=!isCollapse">
+        <i class="el-icon-d-arrow-right"></i>
+        <span slot="title">展开/关闭菜单</span>
+      </div>
+    </el-menu-item>
+
+<!--    <template v-for="(operation,index) in childRoute" v-if="index === activeRoute">-->
+    <template v-for="(operation,index) in childRoute" v-if="index === activeRoute &&　operation.children">
+      <el-submenu index="1">
+        <template slot="title">
+          <i class="el-icon-setting"></i>
+          <span slot="title">{{operation.meta.text}}</span>
+        </template>
+        <el-menu-item-group>
+                    <span slot="title">操作菜单</span>
+          <el-menu-item :index=child.path :key=index v-for="(child,index) in operation.children">{{child.meta.text}}</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+    </template>
+
+
+
+    <el-menu-item index="6" @click="logOut">
+      <i class="el-icon-circle-close"></i>
+      <span slot="title">退出登录</span>
+    </el-menu-item>
+  </el-menu>
+
 </template>
 
 <script>
+  import routes from "../router/routes";
+  import {mapState, mapMutations} from "vuex";
+  import store from '../store/store'
+
   export default {
     name: "SideBar",
+    store,
     data() {
       return {
-        isCollapse: false
+        isCollapse: false,
+        childRoute: routes
       };
+    },
+    computed: {
+      ...mapState(["activeRoute"])
     },
     methods: {
       handleOpen(key, keyPath) {
@@ -40,25 +63,35 @@
       handleClose(key, keyPath) {
         console.log(key, keyPath);
       },
-      toogleCollapse(event){
+      toogleCollapse(event) {
       },
-      logOut(){
-        localStorage.token="";
-        localStorage.teamleader=""
-        // location.href="#/login"
+      logOut() {
+        // localStorage.token = "";
+        // localStorage.teamleader = ""
+       localStorage.clear()
         history.go(0)
-      }
+      },
+
+    },
+    beforeCreate() {
+      this.childRoute = this.routes
+    },
+
+    mounted() {
+
     }
   }
 </script>
 
-<style >
+<style>
   .el-menu {
     border-right-width: 0;
   }
+
   el-menu {
     border-right-width: 0;
   }
+
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
     min-height: 400px;

@@ -11,41 +11,52 @@ export default new Vuex.Store({
       school: "通信",//学院
       qq: "---",
       teamleader: "",//队长学号
-      applicationStatus: 0,//application_status为"0"时显示“申请未处理”，为其他非空字符串时显示“申请未通过：”+该字符串。（为空时不显示）
+      applicationStatus: "",//application_status为"0"时显示“申请未处理”，为其他非空字符串时显示“申请未通过：”+该字符串。（为空时不显示）
       invitation_id: 0,
       leader: false,
       available: true,
-      display:false
+      display: false
     },
 
-    searchTeamInfo:{
-      leader:"init",
- }
+    searchTeamInfo: {
+      leader: "init",
+    },
+
+    activeRoute:0
+
   },
   mutations: {
-    initUserInfo(state,payload) {
-      for (var key in payload){
-        state.userInfoData[key]=payload[key]
+    initUserInfo(state, payload) {
+      for (var key in payload) {
+        state.userInfoData[key] = payload[key]
       }
     },
-    updateTeam(state,payload){
-      state.userInfoData.display=payload[0].is_display;
-      state.userInfoData.available=payload[0].available;
+
+    newActiveRoute(state ,payload){
+      state.activeRoute = payload
     },
-    teamInfo(state,payload){
-      for (var key in payload){
-        state.searchTeamInfo[key]=payload[key]
+
+    updateTeam(state, payload) {
+      state.userInfoData.display = payload[0].is_display;
+      state.userInfoData.available = payload[0].available;
+    },
+    teamInfo(state, payload) {
+      for (var key in payload) {
+        state.searchTeamInfo[key] = payload[key]
       }
     },
-    beingLeader(state){
-      state.userInfoData.teamleader=state.userInfoData.username;
-      state.userInfoData.leader=true;
+    beingLeader(state) {
+      state.userInfoData.teamleader = state.userInfoData.username;
+      state.userInfoData.leader = true;
     },
-    updateStatus(state){
-      state.userInfoData.applicationStatus=0
+    updateStatus(state) {
+      state.userInfoData.applicationStatus = 0
     },
-    updateInvitationId(state){
-      state.userInfoData.invitation_id=0
+    updateInvitationId(state) {
+      state.userInfoData.invitation_id = 0
+    },
+    updateData(state) {
+      state.applicationStatus = "0"
     }
   }
 })

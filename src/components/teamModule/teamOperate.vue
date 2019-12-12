@@ -123,7 +123,7 @@
           })
             .then((res) => {
               if (res.data == "0") {//队伍创建成功
-                this.beingLeader();
+                this.beingLeader();//更改vuex里面的数据
                 this.$message({
                   message: '队伍创建成功!',
                   type: 'successful',
@@ -200,7 +200,6 @@
           })
       },
       sendApply() {
-        // if (!this.userInfoProp.teamleader) {
         this.axios({
           method: "post",
           url: "/apply",
@@ -211,6 +210,7 @@
         })
           .then((response) => {//判断res的结果,给用户相应的反馈
             let self = this
+            this.updateData()//更改vuex的数据,发送成功后,vuex里面的application_status要改变
             this.util.feedbackInfo(self, response.data)
             this.dialogVisible = false
           })
@@ -228,7 +228,7 @@
             }
           )
       },
-      ...mapMutations(["teamInfo", "beingLeader", "updateTeam", "updateStatus"])
+      ...mapMutations(["teamInfo", "beingLeader", "updateTeam", "updateStatus","updateData"])
     },
 
     created() {

@@ -8,56 +8,78 @@ import CompleteInfo from "../components/CompleteInfo";
 import test from "../components/test";
 import teamOperate from "../components/teamModule/teamOperate";
 import NewMessage from "../components/NewMessage";
+import userInfo from "../components/userInfo";
 
+// identity为10时,这个路由是公共路由
 const routes =
   [
     {
       path: '/',
       component: test,
       meta: {
-        text: "主页",
+        identity: 10,
+        text: "个人管理",
         teamleader: false,
         key: 8
-      }
-    },
-    {
-      path: '/team',
-      component: Team,
-      meta: {
-        text: "组队",
-        teamleader: false,
-        key: 4
       },
-      // children: [
-      //   {
-      //     path: '/',
-      //     component: myTeam,
-      //     meta: {
-      //       text: "我的队伍",
-      //       teamleader: false,
-      //       key: 3
-      //     }
-      //   },
-      //   {
-      //     path: '/request',
-      //     component: newRequest,
-      //     meta: {
-      //       text: "入队申请",
-      //       teamleader: true,
-      //       key: 2
-      //     }
-      //   },
-      //   {
-      //     path: '/list',
-      //     component: teamList,
-      //     meta: {
-      //       text: "队伍大厅",
-      //       teamleader: false,
-      //       key: 1
-      //     }
-      //   },
-      // ]
+      children: [
+        {
+          path: "/",
+          component: userInfo,
+          meta: {
+            text: "主页",
+            teamleader: true,
+            key: 2
+          }
+        },
+        {
+          path: "/myTeam",
+          component: myTeam,
+          meta: {
+            text: "我的队伍",
+            teamleader: true,
+            key: 2
+          }
+        },
+        {
+          path: "/list",
+          component: teamList,
+          meta: {
+            text: "队伍大厅",
+            teamleader: true,
+            key: 2
+          }
+        },
+        {
+          path: '/request',
+          component: newRequest,
+          meta: {
+            text: "入队申请",
+            teamleader: true,
+            key: 2
+          }
+        },
+        {
+          path: '/task',
+          component: newRequest,
+          meta: {
+            text: "实验任务",
+            teamleader: true,
+            key: 2
+          }
+        },
+        {
+          path: '/message',
+          component: NewMessage,
+          meta: {
+            text: "我的消息",
+            teamleader: false,
+            key: 7
+          }
+        },
+      ]
     },
+
     {
       path: '/login',
       component: Login,
@@ -76,15 +98,7 @@ const routes =
         key: 6
       }
     },
-    {
-      path: '/message',
-      component: NewMessage,
-      meta: {
-        text: "我的消息",
-        teamleader: false,
-        key: 7
-      }
-    } ,
+
 
   ];
 export default routes;

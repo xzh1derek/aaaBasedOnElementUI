@@ -5,16 +5,26 @@
       <teamOperate :user-info-prop=this.userInfoProp v-if="userInfoProp"></teamOperate>
     </div>
     <div id="view">
-<!--      <router-view style="margin: 0 auto"></router-view>-->
+      <!--      <router-view style="margin: 0 auto"></router-view>-->
       <template v-if="userInfoProp">
-      <h2>我的队伍</h2>
-      <myTeam :user-info-prop=this.userInfoProp > </myTeam>
-        <el-divider></el-divider>
-      <h2>队伍大厅</h2>
-      <teamList :user-info-prop=this.userInfoProp ></teamList>
-        <el-divider></el-divider>
-      <h2>入队申请</h2>
-      <newRequest :user-info-prop=this.userInfoProp ></newRequest>
+
+        <template v-if="userInfoProp.teamleader">
+          <h2>我的队伍</h2>
+          <myTeam :user-info-prop=this.userInfoProp></myTeam>
+          <el-divider></el-divider>
+        </template>
+
+        <template v-if="!userInfoProp.teamleader">
+          <h2>队伍大厅</h2>
+          <teamList :user-info-prop=this.userInfoProp></teamList>
+          <el-divider></el-divider>
+        </template>
+
+        <template v-if="userInfoProp.leader">
+          <h2>入队申请</h2>
+          <newRequest :user-info-prop=this.userInfoProp></newRequest>
+        </template>
+
       </template>
     </div>
   </div>
@@ -33,9 +43,9 @@
 
   export default {
     name: 'Team',
-    data(){
+    data() {
       return {
-        userInfoProp:null
+        userInfoProp: null
 
       }
     },
@@ -52,7 +62,7 @@
       ...mapState(['userInfoData'])
     },
     mounted() {
-      this.userInfoProp=this.userInfoData
+      this.userInfoProp = this.userInfoData
       console.log(this.userInfoProp)
     }
   }
