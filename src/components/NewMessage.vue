@@ -2,7 +2,6 @@
 
   <div>
     <el-table :data="myMail" stripe style="width: 80%">
-      <el-table-column prop="type" label="接收人" width="150"></el-table-column>
       <el-table-column prop="text" label="内容" width="500"></el-table-column>
       <el-table-column fixed="right" label="操作">
         <template slot-scope="scope">
@@ -102,7 +101,7 @@
           school: "",
           class_id: ""
         }],
-        teamInfoDetail: []
+        teamInfoDetail: [],
       }
     },
     store,
@@ -122,7 +121,7 @@
         })
           .then((response) => {
             console.log("successful")
-            this.updateStatus();
+            // this.updateStatus();
             this.util.feedbackInfo(self, response.data)
           })
           .catch(error => {
@@ -344,7 +343,11 @@
       ...mapMutations(["updateStatus", "updateInvitationId"])
     },
     mounted() {
-      var self = this
+      let self = this
+
+      //初始化时,从localStorage里面获取到当前的未读消息的数量
+      this.newMessage = JSON.parse(localStorage.getItem("userInfo")).new_message
+
 
       setTimeout(function () {
         self.axios({

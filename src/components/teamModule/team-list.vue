@@ -1,6 +1,8 @@
 <template>
   <div>
-      <el-table :data="teamListInfo" stripe style="width: 80%" >
+<!--      <el-table :data="teamListInfo" stripe style="width: 80%" >-->
+      <el-table :data="teamListInfo.filter(data => !search || data.leaderDetail.name.toLowerCase().includes(search.toLowerCase()))" stripe style="width: 80%" >
+<!--      <el-table :data="teamListInfo.filter(data => !search || data.leader)" stripe style="width: 80%" >-->
 
         <el-table-column prop="id" label="队伍编号" width="180"></el-table-column>
         <el-table-column prop="courseId" label="课程编号" width="180"></el-table-column>
@@ -10,7 +12,13 @@
         <el-table-column prop="leaderDetail.qq" label="qq" width="180"></el-table-column>
         <el-table-column prop="leaderDetail.school" label="学院" width="180"></el-table-column>
         <el-table-column prop="currentNum" label="现成员数" width="180"></el-table-column>
-        <el-table-column fixed="right" label="操作" >
+        <el-table-column fixed="right"  width="180">
+          <template slot="header" slot-scope="scope">
+            <el-input
+              v-model="search"
+              size="mini"
+              placeholder="输入关键字搜索"/>
+          </template>
           <template slot-scope="scope">
             <el-button @click.native.prevent="sendApplication(scope.row)" type="text" size="small">申请加入</el-button>
           </template>
@@ -30,7 +38,8 @@
         message:{
           type:"",
           text:""
-        }
+        },
+        search:""
       }
     },
     watch: {},

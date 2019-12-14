@@ -72,6 +72,7 @@ const routes =
           path: '/message',
           component: NewMessage,
           meta: {
+            clearAll:true,
             text: "我的消息",
             teamleader: false,
             key: 7

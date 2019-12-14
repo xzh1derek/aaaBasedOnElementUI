@@ -27,4 +27,25 @@ new Vue({
   router,
   components: {App},
   template: '<App/>',
+  methods:{
+    updateUserInfo(e){
+      this.axios({
+        url:"/userInfo",
+        params:{
+          userId:localStorage.token
+        }
+      })
+        .then(response=>{
+          console.log("localStorage刷新了~~~")
+          localStorage.setItem("userInfo", JSON.stringify(response.data));
+
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+    }
+  },
+  mounted(){
+    window.addEventListener('load', e => this.updateUserInfo())
+  }
 });

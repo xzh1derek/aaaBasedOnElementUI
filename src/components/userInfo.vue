@@ -10,13 +10,11 @@
       <dd><a href="javascript:void(0)">修改密码</a></dd>
       <dd><a href="javascript:void(0)">完善QQ</a></dd>
     </dl>
+<!--<template v-if="false">-->
+    <MyApplication></MyApplication>
+<!--</template>-->
+<!--    <finalTest></finalTest>-->
   </div>
-
-
-
-
-
-
 </template>
 
 
@@ -25,17 +23,18 @@
   import {mapState, mapMutations} from 'vuex'
   import teamOperate from './teamModule/teamOperate'
   import test from './test'
+  import MyApplication from "./teamModule/MyApplication";
+  import finalTest from "./teamModule/finalTest";
 
   export default {
     name: "userInfo",
-    // props: ['userInfoProp'],
     store,
     data() {
       return {
         info: JSON.parse(localStorage.getItem("userInfo"))
       }
     },
-    components: {teamOperate, test},
+    components: {teamOperate, test,MyApplication,finalTest},
     computed: {
       ...mapState(['userInfoData'])
     },
@@ -43,7 +42,6 @@
       ...mapMutations(['initUserInfo', "updateTeam"])
     },
     mounted() {
-      this.util.hello()
     }
   }
 </script>

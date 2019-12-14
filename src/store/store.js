@@ -17,14 +17,13 @@ export default new Vuex.Store({
       available: true,
       display: false
     },
-
     searchTeamInfo: {
       leader: "init",
     },
-
-    activeRoute:0
-
+    newMessages: 0,
+    activeRoute: 0
   },
+
   mutations: {
     initUserInfo(state, payload) {
       for (var key in payload) {
@@ -32,7 +31,11 @@ export default new Vuex.Store({
       }
     },
 
-    newActiveRoute(state ,payload){
+    updateMessage(state) {
+      state.newMessages = 0
+    },
+
+    newActiveRoute(state, payload) {
       state.activeRoute = payload
     },
 
