@@ -14,6 +14,21 @@
         <el-table-column prop="username" label="学号" width="180"></el-table-column>
         <el-table-column prop="qq" label="qq"></el-table-column>
         <el-table-column prop="school" label="学院"></el-table-column>
+
+<!--        <el-table-column-->
+<!--          prop="leader"-->
+<!--          label="标签"-->
+<!--          width="100"-->
+<!--          :filters="[{ text: '队长', value: localStorage.token }, { text: '组员', value: '公司' }]"-->
+<!--          :filter-method="filterTag"-->
+<!--          filter-placement="bottom-end">-->
+<!--          <template slot-scope="scope">-->
+<!--            <el-tag-->
+<!--              :type="scope.row.tag === '家' ? 'primary' : 'success'"-->
+<!--              disable-transitions>{{scope.row.tag}}</el-tag>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
+
       </el-table>
     </template>
 
@@ -62,7 +77,10 @@
               showClose: true
             })
           })
-      }
+      },
+      // filterTag(value, row) {
+      //   return row.tag === value;
+      // },
     },
     mounted() {
       this.getMyTeam()

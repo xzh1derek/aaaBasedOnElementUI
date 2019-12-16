@@ -36,7 +36,6 @@ new Vue({
         }
       })
         .then(response=>{
-          console.log("localStorage刷新了~~~")
           localStorage.setItem("userInfo", JSON.stringify(response.data));
 
         })

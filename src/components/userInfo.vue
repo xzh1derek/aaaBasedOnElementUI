@@ -22,7 +22,7 @@
   import store from '../store/store'
   import {mapState, mapMutations} from 'vuex'
   import teamOperate from './teamModule/teamOperate'
-  import test from './test'
+  import PersonalCenter from './teamModule/PersonalCenter'
   import MyApplication from "./teamModule/MyApplication";
   import finalTest from "./teamModule/finalTest";
 
@@ -34,7 +34,7 @@
         info: JSON.parse(localStorage.getItem("userInfo"))
       }
     },
-    components: {teamOperate, test,MyApplication,finalTest},
+    components: {teamOperate, PersonalCenter,MyApplication,finalTest},
     computed: {
       ...mapState(['userInfoData'])
     },

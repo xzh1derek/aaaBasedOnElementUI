@@ -99,7 +99,7 @@
             console.log(response)
             localStorage.setItem("userInfo", JSON.stringify(response.data));
             // localStorage.userInfo = response.data
-            location.href = ""//登录成功后跳转
+            location.href = "/"//登录成功后跳转
 
           })
           .catch(err => {

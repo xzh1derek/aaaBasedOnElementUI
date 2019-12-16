@@ -1,11 +1,12 @@
 <template>
-  <el-menu default-active="1-4-1"
-           class="el-menu-vertical-demo"
-           :collapse="isCollapse"
-           background-color="#2a3f54"
-           text-color="#fff"
-           active-text-color="#ffd04b"
-           router>
+  <el-menu
+    :default-active="mainActiveIndex"
+    class="el-menu-vertical-demo"
+    :collapse="isCollapse"
+    background-color="#2a3f54"
+    text-color="#fff"
+    active-text-color="#ffd04b"
+    router>
 
 
     <el-menu-item>
@@ -15,7 +16,7 @@
       </div>
     </el-menu-item>
 
-<!--    <template v-for="(operation,index) in childRoute" v-if="index === activeRoute">-->
+    <!--    <template v-for="(operation,index) in childRoute" v-if="index === activeRoute">-->
     <template v-for="(operation,index) in childRoute" v-if="index === activeRoute &&　operation.children">
       <el-submenu index="1">
         <template slot="title">
@@ -23,15 +24,15 @@
           <span slot="title">{{operation.meta.text}}</span>
         </template>
         <el-menu-item-group>
-                    <span slot="title">操作菜单</span>
-          <el-menu-item :index=child.path :key=index v-for="(child,index) in operation.children">{{child.meta.text}}</el-menu-item>
+          <span slot="title">操作菜单</span>
+          <el-menu-item :index=child.path :key=index v-for="(child,index) in operation.children">{{child.meta.text}}
+          </el-menu-item>
         </el-menu-item-group>
       </el-submenu>
     </template>
 
 
-
-    <el-menu-item index="6" @click="logOut">
+    <el-menu-item  @click="logOut" index="/login">
       <i class="el-icon-circle-close"></i>
       <span slot="title">退出登录</span>
     </el-menu-item>
@@ -50,7 +51,8 @@
     data() {
       return {
         isCollapse: false,
-        childRoute: routes
+        childRoute: routes,
+        mainActiveIndex: ""
       };
     },
     computed: {
@@ -68,7 +70,7 @@
       logOut() {
         // localStorage.token = "";
         // localStorage.teamleader = ""
-       localStorage.clear()
+        localStorage.clear()
         history.go(0)
       },
 
@@ -79,6 +81,11 @@
 
     mounted() {
 
+    },
+    created() {
+      // this.mainActiveIndex = window.location.hash.substring(1);
+      this.mainActiveIndex = window.location.pathname;
+      console.log(this.mainActiveIndex)
     }
   }
 </script>

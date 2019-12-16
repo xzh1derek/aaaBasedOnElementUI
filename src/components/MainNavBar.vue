@@ -67,7 +67,9 @@
       ...mapMutations(["newActiveRoute"])
     },
     created() {
-      this.mainActiveIndex = window.location.hash.substring(1);
+      // this.mainActiveIndex = window.location.hash.substring(1);
+      this.mainActiveIndex = window.location.pathname;
+      console.log(this.mainActiveIndex)
     }
   }
 </script>

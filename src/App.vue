@@ -3,7 +3,7 @@
     <template></template>
     <div id="container">
       <SideBar v-if="this.loginUser"></SideBar>
-      <div id="rightSide">
+      <div id="rightSide" style="overflow: hidden">
         <div id="header" v-if="this.loginUser">
           <MainNavBar></MainNavBar>
         </div>
@@ -13,9 +13,9 @@
       </div>
     </div>
   </div>
-
-
 </template>
+
+
 <script>
 
   import navbar from "./components/teamModule/navbar";
@@ -35,6 +35,7 @@
       return {
         userInfoToOpe: null,//传给组件的值,通过create钩子函数初始化,这里要写成null,不能写成{},否则会被判为true
         loginUser: "",
+
       }
     },
     watch: {
@@ -166,7 +167,7 @@
   }
 
   #rightSide {
-    height: 850px;
     flex: 1;
+    height: 850px;
   }
 </style>

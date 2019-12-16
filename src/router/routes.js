@@ -5,17 +5,19 @@ import navbar from "../components/teamModule/navbar";
 import Team from "../components/Team";
 import Login from "../components/Login";
 import CompleteInfo from "../components/CompleteInfo";
-import test from "../components/test";
+import PersonalCenter from "../components/teamModule/PersonalCenter";
 import teamOperate from "../components/teamModule/teamOperate";
 import NewMessage from "../components/NewMessage";
 import userInfo from "../components/userInfo";
+import TeachingManagement from "../components/teachingModule/TeachingManagement";
+import CourseLibrary from "../components/teachingModule/CourseLibrary";
 
 // identity为10时,这个路由是公共路由
 const routes =
   [
     {
       path: '/',
-      component: test,
+      component: PersonalCenter,
       meta: {
         identity: 10,
         text: "个人管理",
@@ -72,7 +74,7 @@ const routes =
           path: '/message',
           component: NewMessage,
           meta: {
-            clearAll:true,
+            clearAll: true,
             text: "我的消息",
             teamleader: false,
             key: 7
@@ -90,16 +92,33 @@ const routes =
         key: 5
       }
     },
-    {
-      path: '/complete',
-      component: CompleteInfo,
-      meta: {
-        text: "完善个人信息",
-        teamleader: false,
-        key: 6
-      }
-    },
+    // {
+    //   path: '/complete',
+    //   component: CompleteInfo,
+    //   meta: {
+    //     text: "完善个人信息",
+    //     teamleader: false,
+    //     key: 6
+    //   }
+    // },
 
+    {
+      path: '/teaching',
+      component: TeachingManagement,
+      meta: {
+        text: "教学管理"
+      },
+      children: [
+        {
+          path: "/teaching",
+          component: CourseLibrary,
+          meta: {
+            text:"实验课程库"
+          }
+        }
+      ]
+
+    }
 
   ];
 export default routes;

@@ -1,8 +1,9 @@
 <template>
   <div>
 <!--      <el-table :data="teamListInfo" stripe style="width: 80%" >-->
-      <el-table :data="teamListInfo.filter(data => !search || data.leaderDetail.name.toLowerCase().includes(search.toLowerCase()))" stripe style="width: 80%" >
-<!--      <el-table :data="teamListInfo.filter(data => !search || data.leader)" stripe style="width: 80%" >-->
+<!--      <el-table :data="teamListInfo.filter(data => !search || data.leaderDetail.name.toLowerCase().includes(search.toLowerCase()))" stripe style="width: 80%" >-->
+      <el-table :data="teamListInfo.filter(data => !search || data.leader.toString().includes(search))" stripe style="width: 100%" >
+<!--      <el-table :data="teamListInfo.filter(data => !search || (data.leader=search))" stripe style="width: 80%" >-->
 
         <el-table-column prop="id" label="队伍编号" width="180"></el-table-column>
         <el-table-column prop="courseId" label="课程编号" width="180"></el-table-column>

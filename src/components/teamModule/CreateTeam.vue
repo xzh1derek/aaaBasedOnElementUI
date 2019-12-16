@@ -25,7 +25,7 @@
     name: "CreateTeam",
     data() {
       return {
-        buildTeam: null
+        buildTeam: []
       }
     },
     methods: {
@@ -51,7 +51,7 @@
         let self = this;
         if (checkInfo) {
           this.axios({
-            method: "get",
+            method: "post",
             url: "/team/create",
             params: {
               userId: localStorage.token,

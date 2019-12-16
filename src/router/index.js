@@ -9,7 +9,8 @@ Vue.use(Router)
 
 
 let router = new Router({
-  routes
+  routes,
+  mode:"history"
 })
 
 router.beforeEach((to, from, next) => {
