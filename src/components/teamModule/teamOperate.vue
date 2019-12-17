@@ -4,7 +4,6 @@
       placeholder="请输入被邀学号"
       v-model="input"
       clearable
-      v-if="this.userInfoProp.leader"
       style="margin-bottom: 10px">
     </el-input>
 
@@ -16,7 +15,7 @@
       style="margin-bottom: 10px">
     </el-input>
     <!--是队长才显示-->
-    <el-button round type="primary" @click="invite" v-if="this.userInfoProp.leader">邀请</el-button>
+    <el-button round type="primary" @click="invite">邀请</el-button>
     <!--    未组队才显示-->
     <template v-if="!this.userInfoProp.teamleader">
       <el-button round type="primary" @click="searchTeam">搜索队伍</el-button>

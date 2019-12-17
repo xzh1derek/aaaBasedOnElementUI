@@ -11,6 +11,7 @@ import NewMessage from "../components/NewMessage";
 import userInfo from "../components/userInfo";
 import TeachingManagement from "../components/teachingModule/TeachingManagement";
 import CourseLibrary from "../components/teachingModule/CourseLibrary";
+import Plan from "../components/teachingModule/Plan";
 
 // identity为10时,这个路由是公共路由
 const routes =
@@ -114,6 +115,13 @@ const routes =
           component: CourseLibrary,
           meta: {
             text:"实验课程库"
+          }
+        },
+        {
+          path: "/plan",
+          component: Plan,
+          meta: {
+            text:"教学计划"
           }
         }
       ]
