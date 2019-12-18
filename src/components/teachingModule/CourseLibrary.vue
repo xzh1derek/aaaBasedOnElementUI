@@ -39,7 +39,7 @@
 <!---->
         <el-form-item label="老师" :label-width="formLabelWidth">
           <el-col :span=span>
-            <el-input v-model="form.teachers" autocomplete="off"></el-input>
+            <el-input v-model="form.teacher" autocomplete="off"></el-input>
           </el-col>
         </el-form-item>
 <!---->
@@ -67,8 +67,12 @@
       </div>
     </el-dialog>
     <div>
+      <keep-alive>
+
       <CourseList ref="CourseList" @deleteCourseList="initDeleteList"></CourseList>
-    </div>
+    </keep-alive>
+
+  </div>
   </div>
 </template>
 
@@ -88,7 +92,7 @@
           code: '',
           credit: '',
           hours: '',
-          teachers: '',
+          teacher: '',
           isTeam: false,
           maxNum: ''
         },
@@ -97,7 +101,7 @@
           code: '',
           credit: '',
           hours: '',
-          teachers: '',
+          teacher: '',
           isTeam: false,
           maxNum: ''
         },

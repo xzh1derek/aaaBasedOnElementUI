@@ -11,7 +11,7 @@ import NewMessage from "../components/NewMessage";
 import userInfo from "../components/userInfo";
 import TeachingManagement from "../components/teachingModule/TeachingManagement";
 import CourseLibrary from "../components/teachingModule/CourseLibrary";
-import Plan from "../components/teachingModule/Plan";
+import Plan from "../components/teachingModule/ProjectLibrary";
 
 // identity为10时,这个路由是公共路由
 const routes =
