@@ -1,16 +1,10 @@
 <template>
-  <div >
-
-    <router-view></router-view>
-  </div>
+    
 </template>
 
 <script>
-
-
     export default {
-        name: "TeachingManagement",
-
+        name: "ShowList"
     }
 </script>
 

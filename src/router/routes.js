@@ -11,7 +11,9 @@ import NewMessage from "../components/NewMessage";
 import userInfo from "../components/userInfo";
 import TeachingManagement from "../components/teachingModule/TeachingManagement";
 import CourseLibrary from "../components/teachingModule/CourseLibrary";
-import Plan from "../components/teachingModule/ProjectLibrary";
+import ProjectLibrary from "../components/teachingModule/ProjectLibrary";
+import ModuleList from "../components/teachingModule/ModuleList";
+import ModuleLibrary from "../components/teachingModule/ModuleLibrary";
 
 // identity为10时,这个路由是公共路由
 const routes =
@@ -119,9 +121,16 @@ const routes =
         },
         {
           path: "/plan",
-          component: Plan,
+          component: ProjectLibrary,
           meta: {
             text:"教学计划"
+          }
+        },
+        {
+          path: "/schedule",
+          component: ModuleLibrary,
+          meta: {
+            text:"排课管理"
           }
         }
       ]

@@ -54,7 +54,7 @@
         title="添加班级"
         :visible.sync="innerVisible"
         append-to-body>
-        <BindClasses :course-id="courseId"></BindClasses>
+        <BindClasses :course-id="courseId" url-target="/project/add"></BindClasses>
       </el-dialog>
 
       <div slot="footer" class="dialog-footer">

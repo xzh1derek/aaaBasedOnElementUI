@@ -21,10 +21,15 @@ export default new Vuex.Store({
       leader: "init",
     },
     newMessages: 0,
-    activeRoute: 0
+    activeRoute: 0,
+    multipleSelection:[]
   },
 
   mutations: {
+    updateSelection(state,payload){
+      state.multipleSelection=payload
+    },
+
     initUserInfo(state, payload) {
       for (var key in payload) {
         state.userInfoData[key] = payload[key]

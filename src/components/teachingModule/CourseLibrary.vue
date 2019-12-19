@@ -6,7 +6,7 @@
       <el-button type="primary" :disabled="!editDisable">添加班级</el-button>
       <el-button type="success">导出</el-button>
       <el-button type="warning">检索</el-button>
-      <el-button type="danger" @click="deleteCourse" :disabled="!deleteDisable">删除</el-button>
+      <el-button type="danger" @click="deleteCourse" :disabled="!editDisable">删除</el-button>
     </el-row>
 
     <el-dialog title="填写课程详细信息:" :visible.sync="outerVisible" width="30%">
@@ -58,7 +58,7 @@
         title="添加班级"
         :visible.sync="innerVisible"
         append-to-body>
-        <BindClasses :course-id="courseId"></BindClasses>
+        <BindClasses :course-id="courseId" url-target="/course/bind"></BindClasses>
       </el-dialog>
 
       <div slot="footer" class="dialog-footer">
