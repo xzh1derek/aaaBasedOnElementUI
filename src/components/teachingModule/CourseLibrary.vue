@@ -10,39 +10,39 @@
     </el-row>
 
     <el-dialog title="填写课程详细信息:" :visible.sync="outerVisible" width="30%">
-<!--      <NewCourseForm ></NewCourseForm>-->
+      <!--      <NewCourseForm ></NewCourseForm>-->
       <el-form :model="form">
-        <el-form-item label="课程编号" :label-width="formLabelWidth">
+        <el-form-item label="课程代码" :label-width="formLabelWidth">
           <el-col :span=span>
             <el-input v-model="form.code" autocomplete="off" required></el-input>
           </el-col>
         </el-form-item>
-<!---->
+        <!---->
         <el-form-item label="课程名称" :label-width="formLabelWidth">
           <el-col :span=span>
             <el-input v-model="form.name" autocomplete="off"></el-input>
           </el-col>
         </el-form-item>
-<!---->
-<!---->
+        <!---->
+        <!---->
         <el-form-item label="学分" :label-width="formLabelWidth">
           <el-col :span=span>
             <el-input v-model="form.credit" autocomplete="off"></el-input>
           </el-col>
         </el-form-item>
-<!---->
+        <!---->
         <el-form-item label="总学时" :label-width="formLabelWidth">
           <el-col :span=span>
             <el-input v-model="form.hours" autocomplete="off"></el-input>
           </el-col>
         </el-form-item>
-<!---->
+        <!---->
         <el-form-item label="老师" :label-width="formLabelWidth">
           <el-col :span=span>
             <el-input v-model="form.teacher" autocomplete="off"></el-input>
           </el-col>
         </el-form-item>
-<!---->
+        <!---->
         <el-form-item label="是否要组队" :label-width="formLabelWidth">
           <el-switch v-model="form.isTeam" autocomplete="off"></el-switch>
         </el-form-item>
@@ -58,7 +58,7 @@
         title="添加班级"
         :visible.sync="innerVisible"
         append-to-body>
-        <BindClasses :course-id="courseId" url-target="/course/bind"></BindClasses>
+        <BindClasses :bind-id="courseId" url-target="/course/bind" structure-url="/schools"></BindClasses>
       </el-dialog>
 
       <div slot="footer" class="dialog-footer">
@@ -69,10 +69,10 @@
     <div>
       <keep-alive>
 
-      <CourseList ref="CourseList" @deleteCourseList="initDeleteList"></CourseList>
-    </keep-alive>
+        <CourseList ref="CourseList" @deleteCourseList="initDeleteList"></CourseList>
+      </keep-alive>
 
-  </div>
+    </div>
   </div>
 </template>
 
@@ -109,12 +109,12 @@
         formLabelWidth: '100px',
         courseId: "",
         multipleSelection: [],
-        editDisable:false,
-        bindDisable:false,
-        deleteDisable:false
+        editDisable: false,
+        bindDisable: false,
+        deleteDisable: false
       };
     },
-    components: {BindClasses, CourseList,NewCourseForm},
+    components: {BindClasses, CourseList, NewCourseForm},
     methods: {
       createCourse() {
         let self = this
@@ -126,6 +126,7 @@
         })
           .then(response => {
             this.courseId = response.data
+
             this.innerVisible = true
             this.outerVisible = false
             this.form = this.formInit
@@ -157,16 +158,16 @@
         this.multipleSelection = data
       },
     },
-    watch:{
+    watch: {
       selectedCourse() {
-        console.log("this.selectedCourse.length:"+this.selectedCourse.length)
-       let length = this.selectedCourse.length
-        console.log("length:"+length)
-        if (length !== 1){
+        console.log("this.selectedCourse.length:" + this.selectedCourse.length)
+        let length = this.selectedCourse.length
+        console.log("length:" + length)
+        if (length !== 1) {
           //只有选中一门课程时,才能编辑课程或者给课程添加班级
           this.editDisable = false;
           this.bindDisable = false;
-        }else {
+        } else {
           this.editDisable = true;
           this.bindDisable = true;
         }
@@ -175,9 +176,9 @@
         console.log(this.deleteDisable)
       }
     },
-    computed:{
-        selectedCourse(){
-          return this.multipleSelection
+    computed: {
+      selectedCourse() {
+        return this.multipleSelection
       }
     }
   }

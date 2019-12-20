@@ -22,12 +22,16 @@ export default new Vuex.Store({
     },
     newMessages: 0,
     activeRoute: 0,
-    multipleSelection:[]
+    multipleSelection:[],
+    trunkItems:null
   },
 
   mutations: {
     updateSelection(state,payload){
       state.multipleSelection=payload
+    },
+    updateTrunk(state,payload){
+      state.trunkItems=payload
     },
 
     initUserInfo(state, payload) {

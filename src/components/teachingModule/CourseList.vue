@@ -5,7 +5,7 @@
               border
               @selection-change="handleSelectionChange">
       <el-table-column type="selection" fixed></el-table-column>
-      <el-table-column prop="course_code" label="课程编号" width="180"></el-table-column>
+      <el-table-column prop="course_code" label="课程代码" width="180"></el-table-column>
       <el-table-column prop="course_name" label="课程名称" width="180"></el-table-column>
       <el-table-column prop="credit" label="学分" width="180"></el-table-column>
       <el-table-column prop="hours" label="学时" width="180"></el-table-column>

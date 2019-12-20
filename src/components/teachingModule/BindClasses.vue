@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-select v-model="value1" multiple placeholder="请选择">
+    <el-select v-model="value1" multiple placeholder="请先选择学院">
       <!--      在这个地方,value是index.也就是被选中的item的索引,最后把这些存储在value1数组中-->
       <el-option
         v-for="(item,index) in checkList"
@@ -11,22 +11,26 @@
     </el-select>
 
 
-    <el-button @click="bindAll" size="mini" type="primary">绑定班级</el-button>
-    <div style="border: 1px solid black">
+    <div style="border: 1px solid gainsboro;min-height: 50px;margin-top: 10px">
       <!--            <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>-->
       <!--      <el-checkbox>全选</el-checkbox>-->
-      <div style="margin: 15px 0;"></div>
+      <div style="margin: 15px;"></div>
       <!--                  <el-checkbox-group v-model="checkedClasses" @change="handleCheckedCitiesChange">-->
-      <el-checkbox-group>
-
+      <el-checkbox-group v-model="checkedClasses">
+        <!--如果value1为空,就显示所有的班级-->
         <template v-for="key1 in value1">
-          <el-checkbox v-for="(classInfo,index) in checkList[key1].classesList" :label="classInfo.class_id"
-                       :key="classInfo.class_id">
-            {{classInfo.class_id}}
+          <!--        <template v-for="key1 in (checkList.length-1)" v-if="checkList">-->
+          {{key1}}
+          <el-checkbox v-for="(classInfo,index) in checkList[key1].classesList"
+                       :label="classInfo"
+                       :key="classInfo"
+                       style="font-size: 20px;">
+            {{classInfo}}
           </el-checkbox>
         </template>
       </el-checkbox-group>
     </div>
+    <el-button @click="bindAll" type="primary" style="margin-top: 20px">绑定班级</el-button>
   </div>
 </template>
 
@@ -38,18 +42,30 @@
         value1: [],
         checkList: [],
         checkedClasses: [],
-        checkAll: false,
-        isIndeterminate: true
       }
     },
-    props: ["bindId", "urlTarget"],
+    props: ["bindId", "urlTarget", "structureUrl", "limit"],
     methods: {
       bindAll() {
+
+        if (this.limit == 1) {
+          if (this.checkedClasses.length > 2) {
+            this.$message({
+              message: "最多只能绑定两个班级",
+              type: "warning",
+              duration: 1500,
+              showClose: true
+            })
+            return
+          }
+        }
+
+
         this.axios({
           method: "post",
           url: this.urlTarget,
           params: {
-            bindId: this.bindId,
+            id: this.bindId,
           },
           data: this.checkedClasses,
         })
@@ -72,7 +88,10 @@
       getSchoolStructure() {
         this.axios({
           method: "get",
-          url: "/schools",
+          url: this.structureUrl,
+          params: {
+            id: this.bindId
+          }
         })
           .then(response => {
             this.checkList = response.data
