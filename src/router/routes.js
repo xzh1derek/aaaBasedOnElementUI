@@ -14,6 +14,8 @@ import CourseLibrary from "../components/teachingModule/CourseLibrary";
 import ProjectLibrary from "../components/teachingModule/ProjectLibrary";
 import ModuleList from "../components/teachingModule/ModuleList";
 import ModuleLibrary from "../components/teachingModule/ModuleLibrary";
+import SystemManagement from "../components/Administration/SystemManagement";
+import SchoolClass from "../components/Administration/SchoolClass";
 
 // identity为10时,这个路由是公共路由
 const routes =
@@ -86,6 +88,7 @@ const routes =
       ]
     },
 
+
     {
       path: '/login',
       component: Login,
@@ -116,25 +119,44 @@ const routes =
           path: "/teaching",
           component: CourseLibrary,
           meta: {
-            text:"实验课程库"
+            text: "实验课程库"
           }
         },
         {
           path: "/plan",
           component: ProjectLibrary,
           meta: {
-            text:"教学计划"
+            text: "教学计划"
           }
         },
         {
           path: "/schedule",
           component: ModuleLibrary,
           meta: {
-            text:"排课管理"
+            text: "排课管理"
           }
         }
       ]
 
+    },
+
+    {
+      path: '/system',
+      component: SystemManagement,
+      meta: {
+        text: "系统管理",
+        teamleader: false,
+        key: 100
+      },
+      children: [
+        {
+          path: "/school",
+          component: SchoolClass,
+          meta: {
+            text: "院班管理"
+          }
+        },
+      ]
     }
 
   ];

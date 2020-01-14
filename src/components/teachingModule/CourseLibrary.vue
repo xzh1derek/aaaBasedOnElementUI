@@ -10,7 +10,6 @@
     </el-row>
 
     <el-dialog title="填写课程详细信息:" :visible.sync="outerVisible" width="30%">
-      <!--      <NewCourseForm ></NewCourseForm>-->
       <el-form :model="form">
         <el-form-item label="课程代码" :label-width="formLabelWidth">
           <el-col :span=span>
@@ -67,11 +66,7 @@
       </div>
     </el-dialog>
     <div>
-      <keep-alive>
-
         <CourseList ref="CourseList" @deleteCourseList="initDeleteList"></CourseList>
-      </keep-alive>
-
     </div>
   </div>
 </template>
@@ -80,6 +75,7 @@
   import BindClasses from "./BindClasses";
   import CourseList from "./CourseList";
   import NewCourseForm from "./NewCourseForm";
+  import {mapMutations} from 'vuex'
 
   export default {
     name: "CourseLibrary",
@@ -157,6 +153,7 @@
       initDeleteList(data) {
         this.multipleSelection = data
       },
+      ...mapMutations(['updateVerification'])
     },
     watch: {
       selectedCourse() {
@@ -180,6 +177,9 @@
       selectedCourse() {
         return this.multipleSelection
       }
+    },
+    mounted() {//加载组件的时候就初始化按键码
+      this.updateVerification("1");
     }
   }
 </script>

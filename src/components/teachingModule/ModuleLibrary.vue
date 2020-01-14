@@ -8,10 +8,17 @@
 
   import ModuleList from "./ModuleList"
   import CommonOperation from "./CommonOperation";
+  import {mapMutations} from 'vuex'
 
   export default {
     name: "ModuleLibrary",
-    components: {ModuleList,CommonOperation}
+    components: {ModuleList, CommonOperation},
+    methods: {
+      ...mapMutations(['updateVerification'])
+    },
+    mounted() {
+      this.updateVerification("3");
+    }
   }
 </script>
 

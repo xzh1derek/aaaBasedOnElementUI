@@ -12,8 +12,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://192.168.43.158:8080',//用大致的
-        // target: 'http://localhost:8080',//我自己的
+        // target: 'http://192.168.43.158:8080',//用大致的
+        target: 'http://localhost:8080',//我自己的
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
@@ -22,8 +22,8 @@ module.exports = {
     },
 
     // Various Dev Server settings
-    // host: '0.0.0.0', // can be overwritten by process.env.HOST
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: '0.0.0.0', // can be overwritten by process.env.HOST
+    // host: 'localhost', // can be overwritten by process.env.HOST
     port: 8081, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,

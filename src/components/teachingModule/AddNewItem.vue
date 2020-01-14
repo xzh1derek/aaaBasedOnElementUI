@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button :disabled="isDisabled" @click="showDiagram">添加Module</el-button>
+    <el-button :disabled="isDisabled" @click="showDiagram" >添加Module</el-button>
     <DialogForm ref="dialogVisible"></DialogForm>
   </div>
 </template>

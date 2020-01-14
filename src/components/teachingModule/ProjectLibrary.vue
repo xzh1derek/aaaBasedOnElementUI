@@ -73,6 +73,7 @@
   import CourseList from "./CourseList";
   import NewCourseForm from "./NewCourseForm";
   import ProjectList from "./ProjectList";
+  import {mapMutations} from 'vuex'
 
   export default {
     name: "CourseLibrary",
@@ -156,9 +157,6 @@
       initDeleteList(data) {
         this.multipleSelection = data
       },
-      consoleLog() {
-        console.log(this.form)
-      },
       addNewFormData() {
         this.outerVisible = true;
       },
@@ -177,6 +175,7 @@
         console.log(this.formData)
 
       },
+      ...mapMutations(["updateVerification"])
     },
     watch: {
       selectedProject() {
@@ -206,7 +205,7 @@
       },
     },
     mounted() {
-
+      this.updateVerification("2");
     }
   }
 </script>

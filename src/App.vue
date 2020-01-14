@@ -1,13 +1,12 @@
 <template>
   <div>
-    <template></template>
-    <div id="container">
+    <div id="container" style="background-color: #d1f1ee">
       <SideBar v-if="this.loginUser"></SideBar>
       <div id="rightSide" style="overflow: hidden">
         <div id="header" v-if="this.loginUser">
           <MainNavBar></MainNavBar>
         </div>
-        <div id="content">
+        <div id="content" style="padding-left: 20px;padding-right: 20px;padding-top: 20px;" >
           <router-view></router-view>
         </div>
       </div>
@@ -38,43 +37,43 @@
 
       }
     },
-    watch: {
-      loginUser() {
-        var self = this;
-
-        function getUserInfo() {
-          return self.axios({
-            method: "post",
-            url: "/userInfo",
-            params: {
-              userId: self.loginUser//得改
-              // userId: "1601"//得改
-            }
-          })
-        }
-
-        function getTeamInfo() {
-          return self.axios({
-            method: "get",
-            url: "/search",
-            params: {
-              leader: self.loginUser//得改
-            }
-          })
-        }
-
-        self.axios.all([getUserInfo()])
-          .then(self.axios.spread(function (acct) {
-            //当这两个请求都完成的时候会触发这个函数，两个参数分别代表返回的结果
-            self.initUserInfo(acct.data);
-
-            self.userInfoToOpe = self.userInfoData
-          }))
-          .catch(err => {
-            console.log(err)
-          })
-      }
-    },
+    // watch: {
+    //   loginUser() {
+    //     var self = this;
+    //
+    //     function getUserInfo() {
+    //       return self.axios({
+    //         method: "post",
+    //         url: "/userInfo",
+    //         params: {
+    //           userId: self.loginUser//得改
+    //           // userId: "1601"//得改
+    //         }
+    //       })
+    //     }
+    //
+    //     function getTeamInfo() {
+    //       return self.axios({
+    //         method: "get",
+    //         url: "/search",
+    //         params: {
+    //           leader: self.loginUser//得改
+    //         }
+    //       })
+    //     }
+    //
+    //     self.axios.all([getUserInfo()])
+    //       .then(self.axios.spread(function (acct) {
+    //         //当这两个请求都完成的时候会触发这个函数，两个参数分别代表返回的结果
+    //         self.initUserInfo(acct.data);
+    //
+    //         self.userInfoToOpe = self.userInfoData
+    //       }))
+    //       .catch(err => {
+    //         console.log(err)
+    //       })
+    //   }
+    // },
     computed: {
       ...mapState(['userInfoData'])
     },

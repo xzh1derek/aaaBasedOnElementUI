@@ -1,5 +1,10 @@
 <template>
   <div style="overflow: auto">
+
+<!--    <CommonOperation></CommonOperation>-->
+
+
+
     <el-table :data=courseListInfo.slice((currentPage-1)*pagesize,currentPage*pagesize)
               stripe style="width: 100%"
               border
@@ -35,6 +40,8 @@
 </template>
 
 <script>
+  import CommonOperation from "./CommonOperation";
+
   export default {
     name: "CourseList",
     data() {
@@ -46,6 +53,7 @@
         pagerCount: 5,//展示到多少页时 中间显示...，取值在5~21之间
       }
     },
+    components:{CommonOperation},
     methods: {
 
       handleSizeChange(size) {

@@ -4,6 +4,14 @@
       <AddNewItem ref="addNew" class="inlineItem"></AddNewItem>
       <DeleteItem ref="removeItems" class="inlineItem" target-url="module/delete"></DeleteItem>
       <EditItem class="inlineItem"></EditItem>
+      <ExportList class="inlineItem"></ExportList>
+      <UploadFile class="inlineItem"></UploadFile>
+<!--      <el-button @click="outerVisible=true">添加课程</el-button>-->
+<!--      <el-button type="primary" :disabled="!editDisable">编辑课程</el-button>-->
+<!--      <el-button type="primary" :disabled="!editDisable">添加班级</el-button>-->
+<!--      <el-button type="success">导出</el-button>-->
+<!--      <el-button type="warning">检索</el-button>-->
+<!--      <el-button type="danger" @click="deleteCourse" :disabled="!editDisable">删除</el-button>-->
     </el-row>
   </div>
 </template>
@@ -14,10 +22,12 @@
   import {mapState, mapMutations} from "vuex";
   import DeleteItem from "./DeleteItem";
   import EditItem from "./EditItem";
+  import UploadFile from "./UploadFile";
+  import ExportList from "./ExportList";
 
   export default {
     name: "CommonOperation",
-    components: {AddNewItem, DeleteItem,EditItem},
+    components: {AddNewItem, DeleteItem, EditItem,UploadFile,ExportList},
     store,
     data() {
       return {

@@ -23,16 +23,22 @@ export default new Vuex.Store({
     newMessages: 0,
     activeRoute: 0,
     multipleSelection:[],
+    verificationCode:"",//用于表示当前进入的是哪个路由,以此来控制显示的按键组
     trunkItems:null
   },
 
   mutations: {
+    updateVerification(state,payload){
+      state.verificationCode=payload;
+    },
+
     updateSelection(state,payload){
       state.multipleSelection=payload
     },
     updateTrunk(state,payload){
       state.trunkItems=payload
     },
+
 
     initUserInfo(state, payload) {
       for (var key in payload) {

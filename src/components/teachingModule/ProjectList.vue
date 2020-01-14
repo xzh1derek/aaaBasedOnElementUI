@@ -93,7 +93,6 @@
           method:"get",
           url:"/project",
           params: {
-            teacher: 1
           }
         })
           .then(response=>{

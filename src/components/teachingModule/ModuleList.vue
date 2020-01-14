@@ -50,7 +50,6 @@
           method: "get",
           url: "/module",
           params: {
-            teacher: 1
           }
         })
           .then(response => {
