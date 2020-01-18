@@ -1,18 +1,27 @@
 <template>
   <div id="cardContainer">
     <template v-for="schools in result">
-      <el-card class="box-card" style="" :body-style="{ paddingLeft: '20px'}">
+      <el-card class="box-card" :body-style="{ paddingLeft: '20px'}">
         <div slot="header" class="clearfix">
           <span>{{schools.name}}</span>
-<!--          <el-button style="float: right; padding: 3px 0" type="text" @click="showOperation">操作1</el-button>-->
-          <SchoolOperation ref="operation"></SchoolOperation>
+          <SchoolOperation ref="operation" :school-id="getData(schools.id)" :school-name="getData(schools.name)"
+                           @freshList="getList">
+          </SchoolOperation>
         </div>
         <div v-for="classID in schools.classesList" :key="classID" class="text item"
              style="border-bottom: 1px solid #d6eef1;">
           {{ classID }}
-          <el-button :id="forID(classID)" style="float: right; padding: 3px 0" type="text"
-                     @click="removeClass(forID(classID))">删除
-          </el-button>
+
+          <el-popconfirm
+            confirmButtonText='好的'
+            cancelButtonText='不用了'
+            icon="el-icon-info"
+            iconColor="red"
+            title="确定删除这个班级吗？"
+            @onConfirm="removeClass(getData(classID))">
+            <el-button slot="reference" type="text" style="float: right; padding: 3px 0">删除
+            </el-button>
+          </el-popconfirm>
         </div>
       </el-card>
     </template>
@@ -26,7 +35,7 @@
     name: "SchoolClass",
     data() {
       return {
-        result: {},
+        result: {}
       }
     },
     components: {SchoolOperation},
@@ -63,12 +72,12 @@
           })
       },
 
-      forID(id) {
-        return id
+      getData(data) {
+        return data
       },
 
-      showOperation(){
-        this.$refs.operation.visible= true
+      showOperation() {
+        this.$refs.operation.visible = true
       }
     },
     mounted() {

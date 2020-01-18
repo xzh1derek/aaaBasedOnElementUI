@@ -1,21 +1,17 @@
 import myTeam from '../components/teamModule/my-team'
 import teamList from '../components/teamModule/team-list'
 import newRequest from '../components/teamModule/new-request'
-import navbar from "../components/teamModule/navbar";
-import Team from "../components/Team";
 import Login from "../components/Login";
-import CompleteInfo from "../components/CompleteInfo";
 import PersonalCenter from "../components/teamModule/PersonalCenter";
-import teamOperate from "../components/teamModule/teamOperate";
 import NewMessage from "../components/NewMessage";
 import userInfo from "../components/userInfo";
 import TeachingManagement from "../components/teachingModule/TeachingManagement";
 import CourseLibrary from "../components/teachingModule/CourseLibrary";
 import ProjectLibrary from "../components/teachingModule/ProjectLibrary";
-import ModuleList from "../components/teachingModule/ModuleList";
 import ModuleLibrary from "../components/teachingModule/ModuleLibrary";
 import SystemManagement from "../components/Administration/SystemManagement";
 import SchoolClass from "../components/Administration/SchoolClass";
+import StuManagement from "../components/Administration/StuManagement";
 
 // identity为10时,这个路由是公共路由
 const routes =
@@ -141,7 +137,7 @@ const routes =
     },
 
     {
-      path: '/system',
+      path: '/school',
       component: SystemManagement,
       meta: {
         text: "系统管理",
@@ -154,6 +150,13 @@ const routes =
           component: SchoolClass,
           meta: {
             text: "院班管理"
+          }
+        },
+        {
+          path: "/students",
+          component: StuManagement,
+          meta: {
+            text: "学生管理"
           }
         },
       ]
