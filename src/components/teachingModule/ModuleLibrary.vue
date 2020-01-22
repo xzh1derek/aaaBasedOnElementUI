@@ -7,7 +7,7 @@
 <script>
 
   import ModuleList from "./ModuleList"
-  import CommonOperation from "./CommonOperation";
+  import CommonOperation from "../common/CommonOperation";
   import {mapMutations} from 'vuex'
 
   export default {

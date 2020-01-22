@@ -77,6 +77,7 @@
           url: "/login",
           params: {
             username: this.form.username,
+            // password: this.$md5(this.form.password),
             password: this.form.password,
           }
         })

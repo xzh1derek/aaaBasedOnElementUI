@@ -113,7 +113,7 @@
   }
 </script>
 
-<style>
+<style >
   * {
     margin: 0;
     padding: 0;
@@ -167,6 +167,6 @@
 
   #rightSide {
     flex: 1;
-    height: 850px;
+    height: 5000px;
   }
 </style>

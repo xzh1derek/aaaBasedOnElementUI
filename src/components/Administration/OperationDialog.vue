@@ -1,3 +1,4 @@
+<!--院班管理 菜单中操作按键下 '子按键' 的详细内容dialog-->
 <template>
   <el-dialog
     :title=title
@@ -21,7 +22,7 @@
         title: "",    //动态绑定Dialog的title
         btnType: "",  // 1-->newSchool   2-->editSchoolName    3-->newClass
         input: "",    //和el-input框双向绑定
-        onConfirmFunc:{},//
+        onConfirmFunc:{},//动态绑定点击确定按钮时,执行什么操作.是函数人柱力
       }
     },
     props: ['schoolId', "schoolName"],

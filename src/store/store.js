@@ -15,28 +15,46 @@ export default new Vuex.Store({
       invitation_id: 0,
       leader: false,
       available: true,
-      display: false
+      display: false,
     },
     searchTeamInfo: {
       leader: "init",
     },
     newMessages: 0,
     activeRoute: 0,
-    multipleSelection:[],
-    verificationCode:"",//用于表示当前进入的是哪个路由,以此来控制显示的按键组
-    trunkItems:null
+    multipleSelection: [],
+    verificationCode: "",//用于表示当前进入的是哪个路由,以此来控制显示的按键组
+    trunkItems: null,
+    btnFamily: 10000,//用来控制CommonOperation显示哪些键盘组   0-->stuManagement
+    readyForRenovate:false,//分页组件通过监听这个变量.确定什么时候获取新的页面数据
   },
 
   mutations: {
-    updateVerification(state,payload){
-      state.verificationCode=payload;
+    /**
+     * 改变State里的键值
+     * @param state
+     * @param payload 需要一个对象.至少包含两个属性.
+     *        payload:{
+     *        targetKey-->要改变键值名
+     *        targetVal-->对应的键值
+     *        }
+     */
+    updateCurrentStatus(state, payload) {
+      state[payload.targetKey] = payload.targetVal
+      console.log(state[payload.targetKey])
     },
 
-    updateSelection(state,payload){
-      state.multipleSelection=payload
+    updateVerification(state, payload) {
+      state.verificationCode = payload;
     },
-    updateTrunk(state,payload){
-      state.trunkItems=payload
+
+    updateSelection(state, payload) {
+      state.multipleSelection = payload
+      console.log(state.multipleSelection)
+    },
+    updateTrunk(state, payload) {
+      state.trunkItems = payload
+      console.log(state.trunkItems)
     },
 
 

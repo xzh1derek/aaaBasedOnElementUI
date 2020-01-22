@@ -6,7 +6,6 @@
       width="100"
       trigger="click">
       <div style="text-align: center">
-        <el-button type="text" @click="dialogVisible = true">点击打开 Dialog</el-button>
 <!--        <el-button slot="reference" type="text" @click="newSchool">添加新学院</el-button>-->
         <el-button slot="reference" type="text" @click="openDialog('1')">添加新学院</el-button>
 <!--        <el-button slot="reference" type="text" @click="editSchoolName">修改学院名称</el-button>-->

@@ -110,5 +110,24 @@ export default {
     }
     // 返回最终结果
     return result;
+  },
+
+
+  /**
+   * 从对象的集合中获得某一个属性
+   * @param objList 母对象集合
+   * @param propName 从对象中获取属性的属性名
+   * @returns {Array}
+   */
+  getPropFormListObj(objList, propName) {
+    let length = objList.length;
+    let arr = [];
+    arr.length = length;
+    for (let i = 0; i < objList.length; i++) {
+      arr[i] = objList[i][propName]
+    }
+    console.log(arr);
+    return arr;
   }
+
 }

@@ -40,7 +40,7 @@
 </template>
 
 <script>
-  import CommonOperation from "./CommonOperation";
+  import CommonOperation from "../common/CommonOperation";
 
   export default {
     name: "CourseList",

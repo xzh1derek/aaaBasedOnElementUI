@@ -158,7 +158,8 @@
     watch: {
       selectedCourse() {
         console.log("this.selectedCourse.length:" + this.selectedCourse.length)
-        let length = this.selectedCourse.length
+        let length = this.selectedCourse.length;
+        console.log(this.multipleSelection)
         console.log("length:" + length)
         if (length !== 1) {
           //只有选中一门课程时,才能编辑课程或者给课程添加班级

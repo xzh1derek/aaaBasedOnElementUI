@@ -20,49 +20,81 @@
 
   export default {
     name: "DeleteItem",
-    // store,
     data() {
       return {
         isDisabled: true,
-        dialogVisible: false
+        dialogVisible: false,
+        targetUrl: "",//删除函数的目的地址,通过mounted钩子函数确定
+        deleteData: "",//被删数据的集合,通过mounted钩子函数确定
+        propName: "",//要从对象中提取哪个属性
       }
     },
-    props: ['targetUrl',],
+    // props: ['targetUrl',],
     computed: {
       getTrunkItems() {
         return this.trunkItems
       },
-      ...mapState(["trunkItems"])
+      selectedItems() {
+        return this.multipleSelection
+      },
+      ...mapState(["trunkItems", "multipleSelection", "btnFamily", "readyForRenovate"])
     },
     watch: {
       getTrunkItems() {
         console.log(this.getTrunkItems)
         // this.isDisabled=(this.getTrunkItems.length !== 1)
-      }
+      },
+
+      selectedItems() {
+        // console.log("this.selectedItem.length:" + this.selectedItems.length)
+        // let length = this.selectedCourse.length;
+        console.log(this.multipleSelection)
+        // console.log("length:" + length)
+      },
     },
     methods: {
       deleteItem() {
-
-
         let self = this
+        this.deleteData = this.util.getPropFormListObj(this.multipleSelection, this.propName);//从对象集合中提取username属性
         this.axios({
           method: "delete",
           url: this.targetUrl,
           params: {
-            id: this.trunkItems.id
-          }
+            // id: this.trunkItems.id
+          },
+          data: this.deleteData
         })
           .then(response => {
-            console.log(response.data)
+            let payload={
+              targetKey:"readyForRenovate",
+              targetVal:!this.readyForRenovate
+            };
             this.dialogVisible = false
             // this.$refs.CourseList.initCourseList();
-            this.util.feedbackInfo(self, response.data)
+            this.util.feedbackInfo(self, response.data);
+            this.updateCurrentStatus(payload)//改变 "readyForRenovate" ,以达到让 Pagination 刷新页面的目的
           })
           .catch(err => {
             console.log(err)
           })
       },
+      ...mapMutations(["updateCurrentStatus"])
     },
+    mounted() {
+      switch (this.btnFamily) {
+        case 0 ://删除学生相关操作
+          this.targetUrl = "/students/delete";
+          this.propName = "username";
+          break;
+        case 1 :
+          this.targetUrl = "/students/delete";
+          break;
+        case 2 :
+          this.targetUrl = "/students/delete";
+          break;
+
+      }
+    }
   }
 </script>
 

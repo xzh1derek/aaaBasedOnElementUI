@@ -15,6 +15,7 @@
 </template>
 
 <script>
+  import {mapState} from "vuex"
   export default {
     name: "Pagination",
     data() {
@@ -28,8 +29,13 @@
       }
     },
     props: ['targetUrl1', 'targetUrl2'],//url1:获取表单内容的url  url2:获取表单条数的url
+    computed:{
+      renovateCheck(){
+        return this.readyForRenovate
+      },
+      ...mapState(["readyForRenovate"])
+    },
     methods: {
-
       getItemList() {
         return this.axios({
           method: "get",
@@ -76,6 +82,9 @@
     watch: {
       listInfo() {
         this.$emit('rewriteList', this.listInfo)
+      },
+      renovateCheck(){//监听 readyForRenovate ,如有变化就重新从后台获取数据
+        this.freshList()
       }
     },
     mounted() {

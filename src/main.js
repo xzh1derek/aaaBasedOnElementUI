@@ -7,6 +7,7 @@ import router from './router'
 import axios from './http/http'
 import util from './util/util'
 import ElementUI from 'element-ui'
+import md5 from "js-md5"
 import 'element-ui/lib/theme-chalk/index.css';
 // import bootstrap from 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -18,7 +19,8 @@ Vue.use(ElementUI);
 Vue.config.productionTip = false;
 Vue.prototype.axios = axios;
 Vue.prototype.util = util;
-axios.defaults.baseURL = '/api'
+Vue.prototype.$md5 = md5;
+axios.defaults.baseURL = '/api';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 /* eslint-disable no-new */
