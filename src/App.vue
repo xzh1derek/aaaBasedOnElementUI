@@ -114,11 +114,11 @@
     methods: {
       ...mapMutations(['initUserInfo', "updateTeam"])
     },
-    mounted() {
+    beforeMount() {
       this.loginUser = localStorage.token
       var self = this
 
-      //当用户登陆后
+      // 当用户登陆后，再查询用户信息
       if (this.loginUser) {
 
         function getUserInfo() {
@@ -139,10 +139,11 @@
           .catch(err => {
             console.log(err)
           })
-      } else {
-        //如果用户没有登录,那么直接返回登录界面
-        location.href = "#/login"
-      }
+    }
+      // } else {
+      //   如果用户没有登录,那么直接返回登录界面
+        // location.href = "#/login"
+      // }
     }
   }
 </script>
