@@ -1,84 +1,26 @@
 <template>
   <div>
-    <el-row>
-      <el-button @click="outerVisible=true">添加课程</el-button>
-      <el-button type="primary" :disabled="!editDisable">编辑课程</el-button>
-      <el-button type="primary" :disabled="!editDisable">添加班级</el-button>
-      <el-button type="success">导出</el-button>
-      <el-button type="warning">检索</el-button>
-      <el-button type="danger" @click="deleteCourse" :disabled="!editDisable">删除</el-button>
-    </el-row>
-
-    <el-dialog title="填写课程详细信息:" :visible.sync="outerVisible" width="30%">
-      <el-form :model="form">
-        <el-form-item label="课程代码" :label-width="formLabelWidth">
-          <el-col :span=span>
-            <el-input v-model="form.code" autocomplete="off" required></el-input>
-          </el-col>
-        </el-form-item>
-        <!---->
-        <el-form-item label="课程名称" :label-width="formLabelWidth">
-          <el-col :span=span>
-            <el-input v-model="form.name" autocomplete="off"></el-input>
-          </el-col>
-        </el-form-item>
-        <!---->
-        <!---->
-        <el-form-item label="学分" :label-width="formLabelWidth">
-          <el-col :span=span>
-            <el-input v-model="form.credit" autocomplete="off"></el-input>
-          </el-col>
-        </el-form-item>
-        <!---->
-        <el-form-item label="总学时" :label-width="formLabelWidth">
-          <el-col :span=span>
-            <el-input v-model="form.hours" autocomplete="off"></el-input>
-          </el-col>
-        </el-form-item>
-        <!---->
-        <el-form-item label="老师" :label-width="formLabelWidth">
-          <el-col :span=span>
-            <el-input v-model="form.teacher" autocomplete="off"></el-input>
-          </el-col>
-        </el-form-item>
-        <!---->
-        <el-form-item label="是否要组队" :label-width="formLabelWidth">
-          <el-switch v-model="form.isTeam" autocomplete="off"></el-switch>
-        </el-form-item>
-        <el-form-item label="成队最大人数" :label-width="formLabelWidth">
-          <el-col :span=span>
-            <el-input v-model="form.maxNum" autocomplete="off"></el-input>
-          </el-col>
-        </el-form-item>
-      </el-form>
-
-      <el-dialog
-        width="30%"
-        title="添加班级"
-        :visible.sync="innerVisible"
-        append-to-body>
-        <BindClasses :bind-id="courseId" url-target="/course/bind" structure-url="/schools"></BindClasses>
-      </el-dialog>
-
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="outerVisible = false">取 消</el-button>
-        <el-button type="primary" @click="createCourse">创建课程</el-button>
-      </div>
-    </el-dialog>
-    <div>
-        <CourseList ref="CourseList" @deleteCourseList="initDeleteList"></CourseList>
-    </div>
+    <!--    <el-row>-->
+    <!--      <el-button @click="outerVisible=true">添加课程</el-button>-->
+    <!--      <el-button type="primary" :disabled="!editDisable">编辑课程</el-button>-->
+    <!--      <el-button type="primary" :disabled="!editDisable">添加班级</el-button>-->
+    <!--      <el-button type="success">导出</el-button>-->
+    <!--      <el-button type="warning">检索</el-button>-->
+    <!--      <el-button type="danger" @click="deleteCourse" :disabled="!editDisable">删除</el-button>-->
+    <!--    </el-row>-->
+    <CommonOperation></CommonOperation>
+    <CourseList ref="CourseList" @deleteCourseList="initDeleteList" ></CourseList>
   </div>
 </template>
 
 <script>
-  import BindClasses from "./BindClasses";
   import CourseList from "./CourseList";
-  import NewCourseForm from "./NewCourseForm";
   import {mapMutations} from 'vuex'
+  import CommonOperation from "../common/CommonOperation";
 
   export default {
     name: "CourseLibrary",
+    components: { CourseList, CommonOperation},
     data() {
       return {
         outerVisible: false,
@@ -110,7 +52,6 @@
         deleteDisable: false
       };
     },
-    components: {BindClasses, CourseList, NewCourseForm},
     methods: {
       createCourse() {
         let self = this
@@ -153,7 +94,7 @@
       initDeleteList(data) {
         this.multipleSelection = data
       },
-      ...mapMutations(['updateVerification'])
+      ...mapMutations(['updateCurrentStatus'])
     },
     watch: {
       selectedCourse() {
@@ -179,8 +120,12 @@
         return this.multipleSelection
       }
     },
-    mounted() {//加载组件的时候就初始化按键码
-      this.updateVerification("1");
+    beforeMount() {
+      let payload = {
+        targetKey: "btnFamily",
+        targetVal: 10
+      };
+      this.updateCurrentStatus(payload);
     }
   }
 </script>

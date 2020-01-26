@@ -1,3 +1,5 @@
+<!--显示project下module相关详细信息-->
+
 <template>
   <div>
     <el-table :data=moduleListInfo.modules size="mini"

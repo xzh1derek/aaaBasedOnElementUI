@@ -1,3 +1,4 @@
+<!--新建module的表单-->
 <template>
   <div>
     <el-form :model="form">
@@ -16,6 +17,12 @@
       <el-form-item label="Module时间" :label-width="formLabelWidth">
         <el-col :span=span>
           <el-input v-model="form.time" autocomplete="off"></el-input>
+        </el-col>
+      </el-form-item>
+
+      <el-form-item label="Module时间" :label-width="formLabelWidth">
+        <el-col :span=span>
+          <el-input v-model="form.dateOfString" autocomplete="off"></el-input>
         </el-col>
       </el-form-item>
 
@@ -51,13 +58,15 @@
   import {mapState, mapMutations} from "vuex";
 
   export default {
-    name: "NewCourseForm",
+    name: "NewModuleDialog",
     store,
     data() {
       return {
         form: {
           project_id: '',
           module_index: '',
+          dateOfString: "",
+          time: "",
           location: '',
           stu_num: '',
         },
@@ -94,9 +103,9 @@
           .then(response => {
             //固定排课时,需要选班级
             console.log(response)
-            if (this.multipleSelection[0].is_fixed){
-              this.$emit("showInner",response.data)
-            }else {
+            if (this.multipleSelection[0].is_fixed) {
+              this.$emit("showInner", response.data)
+            } else {
               this.$emit("closeOuter")
             }
 

@@ -1,16 +1,36 @@
 <template>
   <div>
-    <div id="container" style="background-color: #d1f1ee">
-      <SideBar v-if="this.loginUser"></SideBar>
-      <div id="rightSide" style="overflow: hidden">
-        <div id="header" v-if="this.loginUser">
+<!--        <div id="container" style="background-color: #d1f1ee">-->
+<!--          <SideBar v-if="this.loginUser"></SideBar>-->
+<!--          <div id="rightSide" style="overflow: hidden">-->
+<!--            <div id="header" v-if="this.loginUser">-->
+<!--              <MainNavBar></MainNavBar>-->
+<!--            </div>-->
+<!--            <div id="content" style="padding-left: 20px;padding-right: 20px;padding-top: 20px;" >-->
+<!--              <router-view></router-view>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<template v-if=isLogin>
+    <el-container style="height: 100vh;width: 100vw;" >
+      <el-aside width="200px">
+        <SideBar v-if="this.loginUser"></SideBar>
+      </el-aside>
+      <el-container>
+        <el-header style="padding: 0;">
           <MainNavBar></MainNavBar>
-        </div>
-        <div id="content" style="padding-left: 20px;padding-right: 20px;padding-top: 20px;" >
-          <router-view></router-view>
-        </div>
-      </div>
-    </div>
+        </el-header>
+        <el-main >
+          <router-view ></router-view>
+        </el-main>
+      </el-container>
+    </el-container>
+</template>
+
+    <template v-else>
+    <Login ></Login>
+    </template>
   </div>
 </template>
 
@@ -31,7 +51,14 @@
     components: {navbar, userInfo, teamOperate, MainNavBar, SideBar, Login},
     store,
     data() {
+      const item = {
+        date: '2016-05-02',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      };
       return {
+
+        tableData: Array(20).fill(item),
         userInfoToOpe: null,//传给组件的值,通过create钩子函数初始化,这里要写成null,不能写成{},否则会被判为true
         loginUser: "",
 
@@ -75,6 +102,13 @@
     //   }
     // },
     computed: {
+      isLogin(){
+        if (localStorage.token){
+          return true
+        }else {
+          return false
+        }
+      },
       ...mapState(['userInfoData'])
     },
     methods: {
@@ -113,13 +147,18 @@
   }
 </script>
 
-<style >
-  * {
-    margin: 0;
-    padding: 0;
+<style>
+
+  html, body {
+    /*设置内部填充为0，几个布局元素之间没有间距*/
+    padding: 0px;
+    /*外部间距也是如此设置*/
+    margin: 0px;
   }
 
-
+  .el-container{
+    background-color: #d1f1ee
+  }
   #app {
     width: 100%;
     height: 500px;
@@ -168,5 +207,21 @@
   #rightSide {
     flex: 1;
     height: 5000px;
+  }
+
+
+  .el-header {
+    background-color: #B3C0D1;
+    color: #333;
+    line-height: 60px;
+  }
+
+  .el-aside {
+    color: #333;
+  }
+
+  .el-main{
+    padding: 20px;
+    margin-bottom: 20px;
   }
 </style>

@@ -1,3 +1,4 @@
+<!--显示project信息列表和相关操作按键  (module信息通过moduleTable组件显示)-->
 <template>
   <div>
 

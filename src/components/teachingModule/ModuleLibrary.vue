@@ -1,3 +1,4 @@
+<!--module 菜单的母组件,是菜单下所有模块的容器-->
 <template>
   <div>
     <ModuleList></ModuleList>
@@ -14,10 +15,14 @@
     name: "ModuleLibrary",
     components: {ModuleList, CommonOperation},
     methods: {
-      ...mapMutations(['updateVerification'])
+      ...mapMutations(['updateCurrentStatus'])
     },
-    mounted() {
-      this.updateVerification("3");
+    beforeMount() {
+      let payload={
+        targetKey:"btnFamily",
+        targetVal:5
+      };
+      this.updateCurrentStatus(payload);
     }
   }
 </script>

@@ -25,7 +25,7 @@
 
     <Pagination @rewriteList="getListData" target-url1="/students" target-url2="/students/pages"></Pagination>
 
-    <FormInDialog ref="openFormDialog" :origin-data=editBefore></FormInDialog>
+    <FormInDialog ref="openFormDialog" :origin-data=editBefore target-url="/students/update"></FormInDialog>
 
   </div>
 </template>
@@ -53,6 +53,7 @@
       getListData(data) {
         this.stuList = data
       },
+
       handleSelectionChange(val) {
         let payload = {
           targetKey: "multipleSelection",

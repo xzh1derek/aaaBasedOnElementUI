@@ -6,7 +6,8 @@
     background-color="#2a3f54"
     text-color="#fff"
     active-text-color="#ffd04b"
-    router>
+    router
+    style="height: 100vh">
 
 
     <el-menu-item>
@@ -32,7 +33,7 @@
     </template>
 
 
-    <el-menu-item  @click="logOut" index="/login">
+    <el-menu-item @click="logOut" index="/login">
       <i class="el-icon-circle-close"></i>
       <span slot="title">退出登录</span>
     </el-menu-item>

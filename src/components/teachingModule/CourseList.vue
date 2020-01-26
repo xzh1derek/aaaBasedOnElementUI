@@ -1,10 +1,5 @@
 <template>
   <div style="overflow: auto">
-
-<!--    <CommonOperation></CommonOperation>-->
-
-
-
     <el-table :data=courseListInfo.slice((currentPage-1)*pagesize,currentPage*pagesize)
               stripe style="width: 100%"
               border
@@ -14,12 +9,20 @@
       <el-table-column prop="course_name" label="课程名称" width="180"></el-table-column>
       <el-table-column prop="credit" label="学分" width="180"></el-table-column>
       <el-table-column prop="hours" label="学时" width="180"></el-table-column>
-      <el-table-column prop="teachers" label="教师" width="180"></el-table-column>
+      <el-table-column prop="teachers" label="教师" width="180" show-overflow-tooltip></el-table-column>
       <el-table-column prop="is_team" label="是否组队" width="180"></el-table-column>
       <el-table-column prop="max_num" label="组队最大人数" width="180"></el-table-column>
       <el-table-column prop="stu_num" label="学生人数" width="180"></el-table-column>
       <el-table-column prop="project_num" label="项目数" width="180"></el-table-column>
       <el-table-column prop="template" label="模板" width="180"></el-table-column>
+      <el-table-column
+        fixed="right"
+        label="操作"
+        width="100">
+        <template slot-scope="scope">
+          <el-button @click="editCourse(scope.row)" type="text" size="small">编辑</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <div class="paginationClass">
       <el-pagination
@@ -33,14 +36,15 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="courseListInfo.length" class="pageControl">
       </el-pagination>
-
-
     </div>
+    <FormInDialog :origin-data="editBefore" target-url="/course/update" ref="openFormDialog"></FormInDialog>
   </div>
 </template>
 
 <script>
   import CommonOperation from "../common/CommonOperation";
+  import FormInDialog from "../common/FormInDialog";
+  import {mapState} from "vuex";
 
   export default {
     name: "CourseList",
@@ -51,9 +55,16 @@
         currentPage: 1,//初始页
         pagesize: 10,//每一页的数量,
         pagerCount: 5,//展示到多少页时 中间显示...，取值在5~21之间
+        editBefore:{},//未改动之前的数据,预填入form中
       }
     },
-    components:{CommonOperation},
+    components: {CommonOperation,FormInDialog },
+    computed:{
+      isReadyForRenovate(){
+        return this.readyForRenovate
+      },
+      ...mapState(["readyForRenovate","btnFamily"])
+    },
     methods: {
 
       handleSizeChange(size) {
@@ -79,9 +90,11 @@
       },
       handleSelectionChange(val) {
         // this.multipleSelection = val;
-        this.$emit('deleteCourseList',val)
+        this.$emit('deleteCourseList', val)
       },
-      initCourseList(){
+
+
+      initCourseList() {
         this.axios({
           method: "get",
           url: "/course",
@@ -97,6 +110,16 @@
               showClose: true
             });
           })
+      },
+      editCourse(row){
+        this.editBefore=this.util.deepClone(row)
+        this.$refs.openFormDialog.diaVisible=true
+      }
+    },
+    watch:{
+      isReadyForRenovate(){//如果btnFamily=10 并且readyForRenovate改变了,就更新页面
+        if (this.btnFamily===10)
+        this.initCourseList()
       }
     },
     mounted() {

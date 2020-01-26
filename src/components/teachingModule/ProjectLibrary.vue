@@ -9,7 +9,6 @@
     </el-row>
 
     <el-dialog title="填写Project详细信息:" :visible.sync="outerVisible" width="30%">
-      <!--      <NewCourseForm ></NewCourseForm>-->
       <el-form :model="modelFormData">
         <el-form-item label="课程编号" :label-width="formLabelWidth" hidden>
           <el-col :span=span>
@@ -71,7 +70,6 @@
 <script>
   import BindClasses from "./BindClasses";
   import CourseList from "./CourseList";
-  import NewCourseForm from "./NewCourseForm";
   import ProjectList from "./ProjectList";
   import {mapMutations} from 'vuex'
 
@@ -99,7 +97,7 @@
         },
       };
     },
-    components: {BindClasses, ProjectList, NewCourseForm},
+    components: {BindClasses, ProjectList},
     methods: {
       createProject() {
         let pushData = {};

@@ -1,3 +1,4 @@
+<!--选择班级信息,绑定相关班级-->
 <template>
   <div>
     <el-select v-model="value1" multiple placeholder="请先选择学院">
@@ -47,7 +48,6 @@
     props: ["bindId", "urlTarget", "structureUrl", "limit"],
     methods: {
       bindAll() {
-
         if (this.limit == 1) {
           if (this.checkedClasses.length > 2) {
             this.$message({
