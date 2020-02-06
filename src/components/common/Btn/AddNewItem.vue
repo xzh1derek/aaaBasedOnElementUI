@@ -17,11 +17,11 @@
 </template>
 
 <script>
-  import ModuleInfoDialog from "./ModuleInfoDialog";
-  import store from '../../store/store'
+  import ModuleInfoDialog from "../../teachingModule/ModulePart/ModuleInfoDialog";
+  import store from '../../../store/store'
   import {mapState, mapMutations} from "vuex";
-  import StuInfoDialog from "../Administration/StuInfoDialog";
-  import CourseInfoDialog from "./CourseInfoDialog";
+  import StuInfoDialog from "../../Administration/StuInfoDialog";
+  import CourseInfoDialog from "../../teachingModule/Course/CourseInfoDialog";
 
   export default {
     name: "AddNewItem",
