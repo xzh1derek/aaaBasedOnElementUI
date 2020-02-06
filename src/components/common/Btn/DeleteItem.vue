@@ -29,7 +29,6 @@
         propName: "",//要从对象中提取哪个属性
       }
     },
-    // props: ['targetUrl',],
     computed: {
       getTrunkItems() {
         return this.trunkItems
@@ -48,7 +47,7 @@
       selectedItems() {
         // console.log("this.selectedItem.length:" + this.selectedItems.length)
         // let length = this.selectedCourse.length;
-        console.log(this.multipleSelection)
+        // console.log(this.multipleSelection)
         // console.log("length:" + length)
       },
     },
@@ -60,11 +59,13 @@
           method: "delete",
           url: this.targetUrl,
           params: {
+            courseId: this.multipleSelection[0].id
             // id: this.trunkItems.id
           },
           data: this.deleteData
         })
           .then(response => {
+            //成功后改变"readyForRenovate"的状态,list组件监听这个变量.一旦改变,就更新列表
             let payload={
               targetKey:"readyForRenovate",
               targetVal:!this.readyForRenovate
@@ -86,11 +87,11 @@
           this.targetUrl = "/students/delete";
           this.propName = "username";
           break;
-        case 1 :
-          this.targetUrl = "/students/delete";
+        case 5 :
+          this.targetUrl = "/module/delete";
           break;
-        case 2 :
-          this.targetUrl = "/students/delete";
+        case 10 :
+          this.targetUrl = "/course/delete";
           break;
 
       }

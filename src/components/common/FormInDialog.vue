@@ -85,7 +85,7 @@
 </template>
 
 <script>
-  import {mapState} from "vuex"
+  import {mapState,mapMutations} from "vuex"
 
   export default {
     name: "DialogForm",
@@ -101,17 +101,13 @@
     },
     props: ["originData","targetUrl"],
     computed: {
-      ...mapState(["btnFamily"])
+      ...mapState(["btnFamily","readyForRenovate"])
     },
     methods: {
       //上传新的学生信息
       submitNewInfo() {
-        // if (this.originData.teachers){
-        //   delete this.originData.teachers
-        // }
-
-        this.originData.is_published=true
-        this.originData.teacher=0
+        this.originData.is_published=true;
+        this.originData.teacher=0;
 
         this.axios({
           method: "post",//一律都是update
@@ -122,16 +118,20 @@
           data: this.originData
         })
           .then(response => {
-            this.util.feedbackInfo(this, response.data)
-            // this.editStuDiaVisible = false;
+            let payload ={
+              targetKey:"readyForRenovate",
+              targetVal:!this.readyForRenovate
+            };
+            this.util.feedbackInfo(this, response.data);
             this.diaVisible = false;
-
+            this.updateCurrentStatus(payload)//改变readyForRenovate的值,刷新界面
 
           })
           .catch(err => {
             console.log(err)
           })
-      }
+      },
+      ...mapMutations(["updateCurrentStatus"])
     },
     watch: {
       //监控diaVisible的值 组件父组件只需要改变diaVisible的值 组件内部通过btnFamily判断到底要使用哪个dialog

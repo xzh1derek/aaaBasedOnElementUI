@@ -1,12 +1,12 @@
 <template>
   <div>
-    <el-button type="danger" @click="showForm" :disabled="isDisabled">编辑</el-button>
+    <el-button  @click="showForm" :disabled="isDisabled">编辑</el-button>
     <EditForm ref="editForm"></EditForm>
   </div>
 </template>
 
 <script>
-  import EditForm from "./EditForm";
+  import EditForm from "../../teachingModule/EditForm";
 
   export default {
     name: "EditItem",
