@@ -29,7 +29,6 @@ router.beforeEach((to, from, next) => {
       .catch(err=>{
         console.log(err)
       })
-    console.log("hello this")
     next()
   }else {
     next()

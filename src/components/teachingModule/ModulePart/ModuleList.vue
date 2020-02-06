@@ -31,8 +31,8 @@
 
 <script>
   import ModuleTable from "./ModuleTable";
-  import CommonOperation from "../common/CommonOperation";
-  import store from '../../store/store'
+  import CommonOperation from "../../common/CommonOperation";
+  import store from '../../../store/store'
   import {mapMutations} from "vuex";
 
   export default {

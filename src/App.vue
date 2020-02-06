@@ -38,17 +38,16 @@
 <script>
 
   import navbar from "./components/teamModule/navbar";
-  import userInfo from "./components/userInfo";
   import teamOperate from "./components/teamModule/teamOperate";
   import store from './store/store'
   import {mapState, mapMutations} from 'vuex'
-  import MainNavBar from "./components/MainNavBar";
-  import SideBar from "./components/SideBar";
+  import MainNavBar from "./components/Nav/MainNavBar";
+  import SideBar from "./components/Nav/SideBar";
   import Login from "./components/Login";
 
   export default {
     name: 'App',
-    components: {navbar, userInfo, teamOperate, MainNavBar, SideBar, Login},
+    components: {navbar, teamOperate, MainNavBar, SideBar, Login},
     store,
     data() {
       const item = {
@@ -64,43 +63,10 @@
 
       }
     },
-    // watch: {
-    //   loginUser() {
-    //     var self = this;
-    //
-    //     function getUserInfo() {
-    //       return self.axios({
-    //         method: "post",
-    //         url: "/userInfo",
-    //         params: {
-    //           userId: self.loginUser//得改
-    //           // userId: "1601"//得改
-    //         }
-    //       })
-    //     }
-    //
-    //     function getTeamInfo() {
-    //       return self.axios({
-    //         method: "get",
-    //         url: "/search",
-    //         params: {
-    //           leader: self.loginUser//得改
-    //         }
-    //       })
-    //     }
-    //
-    //     self.axios.all([getUserInfo()])
-    //       .then(self.axios.spread(function (acct) {
-    //         //当这两个请求都完成的时候会触发这个函数，两个参数分别代表返回的结果
-    //         self.initUserInfo(acct.data);
-    //
-    //         self.userInfoToOpe = self.userInfoData
-    //       }))
-    //       .catch(err => {
-    //         console.log(err)
-    //       })
-    //   }
-    // },
+    watch: {
+      $route(to,from){//监听路由变化
+      }
+    },
     computed: {
       isLogin(){
         if (localStorage.token){

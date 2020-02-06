@@ -1,10 +1,13 @@
+<!--显示当前还需要组队的课程信息-->
+
+
 <template>
   <div>
     <template v-if="buildTeam.length!==0">
-    <div style="background-color: #5bc0de;width: 80%">
+    <div style="background-color: #5bc0de;width: 100%">
       <h1 style="display: inline;margin-right: 20px">尚需组队的课程</h1>
     </div>
-    <el-table :data="buildTeam" stripe style="width: 80%" v-if="buildTeam">
+    <el-table :data="buildTeam" stripe style="width: 100%" v-if="buildTeam">
       <el-table-column prop="course_id" label="课程编号" width="180"></el-table-column>
       <el-table-column prop="course.course_name" label="课程名称" width="180"></el-table-column>
       <el-table-column prop="course.credit" label="学分" width="180"></el-table-column>
@@ -40,7 +43,6 @@
         })
           .then(response => {
             self.buildTeam = response.data
-            console.log(self.buildTeam)
           })
           .catch(err => {
             console.log(err)

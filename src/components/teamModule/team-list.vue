@@ -93,6 +93,10 @@
         this.axios({
           method: "get",
           url: "/foyer",
+          params: {
+            rows:10,
+            page:1
+          }
         })
           .then((res) => {//把返回的所有队伍信息存起来用来显示.
             this.teamListInfo = res.data;

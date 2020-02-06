@@ -68,8 +68,8 @@
 </template>
 
 <script>
-  import BindClasses from "./BindClasses";
-  import CourseList from "./CourseList";
+  import BindClasses from "../../common/Btn/BindClasses";
+  import CourseList from "../Course/CourseList";
   import ProjectList from "./ProjectList";
   import {mapMutations} from 'vuex'
 

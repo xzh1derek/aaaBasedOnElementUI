@@ -1,4 +1,5 @@
 <template>
+
   <el-dialog title="填写课程详细信息:" :visible.sync="outerVisible" width="30%">
     <el-form :model="form">
       <el-form-item label="ModuleID" :label-width="formLabelWidth">
@@ -27,7 +28,7 @@
 
       <!--任选需要填人数 isFixed=false时-->
       <!--      <el-form-item label="学生数" :label-width="formLabelWidth" v-if="!this.multipleSelection[0].is_fixed">-->
-      <el-form-item label="学生数" :label-width="formLabelWidth">
+        <el-form-item label="学生数" :label-width="formLabelWidth">
         <el-col :span=span>
           <el-input v-model="form.stu_num" autocomplete="off"></el-input>
         </el-col>

@@ -1,9 +1,8 @@
 <template>
-
   <div>
-    <el-table :data="myMail" stripe style="width: 80%">
-      <el-table-column prop="text" label="内容" width="500"></el-table-column>
-      <el-table-column fixed="right" label="操作">
+    <el-table :data="myMail" stripe height="247" style="width: 100%" size="small">
+      <el-table-column prop="text" label="我的消息"></el-table-column>
+      <el-table-column fixed="right" label="操作" width="200px">
         <template slot-scope="scope">
           <template v-if="scope.row.type==2">
             <el-button @click="answerInvite(scope.row,'/mail/approve')" type="text" size="small">同意</el-button>
@@ -27,10 +26,10 @@
     <el-dialog title="详细信息" :visible.sync="dialogVisible" width="60%">
       <div>
         <el-table :data="userInfoDetail" style="width: 100%">
-          <el-table-column prop="name" label="姓名" width="100"></el-table-column>
-          <el-table-column prop="username" label="学号" width="100"></el-table-column>
-          <el-table-column prop="school" label="学院" width="180"></el-table-column>
-          <el-table-column prop="qq" label="qq" width="150"></el-table-column>
+          <el-table-column prop="name" label="姓名" width="200"></el-table-column>
+          <el-table-column prop="username" label="学号" width="200"></el-table-column>
+          <el-table-column prop="school" label="学院" ></el-table-column>
+          <el-table-column prop="qq" label="qq" width="200"></el-table-column>
         </el-table>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -51,38 +50,12 @@
         <el-button type="primary" @click="dialogVisible2 = false">确 定</el-button>
       </span>
     </el-dialog>
-
-
   </div>
-
-
-  <!--  <div>-->
-  <!--    <template v-for="mail in myMail">-->
-  <!--      <template v-if="mail.type===2">-->
-  <!--        <p>{{mail.text}}</p>-->
-  <!--        <div style="">-->
-  <!--          <el-button type="primary" size="mini" :mailId=mail.id @click="answerInvite($event,'/mail/approve')">同意-->
-  <!--          </el-button>-->
-  <!--          <el-button type="primary" size="mini" :mailId=mail.id @click="answerInvite($event,'/mail/reject')">拒绝-->
-  <!--          </el-button>-->
-  <!--          <el-button type="primary" size="mini" :sender="mail.sender" @click="showUserDetail">申请人详细</el-button>-->
-  <!--        </div>-->
-  <!--      </template>-->
-  <!--      <p v-if="mail.type===1">{{mail.text}}</p>-->
-  <!--&lt;!&ndash;&ndash;&gt;-->
-  <!--      <template v-if="mail.type===0">-->
-  <!--        <p>系统消息 <span>{{mail.text}}</span></p>-->
-  <!--        <div>-->
-  <!--          <el-button type="primary" size="mini" :mailId="mail.id" @click="deleteMail($event)">删除</el-button>-->
-  <!--        </div>-->
-  <!--      </template>-->
-  <!--    </template>-->
-  <!--  </div>-->
 </template>
 
 <script>
   import {mapState, mapMutations} from 'vuex'
-  import store from "../store/store"
+  import store from "../../store/store"
 
   export default {
     name: "NewMessage",
@@ -90,7 +63,7 @@
       return {
         newApplicationStatus: false,
         newInvitation: false,
-        myMail: "",
+        myMail: [],
         dialogVisible: false,
         dialogVisible2: false,
         show: false,
@@ -120,7 +93,6 @@
           }
         })
           .then((response) => {
-            console.log("successful")
             // this.updateStatus();
             this.util.feedbackInfo(self, response.data)
           })
@@ -200,7 +172,7 @@
                   userId: localStorage.token//得改
                 }
               })
-              //如果查询成功,本地缓存用户信息
+                //如果查询成功,本地缓存用户信息
                 .then((res) => {
                   self.myMail = res.data
 
@@ -239,7 +211,6 @@
           }
         })
           .then((response) => {
-            console.log(response)
             for (let key in this.userInfoDetail[0]) {
               this.userInfoDetail[0][key] = response.data[key]
             }
@@ -252,10 +223,9 @@
                   userId: localStorage.token//得改
                 }
               })
-              //如果查询成功,本地缓存用户信息
+                //如果查询成功,本地缓存用户信息
                 .then((res) => {
                   self.myMail = res.data
-                  // console.log(self.myMail)
                 })
                 //如果查询失败,提醒用户重新登录
                 .catch(err => {
@@ -284,11 +254,10 @@
           method: "get",
           url: "/mail/teamDetail",
           params: {
-            sender: row.teamId
+            teamId: row.teamId
           }
         })
           .then((response) => {
-            console.log(response)
             this.teamInfoDetail = response.data
           })
           .catch(error => {
@@ -318,10 +287,9 @@
                   userId: localStorage.token//得改
                 }
               })
-              //如果查询成功,本地缓存用户信息
+                //如果查询成功,本地缓存用户信息
                 .then((res) => {
                   self.myMail = res.data
-                  // console.log(self.myMail)
                 })
                 //如果查询失败,提醒用户重新登录
                 .catch(err => {
@@ -357,11 +325,9 @@
             userId: localStorage.token//得改
           }
         })
-        //如果查询成功,本地缓存用户信息
+          //如果查询成功,本地缓存用户信息
           .then((res) => {
             self.myMail = res.data
-            console.log(self.myMail)
-            // console.log(Array.isArray(self.myMail))
           })
           //如果查询失败,提醒用户重新登录
           .catch(err => {

@@ -27,6 +27,8 @@ export default new Vuex.Store({
     trunkItems: null,
     btnFamily: 10000,//用来控制CommonOperation显示哪些键盘组   0-->stuManagement   5-->module相关  10-->course相关
     readyForRenovate:false,//分页组件通过监听这个变量.确定什么时候获取新的页面数据
+
+    tableWidth:"100%"
   },
 
   mutations: {
@@ -41,7 +43,6 @@ export default new Vuex.Store({
      */
     updateCurrentStatus(state, payload) {
       state[payload.targetKey] = payload.targetVal
-      console.log(state[payload.targetKey])
     },
 
     updateVerification(state, payload) {

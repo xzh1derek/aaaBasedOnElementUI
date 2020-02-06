@@ -11,8 +11,8 @@
 
 <script>
   import NewModuleDialog from "./NewModuleDialog";
-  import BindClasses from "./BindClasses";
-  import store from '../../store/store'
+  import BindClasses from "../../common/Btn/BindClasses";
+  import store from '../../../store/store'
   import {mapState, mapMutations} from "vuex";
 
   export default {

@@ -9,18 +9,18 @@
     <!--      <el-button type="danger" @click="deleteCourse" :disabled="!editDisable">删除</el-button>-->
     <!--    </el-row>-->
     <CommonOperation></CommonOperation>
-    <CourseList ref="CourseList" @deleteCourseList="initDeleteList" ></CourseList>
+    <CourseList ref="CourseList" @deleteCourseList="initDeleteList"></CourseList>
   </div>
 </template>
 
 <script>
   import CourseList from "./CourseList";
   import {mapMutations} from 'vuex'
-  import CommonOperation from "../common/CommonOperation";
+  import CommonOperation from "../../common/CommonOperation";
 
   export default {
     name: "CourseLibrary",
-    components: { CourseList, CommonOperation},
+    components: {CourseList, CommonOperation},
     data() {
       return {
         outerVisible: false,
@@ -53,27 +53,8 @@
       };
     },
     methods: {
-      createCourse() {
-        let self = this
-        let params = this.form;
-        this.axios({
-          method: "post",
-          url: "/course/new",
-          params
-        })
-          .then(response => {
-            this.courseId = response.data
 
-            this.innerVisible = true
-            this.outerVisible = false
-            this.form = this.formInit
 
-            this.$refs.CourseList.initCourseList();
-          })
-          .catch(err => {
-            console.log(err)
-          })
-      },
       deleteCourse() {
         let self = this
         this.axios({
@@ -91,17 +72,18 @@
             console.log(err)
           })
       },
+
+
       initDeleteList(data) {
         this.multipleSelection = data
       },
+
+
       ...mapMutations(['updateCurrentStatus'])
     },
     watch: {
       selectedCourse() {
-        console.log("this.selectedCourse.length:" + this.selectedCourse.length)
         let length = this.selectedCourse.length;
-        console.log(this.multipleSelection)
-        console.log("length:" + length)
         if (length !== 1) {
           //只有选中一门课程时,才能编辑课程或者给课程添加班级
           this.editDisable = false;

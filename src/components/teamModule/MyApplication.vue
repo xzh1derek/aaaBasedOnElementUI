@@ -1,15 +1,13 @@
 <!--在这和里面写我的申请的相关操作-->
 <template>
   <div>
-    <template v-if="myApplication">
-    <div style="background-color: #5bc0de;width: 80%">
-      <h1 style="display: inline;margin-right: 20px">我的申请</h1>
-    </div>
-    <el-table  :data="myApplication" stripe style="width: 80%">
+    <template >
+
+    <el-table  :data="myApplication" stripe style="width: 100%" size="mini" height="247">
       <el-table-column prop="receiver" label="接收人" width="180"></el-table-column>
       <el-table-column prop="teamId" label="目的队伍" width="180"></el-table-column>
-      <el-table-column prop="text" label="缘由" width="180"></el-table-column>
-      <el-table-column fixed="right" label="操作" >
+      <el-table-column prop="text" label="缘由" ></el-table-column>
+      <el-table-column fixed="right" label="操作"  width="150">
         <template slot-scope="scope">
           <el-button @click.native.prevent="withdrawApply(scope.row)" type="text" size="small">撤回申请</el-button>
         </template>

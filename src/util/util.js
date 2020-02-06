@@ -1,9 +1,12 @@
 //因为函数里this的指向问题,所以函数一定要在调用前,先用self绑定接收this,然后把self传给函数
 export default {
-  hello() {
-    console.log("hello world")
-  },
 
+
+  /**
+   * 用于给用户操作反馈
+   * @param self 传入this指针
+   * @param data  用于判断显示什么提示
+   */
   feedbackInfo(self, data) {
     let applyRes = {
       text: "",
@@ -42,11 +45,19 @@ export default {
         applyRes.text = "操作失败!您的队伍已满员";
         applyRes.type = "warning";
         break;
+      case 8:
+        applyRes.text = "对方尚未选择该课程";
+        applyRes.type = "warning";
+        break;
+
+      default:
+        applyRes.text = "尚未处理该返回";
+        applyRes.type = "warning";
     }
     self.$message({
       message: applyRes.text,
       type: applyRes.type,
-      duration: 1500,
+      duration: 3000,
       showClose: true
     });
   },
@@ -61,7 +72,7 @@ export default {
           userId: localStorage.token//得改
         }
       })
-      //如果查询成功,本地缓存用户信息
+        //如果查询成功,本地缓存用户信息
         .then((res) => {
           // console.log(123465)
           // console.log(res)

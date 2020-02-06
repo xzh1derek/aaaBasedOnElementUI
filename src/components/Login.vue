@@ -23,6 +23,14 @@
 
 
 <script>
+
+  document.onkeydown = function (event) {
+    var e = event || window.event || arguments.callee.caller.arguments[0];
+    if (e && e.keyCode === 13) { // 按 Esc
+
+    }
+  };
+
   export default {
     name: "login",
     data() {
@@ -70,6 +78,8 @@
             localStorage.token = ""
           })
       },
+
+
       loginSystem() {
         let self = this
         this.axios({
@@ -107,8 +117,19 @@
             console.log("有错误")
             console.log(err)
           })
-      }
-    }
+      },
+
+    },
+    created: function() {//监听回车事件
+      let self = this;
+      document.onkeydown = function(e) {
+        let key = window.event.keyCode;
+        if (key === 13) {
+          self.loginSystem();
+        }
+      };
+    },
+
   }
 </script>
 

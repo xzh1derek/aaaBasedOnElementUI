@@ -1,3 +1,4 @@
+<!--获取院班信息-->
 <template>
   <div id="cardContainer">
     <template v-for="schools in result">
@@ -46,7 +47,7 @@
           method: "get"
         })
           .then(response => {
-            this.result = response.data;
+            this.result = response.data;//将获取到的院班信息赋值给 result 用于渲染
             console.log(response)
           })
           .catch(err => {
@@ -54,6 +55,10 @@
           })
       },
 
+      /**
+       * 删除班级
+       * @param classId   已经在v-for时通过getData函数传入
+       */
       removeClass(classId) {
         this.axios({
           method: "delete",
@@ -71,6 +76,12 @@
             console.log(err)
           })
       },
+
+      /**
+       *实现在v-for时动态传入参数
+       * @param data
+       * @returns {*}
+       */
 
       getData(data) {
         return data

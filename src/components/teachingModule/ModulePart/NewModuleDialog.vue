@@ -54,7 +54,7 @@
 </template>
 
 <script>
-  import store from '../../store/store'
+  import store from '../../../store/store'
   import {mapState, mapMutations} from "vuex";
 
   export default {

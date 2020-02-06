@@ -3,15 +3,16 @@ import teamList from '../components/teamModule/team-list'
 import newRequest from '../components/teamModule/new-request'
 import Login from "../components/Login";
 import PersonalCenter from "../components/teamModule/PersonalCenter";
-import NewMessage from "../components/NewMessage";
+import NewMessage from "../components/Nav/NewMessage";
 import userInfo from "../components/userInfo";
 import TeachingManagement from "../components/teachingModule/TeachingManagement";
-import CourseLibrary from "../components/teachingModule/CourseLibrary";
-import ProjectLibrary from "../components/teachingModule/ProjectLibrary";
-import ModuleLibrary from "../components/teachingModule/ModuleLibrary";
+import CourseLibrary from "../components/teachingModule/Course/CourseLibrary";
+import ProjectLibrary from "../components/teachingModule/ProjectPart/ProjectLibrary";
+import ModuleLibrary from "../components/teachingModule/ModulePart/ModuleLibrary";
 import SystemManagement from "../components/Administration/SystemManagement";
 import SchoolClass from "../components/Administration/SchoolClass";
 import StuManagement from "../components/Administration/StuManagement";
+import HostPage from "../components/teamModule/HostPage";
 
 // identity为10时,这个路由是公共路由
 const routes =
@@ -28,7 +29,7 @@ const routes =
       children: [
         {
           path: "/",
-          component: userInfo,
+          component: HostPage,
           meta: {
             text: "主页",
             teamleader: true,
@@ -71,19 +72,8 @@ const routes =
             key: 2
           }
         },
-        {
-          path: '/message',
-          component: NewMessage,
-          meta: {
-            clearAll: true,
-            text: "我的消息",
-            teamleader: false,
-            key: 7
-          }
-        },
       ]
     },
-
 
     {
       path: '/login',
@@ -94,15 +84,6 @@ const routes =
         key: 5
       }
     },
-    // {
-    //   path: '/complete',
-    //   component: CompleteInfo,
-    //   meta: {
-    //     text: "完善个人信息",
-    //     teamleader: false,
-    //     key: 6
-    //   }
-    // },
 
     {
       path: '/teaching',
@@ -160,7 +141,18 @@ const routes =
           }
         },
       ]
-    }
+    },
 
+
+    {
+      path: '/message',
+      component: NewMessage,
+      meta: {
+        clearAll: true,
+        text: "我的消息",
+        teamleader: false,
+        key: 7
+      }
+    },
   ];
 export default routes;

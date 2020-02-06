@@ -42,9 +42,9 @@
 </template>
 
 <script>
-  import CommonOperation from "../common/CommonOperation";
-  import FormInDialog from "../common/FormInDialog";
-  import {mapState} from "vuex";
+  import CommonOperation from "../../common/CommonOperation";
+  import FormInDialog from "../../common/FormInDialog";
+  import {mapState,mapMutations} from "vuex";
 
   export default {
     name: "CourseList",
@@ -88,9 +88,17 @@
           }
         }
       },
+
+
       handleSelectionChange(val) {
-        // this.multipleSelection = val;
-        this.$emit('deleteCourseList', val)
+        let payload={
+          targetKey:"multipleSelection",
+          targetVal:val
+        }
+
+        this.updateCurrentStatus(payload)
+
+        // this.$emit('deleteCourseList', val)
       },
 
 
@@ -114,13 +122,16 @@
       editCourse(row){
         this.editBefore=this.util.deepClone(row)
         this.$refs.openFormDialog.diaVisible=true
-      }
+
+      },
+      ...mapMutations(["updateCurrentStatus"])
     },
     watch:{
       isReadyForRenovate(){//如果btnFamily=10 并且readyForRenovate改变了,就更新页面
-        if (this.btnFamily===10)
+        if (this.btnFamily==10)
         this.initCourseList()
-      }
+      },
+
     },
     mounted() {
       //加载页面时,发送请求,获取所有队伍信息

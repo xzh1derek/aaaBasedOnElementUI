@@ -36,14 +36,6 @@
       </el-form-item>
     </el-form>
 
-    <!--    <el-dialog-->
-    <!--      width="30%"-->
-    <!--      title="添加班级"-->
-    <!--      :visible.sync="innerVisible"-->
-    <!--      append-to-body>-->
-    <!--      <BindClasses :bind-id="courseId" url-target="/course/bind" structure-url="/schools"></BindClasses>-->
-    <!--    </el-dialog>-->
-
     <div slot="footer" class="dialog-footer">
       <el-button>取 消</el-button>
       <el-button type="primary" @click="createCourse">创建课程</el-button>
@@ -53,7 +45,6 @@
 </template>
 
 <script>
-  import BindClasses from "./BindClasses";
   import {mapMutations, mapState} from 'vuex'
 
   export default {
@@ -73,7 +64,6 @@
         formLabelWidth: '100px',
       }
     },
-    components: {BindClasses},
     computed: {
       ...mapState(["readyForRenovate"])
     },

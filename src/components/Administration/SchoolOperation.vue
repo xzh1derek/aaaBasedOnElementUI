@@ -5,6 +5,7 @@
       title="请选择操作:"
       width="100"
       trigger="click">
+
       <div style="text-align: center">
 <!--        <el-button slot="reference" type="text" @click="newSchool">添加新学院</el-button>-->
         <el-button slot="reference" type="text" @click="openDialog('1')">添加新学院</el-button>

@@ -28,14 +28,14 @@
       title="提示"
       :visible.sync="dialogVisible"
       width="30%">
-      <BindClasses :bind-id="moduleId" url-target="/module/bind"  structure-url="/module/classes" limit="1"></BindClasses>
+      <BindClasses :bind-id="moduleId"   structure-url="/module/classes" limit="1"></BindClasses>
     </el-dialog>
 
   </div>
 </template>
 
 <script>
-  import BindClasses from "./BindClasses";
+  import BindClasses from "../../common/Btn/BindClasses";
   // import store from '../../store/store'
   import {mapState, mapMutations} from "vuex";
   export default {

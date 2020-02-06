@@ -7,7 +7,7 @@
     text-color="#fff"
     active-text-color="#ffd04b"
     router
-    style="height: 100vh">
+    style="height: 100vh;">
 
 
     <el-menu-item>
@@ -32,19 +32,20 @@
       </el-submenu>
     </template>
 
-
-    <el-menu-item @click="logOut" index="/login">
-      <i class="el-icon-circle-close"></i>
-      <span slot="title">退出登录</span>
-    </el-menu-item>
+    <div style="position: fixed;bottom: 0;width: 200px">
+      <el-menu-item @click="logOut" index="/login">
+        <i class="el-icon-circle-close"></i>
+        <span slot="title">退出登录</span>
+      </el-menu-item>
+    </div>
   </el-menu>
 
 </template>
 
 <script>
-  import routes from "../router/routes";
+  import routes from "../../router/routes";
   import {mapState, mapMutations} from "vuex";
-  import store from '../store/store'
+  import store from '../../store/store'
 
   export default {
     name: "SideBar",

@@ -1,8 +1,12 @@
 <template>
   <div>
+
+    <!--    显示当前需要组队的课程信息-->
     <CreateTeam @updateMyTeam="getMyTeam"></CreateTeam>
+
+
     <template v-for="(team,index) in myTeamMember" style="margin-bottom: 100px">
-      <div id="outer" style="background-color: #fafafa;width: 90%;border: 1px solid grey;border-radius: 10px">
+      <div id="outer" style="background-color: #fafafa;width: 100%;border: 1px solid grey;border-radius: 10px">
         <div id="left">
           <el-row>
             <el-col :span="12">
@@ -47,28 +51,16 @@
             clearable
             style="margin-bottom: 10px">
           </el-input>
-          <el-button round type="primary" @click="invite">邀请</el-button>
+          <el-button round type="primary" @click=invite(team.id)>邀请</el-button>
         </div>
       </div>
-      <el-table :key="index" :data="team.memberDetails" stripe style="width: 80%">
+
+
+      <el-table :key="index" :data="team.memberDetails" stripe style="width: 100%">
         <el-table-column prop="name" label="组员姓名" width="180"></el-table-column>
         <el-table-column prop="username" label="学号" width="180"></el-table-column>
         <el-table-column prop="qq" label="qq"></el-table-column>
         <el-table-column prop="school" label="学院"></el-table-column>
-
-        <!--        <el-table-column-->
-        <!--          prop="leader"-->
-        <!--          label="标签"-->
-        <!--          width="100"-->
-        <!--          :filters="[{ text: '队长', value: localStorage.token }, { text: '组员', value: '公司' }]"-->
-        <!--          :filter-method="filterTag"-->
-        <!--          filter-placement="bottom-end">-->
-        <!--          <template slot-scope="scope">-->
-        <!--            <el-tag-->
-        <!--              :type="scope.row.tag === '家' ? 'primary' : 'success'"-->
-        <!--              disable-transitions>{{scope.row.tag}}</el-tag>-->
-        <!--          </template>-->
-        <!--        </el-table-column>-->
 
       </el-table>
     </template>
@@ -83,13 +75,13 @@
 
   export default {
     name: "my-team",
-    props: ['userInfoProp'],
     components: {CreateTeam},
     data() {
       return {
-        myTeamMember: null,
+        myTeamMember: [],
         show: "true",
-        available: "true"
+        available: "true",
+        input: ""//与输入邀请人学号的输入框绑定
       }
     },
     computed: {
@@ -106,9 +98,11 @@
         })
           .then((res) => {//把返回的所有队伍信息存起来用来显示.
             if (res.data.length == 0) {
+              console.log(self.myTeamMember)
               return
             }
             self.myTeamMember = res.data//这里要改
+
             console.log(self.myTeamMember)
             // self.myTeamMember = res.data.memberDetails//这里要改
           })
@@ -122,7 +116,6 @@
           })
       },
       showTeam(data) {//是否展示队伍
-        console.log("data:"+data)
         // this.axios({
         //   method: "post",
         //   url: "/team/setDisplay",
@@ -155,12 +148,12 @@
             console.log("error:" + error)
           })
       },
-      invite() {
+      invite(teamId) {
         this.axios({
           method: "post",
-          url: "/invite",
+          url: "/team/invite",
           params: {
-            sender: this.userInfoProp.username,
+            teamId: teamId,
             receiver: this.input
           }
         })
@@ -182,22 +175,22 @@
     },
     mounted() {
       this.getMyTeam()
-      console.log(this.show)
-      console.log(this.available)
     }
   }
 </script>
 
 <style scoped>
-  #outer{
+  #outer {
     display: flex;
     flex-direction: row;
     overflow: hidden;
   }
-  #left{
+
+  #left {
     flex: 5;
   }
-  #right{
+
+  #right {
     flex: 2;
     border: 1px solid grey;
   }
