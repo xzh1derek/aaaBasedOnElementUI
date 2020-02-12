@@ -17,23 +17,36 @@
     <!--    第二行-->
     <el-row :gutter="20">
       <el-col :span="12">
-        <MyApplication></MyApplication>
+
+        <i class="el-icon-message"><span class="subTitle">我的申请</span>
+        </i>
       </el-col>
       <el-col :span="12">
-        <div class="grid-content bg-purple">本周课表</div>
+        <i class="el-icon-mobile"><span class="subTitle">需要组队的课程</span></i>
       </el-col>
     </el-row>
 
 
+    <el-row :gutter="20">
+      <el-col :span="12">
+        <MyApplication></MyApplication>
+      </el-col>
+      <el-col :span="12">
+        <CreateTeam></CreateTeam>
+<!--        <div class="grid-content bg-purple">本周课表</div>-->
+      </el-col>
+    </el-row>
 
 
-<!--    第三行-->
+    <!--    第三行-->
     <div id="selectedCoursed">
       <el-row :gutter="20">
         <el-col :span="24">
-          <b>
-            <i class="el-icon-notebook-2"></i>已选课程
-          </b>
+
+          <i class="el-icon-notebook-2">
+            <span class="subTitle"> 已选课程</span>
+          </i>
+
         </el-col>
       </el-row>
 
@@ -46,7 +59,6 @@
     </div>
 
 
-
   </div>
 
 </template>
@@ -56,10 +68,11 @@
   import MyApplication from "./MyApplication";
   import NewMessage from "../Nav/NewMessage";
   import SelectedCourses from "./SelectedCourses";
+  import CreateTeam from "./CreateTeam";
 
   export default {
     name: "HostPage",
-    components: {userInfo, MyApplication, NewMessage, SelectedCourses,MyApplication}
+    components: {userInfo, MyApplication, NewMessage, SelectedCourses,CreateTeam}
 
   }
 </script>
@@ -100,5 +113,9 @@
   .row-bg {
     padding: 10px 0;
     background-color: #f9fafc;
+  }
+
+  .subTitle{
+    color: #737373;
   }
 </style>
