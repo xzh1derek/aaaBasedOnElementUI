@@ -2,7 +2,7 @@
   <div>
     <div id="container" >
       <template v-for="course in courseList">
-        <el-card class="box-card" shadow="hover">
+        <el-card class="box-card" shadow="hover" style="background-color: #f9ffed" >
           <div slot="header" class="clearfix">
             <span><b>{{course.course.course_name}}</b></span>
           </div>

@@ -21,7 +21,7 @@
         <el-header style="padding: 0;">
           <MainNavBar></MainNavBar>
         </el-header>
-        <el-main >
+        <el-main style="position: relative">
           <router-view ></router-view>
         </el-main>
       </el-container>
