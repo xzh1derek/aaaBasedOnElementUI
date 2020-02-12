@@ -3,23 +3,30 @@
 
 <template>
   <div>
-    <template v-if="buildTeam.length!==0">
-    <div style="background-color: #5bc0de;width: 100%">
-      <h1 style="display: inline;margin-right: 20px">尚需组队的课程</h1>
-    </div>
-    <el-table :data="buildTeam" stripe style="width: 100%" v-if="buildTeam">
-      <el-table-column prop="course_id" label="课程编号" width="180"></el-table-column>
+    <el-table :data="buildTeam" height="247" stripe style="width: 100%" size="mini" >
       <el-table-column prop="course.course_name" label="课程名称" width="180"></el-table-column>
-      <el-table-column prop="course.credit" label="学分" width="180"></el-table-column>
-      <el-table-column prop="course.max_num" label="队伍最大人数" width="180"></el-table-column>
+      <el-table-column prop="course.credit" label="学分" width="100"></el-table-column>
+      <el-table-column prop="course.max_num" label="队伍最大人数" width="150"></el-table-column>
       <el-table-column prop="course.teacher" label="任课老师" width="180"></el-table-column>
-      <el-table-column fixed="right" label="操作">
+      <el-table-column fixed="right" label="操作" width="150">
         <template slot-scope="scope">
+<!--          <el-button @click="dialogVisible=true" type="text" size="small">申请加入</el-button>-->
           <el-button @click.native.prevent="creatTeam(scope.row)" type="text" size="small">创建队伍</el-button>
         </template>
       </el-table-column>
     </el-table>
-    </template>
+
+
+<!--    <el-dialog-->
+<!--      title="请输入队长学号:"-->
+<!--      :visible.sync="dialogVisible"-->
+<!--      width="30%">-->
+<!--      <el-input v-model="input"></el-input>-->
+<!--      <span slot="footer" class="dialog-footer">-->
+<!--    <el-button @click="dialogVisible = false">取 消</el-button>-->
+<!--    <el-button type="primary" @click="sendApplication">确 定</el-button>-->
+<!--  </span>-->
+<!--    </el-dialog>-->
   </div>
 </template>
 
@@ -28,7 +35,9 @@
     name: "CreateTeam",
     data() {
       return {
-        buildTeam: []
+        buildTeam: [],
+        dialogVisible: false,//控制是否显示对话框
+        input:"",//保存队长学号
       }
     },
     methods: {
@@ -48,6 +57,8 @@
             console.log(err)
           })
       },
+
+
       creatTeam(row) {//创建队伍
         let checkInfo = confirm(" ❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗\n是否要创建一个队伍?\n创建完成后不可退出");
         let self = this;
@@ -83,10 +94,33 @@
             })
         }
       },
+
+      // sendApplication() {//发送申请加入请求,这里有问题!!!!!!!!!!!!!!!!!!
+      //   this.axios({
+      //     method: "post",
+      //     url: "/apply",
+      //     params: {
+      //       teamId: this.input, //队伍编号
+      //       sender: localStorage.token//申请人
+      //     }
+      //   })
+      //     .then((response) => {//判断res的结果,给用户相应的反馈
+      //      this.util.feedbackInfo(this,response.data)
+      //     })
+      //     //解析服务器返回的response,并且做出相应的处理
+      //     .catch(error => {
+      //       this.$message({
+      //         message: '操作失败!,请稍后再试',
+      //         type: 'error',
+      //         duration: 1500,
+      //         showClose: true
+      //       });
+      //     })
+      // }
     },
     mounted() {
-      let self = this;
-      this.toBeCreated(self)
+
+      this.toBeCreated(this)
     }
   }
 </script>
