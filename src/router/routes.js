@@ -1,6 +1,5 @@
 import myTeam from '../components/teamModule/my-team'
 import teamList from '../components/teamModule/team-list'
-import newRequest from '../components/teamModule/new-request'
 import Login from "../components/Login";
 import PersonalCenter from "../components/teamModule/PersonalCenter";
 import NewMessage from "../components/Nav/NewMessage";
@@ -55,17 +54,8 @@ const routes =
           }
         },
         {
-          path: '/request',
-          component: newRequest,
-          meta: {
-            text: "入队申请",
-            teamleader: true,
-            key: 2
-          }
-        },
-        {
           path: '/task',
-          component: newRequest,
+          component: teamList,
           meta: {
             text: "实验任务",
             teamleader: true,
