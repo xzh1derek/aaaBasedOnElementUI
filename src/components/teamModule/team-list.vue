@@ -1,10 +1,7 @@
 <template>
   <div>
-<!--      <el-table :data="teamListInfo" stripe style="width: 80%" >-->
-<!--      <el-table :data="teamListInfo.filter(data => !search || data.leaderDetail.name.toLowerCase().includes(search.toLowerCase()))" stripe style="width: 80%" >-->
-      <el-table :data="teamListInfo.filter(data => !search || data.leader.toString().includes(search))" stripe style="width: 100%" >
-<!--      <el-table :data="teamListInfo.filter(data => !search || (data.leader=search))" stripe style="width: 80%" >-->
-
+<!--      <el-table :data="teamListInfo.filter(data => !search || data.leader.toString().includes(search))" height="80vh" stripe style="width: 100%" >-->
+      <el-table :data="teamListInfo" height="80vh" stripe style="width: 100%" >
         <el-table-column prop="id" label="队伍编号" width="180"></el-table-column>
         <el-table-column prop="courseId" label="课程编号" width="180"></el-table-column>
         <el-table-column prop="course.course_name" label="课程名称" width="180"></el-table-column>
@@ -25,11 +22,14 @@
           </template>
         </el-table-column>
       </el-table>
+
+    <Pagination @rewriteList="getListData" target-url1="/foyer" target-url2="/foyer/pages"></Pagination>
   </div>
 </template>
 
 <script>
   import {mapState, mapMutations} from 'vuex'
+  import Pagination from "../common/Pagination";
 
   export default {
     name: "team-list",
@@ -43,17 +43,20 @@
         search:""
       }
     },
-    watch: {},
+    components:{Pagination},
     computed: {
       ...mapState(["searchTeamInfo", "userInfoData"])
     },
     methods: {
-      matchCourse(id){
-        switch (id) {
-          case 1:return "A测";
-          case 0:return "B测";
-        }
+
+      /**
+       * 获取从pagination组件提交来的数据,赋值给 stuList,用来渲染表格
+       * @param data : pagination 组件提交来的数据
+       */
+      getListData(data) {
+        this.teamListInfo = data
       },
+
       sendApplication(row) {//发送申请加入请求
           this.axios({
             method: "post",
@@ -87,29 +90,6 @@
               });
             })
         }
-      },
-    mounted() {//加载页面时,发送请求,获取所有队伍信息
-               //初始化时,要先把数据存在数组中
-        this.axios({
-          method: "get",
-          url: "/foyer",
-          params: {
-            rows:10,
-            page:1
-          }
-        })
-          .then((res) => {//把返回的所有队伍信息存起来用来显示.
-            this.teamListInfo = res.data;
-            console.log(res)
-          })
-          .catch(error => {
-            this.$message({
-              message: '信息加载失败,请稍后再试!',
-              type: 'error',
-              duration: 1500,
-              showClose: true
-            });
-          })
       }
   }
 </script>
