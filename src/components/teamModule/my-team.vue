@@ -1,68 +1,32 @@
 <template>
   <div>
+    <template>
+      <div v-if="myTeamMember">
+        <div v-for="(team,index) in myTeamMember"  style="margin-bottom: 20px">
+          <el-card>
+            <div slot="header" class="clearfix">
+              <span><b>{{team.course.course_name}}</b></span>
+              <TeamOperation v-if="team.leader==token" :is-available="team.available" :is-display="team.display"
+                             :team-id="team.id"></TeamOperation>
 
-    <!--    显示当前需要组队的课程信息-->
-    <CreateTeam @updateMyTeam="getMyTeam"></CreateTeam>
-
-
-    <template v-for="(team,index) in myTeamMember" style="margin-bottom: 100px">
-      <div id="outer" style="background-color: #fafafa;width: 100%;border: 1px solid grey;border-radius: 10px">
-        <div id="left">
-          <el-row>
-            <el-col :span="12">
-              <div class="grid-content "><span
-                style="font-weight: bold;font-size: 30px">{{team.course.course_name}}</span></div>
-            </el-col>
-            <el-col :span="12">
-              <div class="grid-content">
-                <el-switch
-                  v-model="team.display.toString()"
-                  active-text="展示队伍"
-                  inactive-text="隐藏队伍"
-                  active-value="true"
-                  inactive-value="false"
-                  @change="showTeam">
-                </el-switch>
-              </div>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <div class="grid-content ">队伍编号:{{team.id}}</div>
-            </el-col>
-            <el-col :span="12">
-              <div class="grid-content ">
-                <el-switch
-                  v-model="team.available.toString()"
-                  active-text="接受申请"
-                  inactive-text="拒绝申请"
-                  active-value="true"
-                  inactive-value="false"
-                  @change="teamAvailable">
-                </el-switch>
-              </div>
-            </el-col>
-          </el-row>
-        </div>
-        <div id="right">
-          <el-input
-            placeholder="请输入被邀学号"
-            v-model="input"
-            clearable
-            style="margin-bottom: 10px">
-          </el-input>
-          <el-button round type="primary" @click=invite(team.id)>邀请</el-button>
+            </div>
+            <div class="text item">
+              <el-table :key="index" :data="team.memberDetails" stripe style="width: 100%">
+                <el-table-column prop="name" label="组员姓名" width="180"></el-table-column>
+                <el-table-column prop="username" label="学号" width="180"></el-table-column>
+                <el-table-column prop="class_id" label="班级" width="180"></el-table-column>
+                <el-table-column prop="qq" label="qq"></el-table-column>
+                <el-table-column prop="school" label="学院"></el-table-column>
+              </el-table>
+            </div>
+          </el-card>
         </div>
       </div>
 
-
-      <el-table :key="index" :data="team.memberDetails" stripe style="width: 100%">
-        <el-table-column prop="name" label="组员姓名" width="180"></el-table-column>
-        <el-table-column prop="username" label="学号" width="180"></el-table-column>
-        <el-table-column prop="qq" label="qq"></el-table-column>
-        <el-table-column prop="school" label="学院"></el-table-column>
-
-      </el-table>
+      <div v-else  class="center-in-center">
+        <img src="../../../static/image/noTeam.png" alt="还没有组过队伍">
+        <p>还没有组队,快去组队吧!!!</p>
+      </div>
     </template>
 
 
@@ -72,16 +36,18 @@
 <script>
   import {mapState} from "vuex"
   import CreateTeam from "./CreateTeam";
+  import TeamOperation from "./TeamOperation";
 
   export default {
     name: "my-team",
-    components: {CreateTeam},
+    components: {CreateTeam, TeamOperation},
     data() {
       return {
         myTeamMember: [],
         show: "true",
         available: "true",
-        input: ""//与输入邀请人学号的输入框绑定
+        input: "",//与输入邀请人学号的输入框绑定,
+        token: localStorage.token
       }
     },
     computed: {
@@ -97,8 +63,8 @@
           }
         })
           .then((res) => {//把返回的所有队伍信息存起来用来显示.
-            if (res.data.length == 0) {
-              console.log(self.myTeamMember)
+            if (res.data.length === 0) {
+              self.myTeamMember = null
               return
             }
             self.myTeamMember = res.data//这里要改
@@ -115,62 +81,7 @@
             })
           })
       },
-      showTeam(data) {//是否展示队伍
-        // this.axios({
-        //   method: "post",
-        //   url: "/team/setDisplay",
-        //   params: {
-        //     teamId: this.userInfoProp.teamleader,
-        //     status: data
-        //   }
-        // })
-        //   .then((response) => {
-        //
-        //   })
-        //   //解析服务器返回的response,并且做出相应的处理
-        //   .catch(error => {
-        //     console.log("error:" + error)
-        //   })
-      },
-      teamAvailable(data) {
-        this.axios({
-          method: "post",
-          url: "/team/setAvailable",
-          params: {
-            leader: this.userInfoProp.teamleader,
-            status: data
-          }
-        })
-          .then((response) => {
-          })
-          //解析服务器返回的response,并且做出相应的处理
-          .catch(error => {
-            console.log("error:" + error)
-          })
-      },
-      invite(teamId) {
-        this.axios({
-          method: "post",
-          url: "/team/invite",
-          params: {
-            teamId: teamId,
-            receiver: this.input
-          }
-        })
-          .then((response) => {
-            let self = this
-            this.util.feedbackInfo(self, response.data)
-          })
-          //解析服务器返回的response,并且做出相应的处理
-          .catch(error => {
-            this.$message({
-              message: '请输入学号!',
-              type: 'error',
-              duration: 1500,
-              showClose: true
-            });
-          })
-      },
+
 
     },
     mounted() {
@@ -228,5 +139,50 @@
   .row-bg {
     padding: 10px 0;
     background-color: #f9fafc;
+  }
+
+
+  .text {
+    font-size: 14px;
+    border-bottom: 1px solid #d6eef1;
+  }
+
+  .item {
+    margin-bottom: 18px;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
+
+  .clearfix:after {
+    clear: both
+  }
+
+  .el-card {
+    margin-bottom: 20px
+  }
+
+  .box-card {
+    width: 100px;
+    margin-bottom: 200px;
+
+  }
+
+
+
+
+  .center-in-center{
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
   }
 </style>
