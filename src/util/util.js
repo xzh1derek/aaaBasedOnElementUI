@@ -141,6 +141,23 @@ export default {
     }
     console.log(arr);
     return arr;
+  },
+
+
+  /**
+   * 快速返回简短的错误信息,
+   * @param _this:this指针
+   * @param msg:错误信息
+   */
+  returnErr(_this,msg){
+    _this.$message({
+      message: msg,
+      type: "error",
+      duration: 3000,
+      showClose: true
+    });
   }
+
+
 
 }
