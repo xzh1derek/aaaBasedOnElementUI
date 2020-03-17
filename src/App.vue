@@ -1,35 +1,23 @@
 <template>
   <div>
-<!--        <div id="container" style="background-color: #d1f1ee">-->
-<!--          <SideBar v-if="this.loginUser"></SideBar>-->
-<!--          <div id="rightSide" style="overflow: hidden">-->
-<!--            <div id="header" v-if="this.loginUser">-->
-<!--              <MainNavBar></MainNavBar>-->
-<!--            </div>-->
-<!--            <div id="content" style="padding-left: 20px;padding-right: 20px;padding-top: 20px;" >-->
-<!--              <router-view></router-view>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-
-<template v-if=isLogin>
-    <el-container style="height: 100vh;width: 100vw;" >
-      <el-aside width="200px">
-        <SideBar v-if="this.loginUser"></SideBar>
-      </el-aside>
-      <el-container>
-        <el-header style="padding: 0;">
-          <MainNavBar></MainNavBar>
-        </el-header>
-        <el-main style="position: relative">
-          <router-view ></router-view>
-        </el-main>
+    <template v-if=isLogin>
+      <el-container style="height: 100vh;width: 100vw;">
+        <el-aside width="200px">
+          <SideBar v-if="this.loginUser"></SideBar>
+        </el-aside>
+        <el-container>
+          <el-header style="padding: 0;">
+            <MainNavBar></MainNavBar>
+          </el-header>
+          <el-main style="position: relative">
+            <router-view></router-view>
+          </el-main>
+        </el-container>
       </el-container>
-    </el-container>
-</template>
+    </template>
 
     <template v-else>
-    <Login ></Login>
+      <Login></Login>
     </template>
   </div>
 </template>
@@ -64,14 +52,14 @@
       }
     },
     watch: {
-      $route(to,from){//监听路由变化
+      $route(to, from) {//监听路由变化
       }
     },
     computed: {
-      isLogin(){
-        if (localStorage.token){
+      isLogin() {
+        if (localStorage.token) {
           return true
-        }else {
+        } else {
           return false
         }
       },
@@ -105,10 +93,10 @@
           .catch(err => {
             console.log(err)
           })
-    }
+      }
       // } else {
       //   如果用户没有登录,那么直接返回登录界面
-        // location.href = "#/login"
+      // location.href = "#/login"
       // }
     }
   }
@@ -123,9 +111,10 @@
     margin: 0px;
   }
 
-  .el-container{
+  .el-container {
     background-color: #d1f1ee
   }
+
   #app {
     width: 100%;
     height: 500px;
@@ -187,7 +176,7 @@
     color: #333;
   }
 
-  .el-main{
+  .el-main {
     padding: 20px;
     margin-bottom: 20px;
   }

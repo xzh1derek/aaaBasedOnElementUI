@@ -17,8 +17,9 @@ import HostPage from "../components/teamModule/HostPage";
 const routes =
   [
     {
-      path: '/',
+      path: '/user/',
       component: PersonalCenter,
+      redirect:"/user/info",
       meta: {
         identity: 10,
         text: "个人管理",
@@ -27,7 +28,7 @@ const routes =
       },
       children: [
         {
-          path: "/",
+          path: "info",
           component: HostPage,
           meta: {
             text: "主页",
@@ -36,7 +37,7 @@ const routes =
           }
         },
         {
-          path: "/myTeam",
+          path: "myTeam",
           component: myTeam,
           meta: {
             text: "我的队伍",
@@ -45,7 +46,7 @@ const routes =
           }
         },
         {
-          path: "/list",
+          path: "list",
           component: teamList,
           meta: {
             text: "队伍大厅",
@@ -54,7 +55,7 @@ const routes =
           }
         },
         {
-          path: '/task',
+          path: 'task',
           component: teamList,
           meta: {
             text: "实验任务",
@@ -76,14 +77,14 @@ const routes =
     },
 
     {
-      path: '/teaching',
+      path: '/teaching/',
       component: TeachingManagement,
       meta: {
         text: "教学管理"
       },
       children: [
         {
-          path: "/teaching",
+          path: "courses",
           component: CourseLibrary,
           meta: {
             text: "实验课程库"
@@ -97,7 +98,7 @@ const routes =
           }
         },
         {
-          path: "/schedule",
+          path: "schedule",
           component: ModuleLibrary,
           meta: {
             text: "排课管理"
@@ -108,7 +109,7 @@ const routes =
     },
 
     {
-      path: '/school',
+      path: '/school/',
       component: SystemManagement,
       meta: {
         text: "系统管理",
@@ -117,14 +118,14 @@ const routes =
       },
       children: [
         {
-          path: "/school",
+          path: "school_classes",
           component: SchoolClass,
           meta: {
             text: "院班管理"
           }
         },
         {
-          path: "/students",
+          path: "students",
           component: StuManagement,
           meta: {
             text: "学生管理"
@@ -135,7 +136,7 @@ const routes =
 
 
     {
-      path: '/message',
+      path: '/message/',
       component: NewMessage,
       meta: {
         clearAll: true,

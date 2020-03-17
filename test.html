@@ -3,8 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
-</head>
-<body>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
 
+    body {
+
+      /*align-content: center;*/
+    }
+
+    #father {
+      width: 500px;
+      height: 500px;
+      border: 1px solid black;
+      /*margin: auto;*/
+      /*display: flex;*/
+      /*justify-content: center;*/
+      /*align-items: center;*/
+      line-height: 500px;
+      text-align: center;
+    }
+
+    #son {
+      width: 100px;
+      height: 100px;
+      background-color: #9658ff;
+      /*position: relative;*/
+      /*margin: auto;*/
+      /*top: 50%;*/
+      /*left: 50%;*/
+      /*transform: translateY(-50%);*/
+      display: inline-block;
+      vertical-align: middle;
+      /*line-height: initial;*/
+      /*text-align: left; !* 修正文字 *!*/
+    }
+
+
+  </style>
+</head>
+
+<body>
+<div id="father">
+  <div id="son"></div>
+</div>
 </body>
 </html>
