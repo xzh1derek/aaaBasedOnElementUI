@@ -1,35 +1,41 @@
 <template>
   <div>
-    <template>
-      <div v-if="myTeamMember">
-        <div v-for="(team,index) in myTeamMember"  style="margin-bottom: 20px">
-          <el-card>
-            <div slot="header" class="clearfix">
-              <span><b>{{team.course.course_name}}</b></span>
-              <TeamOperation v-if="team.leader==token" :is-available="team.available" :is-display="team.display"
-                             :team-id="team.id"></TeamOperation>
+    <div style="z-index: 10;position: relative">
+      <TeamButton></TeamButton>
+    </div>
 
-            </div>
-            <div class="text item">
-              <el-table :key="index" :data="team.memberDetails" stripe style="width: 100%">
-                <el-table-column prop="name" label="组员姓名" width="180"></el-table-column>
-                <el-table-column prop="username" label="学号" width="180"></el-table-column>
-                <el-table-column prop="class_id" label="班级" width="180"></el-table-column>
-                <el-table-column prop="qq" label="qq"></el-table-column>
-                <el-table-column prop="school" label="学院"></el-table-column>
-              </el-table>
-            </div>
-          </el-card>
+    <div>
+      <template>
+        <div v-if="myTeamMember">
+          <div v-for="(team,index) in myTeamMember" style="margin-bottom: 20px">
+            <el-card>
+              <div slot="header" class="clearfix">
+                <span><b>{{team.course.course_name}}</b></span>
+                <TeamOperation v-if="team.leader==token" :is-available="team.available" :is-display="team.display"
+                               :team-id="team.id"></TeamOperation>
+
+              </div>
+              <div class="text item">
+                <el-table :key="index" :data="team.memberDetails" stripe style="width: 100%">
+                  <el-table-column prop="name" label="组员姓名" width="180"></el-table-column>
+                  <el-table-column prop="username" label="学号" width="180"></el-table-column>
+                  <el-table-column prop="class_id" label="班级" width="180"></el-table-column>
+                  <el-table-column prop="qq" label="qq"></el-table-column>
+                  <el-table-column prop="school" label="学院"></el-table-column>
+                </el-table>
+              </div>
+            </el-card>
+          </div>
         </div>
-      </div>
-
-      <div v-else  class="center-in-center">
-        <img src="../../../static/image/noTeam.png" alt="还没有组过队伍">
-        <p>还没有组队,快去组队吧!!!</p>
-      </div>
-    </template>
 
 
+        <!--      !!!!不要删    如果没有数据-->
+        <div v-else class="center-in-center " style="z-index: unset">
+          <img src="../../../static/image/noTeam.png" alt="还没有组过队伍">
+          <p>还没有组队,快去组队吧!!!</p>
+        </div>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -37,10 +43,12 @@
   import {mapState} from "vuex"
   import CreateTeam from "./CreateTeam";
   import TeamOperation from "./TeamOperation";
+  import MyApplication from "./MyApplication";
+  import TeamButton from "./TeamButton";
 
   export default {
     name: "my-team",
-    components: {CreateTeam, TeamOperation},
+    components: {CreateTeam, TeamOperation, MyApplication, TeamButton},
     data() {
       return {
         myTeamMember: [],
@@ -50,8 +58,16 @@
         token: localStorage.token
       }
     },
+    watch:{
+      ready4Renovate(){
+        this.getMyTeam()
+      }
+    },
     computed: {
-      ...mapState(['userInfoData'])
+      ready4Renovate(){
+        return this.readyForRenovate
+      },
+      ...mapState(['userInfoData',"readyForRenovate"])
     },
     methods: {
       getMyTeam() {
@@ -162,6 +178,7 @@
   }
 
   .el-card {
+    margin-top: 20px;
     margin-bottom: 20px
   }
 
@@ -171,10 +188,7 @@
 
   }
 
-
-
-
-  .center-in-center{
+  .center-in-center {
     text-align: center;
     position: absolute;
     top: 50%;

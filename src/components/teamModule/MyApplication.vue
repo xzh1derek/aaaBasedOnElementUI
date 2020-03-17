@@ -2,7 +2,7 @@
 <template>
   <div>
     <template>
-      <el-table :data="myApplication" stripe style="width: 100%" size="mini" height="247">
+      <el-table :data="myApplication" stripe style="width: 100%" height="247">
         <el-table-column prop="receiver" label="接收人" width="180"></el-table-column>
         <el-table-column prop="teamId" label="目的队伍" width="180"></el-table-column>
         <el-table-column prop="text" label="缘由"></el-table-column>
