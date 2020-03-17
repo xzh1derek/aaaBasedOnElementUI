@@ -4,7 +4,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
-      :page-sizes="[10 ,20, 40]"
+      :page-sizes="[9 ,20, 40]"
       :page-size="pagesize"
       :background='true'
       :pager-count="pagerCount"
@@ -22,7 +22,7 @@
       return {
         stuList: [],
         totalItems: 1,
-        pagesize: 10,//每一页的数量,
+        pagesize: 9,//每一页的数量,
         pagerCount: 5,//展示到多少页时 中间显示...，取值在5~21之间
         listInfo: [],
         currentPage: 1,//初始页
