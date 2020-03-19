@@ -26,7 +26,6 @@
 <script>
 
   import navbar from "./components/teamModule/navbar";
-  import teamOperate from "./components/teamModule/teamOperate";
   import store from './store/store'
   import {mapState, mapMutations} from 'vuex'
   import MainNavBar from "./components/Nav/MainNavBar";
@@ -35,7 +34,7 @@
 
   export default {
     name: 'App',
-    components: {navbar, teamOperate, MainNavBar, SideBar, Login},
+    components: {navbar,  MainNavBar, SideBar, Login},
     store,
     data() {
       const item = {

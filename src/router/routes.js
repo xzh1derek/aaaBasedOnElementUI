@@ -91,7 +91,7 @@ const routes =
           }
         },
         {
-          path: "/plan",
+          path: "plan",
           component: ProjectLibrary,
           meta: {
             text: "教学计划"

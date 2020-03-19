@@ -40,7 +40,6 @@
 <script>
   import store from '../store/store'
   import {mapState, mapMutations} from 'vuex'
-  import teamOperate from './teamModule/teamOperate'
   import PersonalCenter from './teamModule/PersonalCenter'
   import MyApplication from "./teamModule/MyApplication";
   import finalTest from "./teamModule/finalTest";
@@ -54,7 +53,7 @@
         visible: false
       }
     },
-    components: {teamOperate, PersonalCenter, MyApplication, finalTest},
+    components: { PersonalCenter, MyApplication, finalTest},
     computed: {
       ...mapState(['userInfoData'])
     },

@@ -4,13 +4,15 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
-      :page-sizes="[9 ,20, 40]"
+      :page-sizes=pageSizes
       :page-size="pagesize"
       :background='true'
       :pager-count="pagerCount"
       layout="total, sizes, prev, pager, next, jumper"
       :total="totalItems" class="pageControl">
     </el-pagination>
+<!--    :page-sizes="[9 ,20, 40]"-->
+
   </div>
 </template>
 
@@ -23,7 +25,9 @@
         stuList: [],
         totalItems: 1,
         pagesize: 9,//每一页的数量,
+        pageSizes:[9,20,40],
         pagerCount: 5,//展示到多少页时 中间显示...，取值在5~21之间
+
         listInfo: [],
         currentPage: 1,//初始页
       }
