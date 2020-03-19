@@ -55,7 +55,7 @@
         show: "true",
         available: "true",
         input: "",//与输入邀请人学号的输入框绑定,
-        token: localStorage.token
+        token: localStorage.token,
       }
     },
     watch:{
