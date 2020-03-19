@@ -6,10 +6,10 @@
               @selection-change="handleSelectionChange">
       <el-table-column type="selection" fixed></el-table-column>
       <el-table-column prop="course_code" label="课程代码" width="180"></el-table-column>
-      <el-table-column prop="course_name" label="课程名称" width="180"></el-table-column>
+      <el-table-column prop="course_name" label="课程名称" width="180" show-overflow-tooltip></el-table-column>
       <el-table-column prop="credit" label="学分" width="180"></el-table-column>
       <el-table-column prop="hours" label="学时" width="180"></el-table-column>
-      <el-table-column prop="teachers" label="教师" width="180" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="teachers" :formatter="formatTeacherName" label="教师" width="180" show-overflow-tooltip></el-table-column>
       <el-table-column prop="is_team" label="是否组队" width="180"></el-table-column>
       <el-table-column prop="max_num" label="组队最大人数" width="180"></el-table-column>
       <el-table-column prop="stu_num" label="学生人数" width="180"></el-table-column>
@@ -97,8 +97,6 @@
         }
 
         this.updateCurrentStatus(payload)
-
-        // this.$emit('deleteCourseList', val)
       },
 
 
@@ -124,6 +122,14 @@
         this.$refs.openFormDialog.diaVisible=true
 
       },
+
+      //格式化老师姓名显示
+      formatTeacherName(){
+        //arguments的第三个元素就是本行显示的内容
+        return arguments[2].join("　")
+      },
+
+
       ...mapMutations(["updateCurrentStatus"])
     },
     watch:{
