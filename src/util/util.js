@@ -146,18 +146,68 @@ export default {
 
   /**
    * 快速返回简短的错误信息,
-   * @param _this:this指针
    * @param msg:错误信息
    */
-  returnErr(_this,msg){
-    _this.$message({
+  returnErr(msg) {
+    this.$message({
       message: msg,
       type: "error",
       duration: 3000,
       showClose: true
     });
+  },
+
+
+  /**
+   * 用闭包实现截留函数
+   * @param func
+   * @param delay
+   * @returns {function(...[*]=)}
+   */
+  throttle(func, delay) {
+    let startTime = Date.parse(new Date());
+    return function () {
+      let currentTime = Date.parse(new Date());
+      let remainTime = delay - (currentTime - startTime);
+      console.log("startTime:" + startTime)
+      console.log("currentTime:" + currentTime)
+      console.log("remainTime:" + remainTime)
+
+      if (remainTime <= 0) {
+        func();
+        startTime = Date.parse(new Date());
+      } else {
+        this.$message({
+          message: "操作太快,请稍后再试",
+          type: "warning",
+          duration: 1500,
+          showClose: true
+        });
+      }
+    };
+  },
+
+  /**
+   * 判断一个字符串是否合法
+   * @param str
+   * @param reg
+   * @returns {boolean}
+   */
+  validateSomething(str, reg) {
+    str = str.replace(/\s/g, "")
+    if (!str) return false;
+    if (!reg.test(str)) {
+      this.$message({
+        message: "输入格式错误,请重新输入",
+        type: "error",
+        duration: 3000,
+        showClose: true
+      });
+      return false
+    } else {
+      return true
+    }
+
   }
-
-
 
 }
