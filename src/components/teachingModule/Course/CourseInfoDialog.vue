@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="填写课程详细信息:" :visible.sync="dialogFormVisible" width="30%">
+  <el-dialog title="填写课程详细信息:" :visible.sync="dialogFormVisible" width="30%" >
     <NewCourseDialog @submitSuccess="closeDialog"></NewCourseDialog>
   </el-dialog>
 </template>

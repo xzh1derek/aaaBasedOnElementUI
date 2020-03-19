@@ -1,64 +1,20 @@
 <!--处理一切与绑定有关的逻辑,包括为课程绑定班级等-->
-
-
 <template>
   <div>
     <el-button @click="openBindDialog">{{btnText}}</el-button>
-
     <el-dialog
       title="请选择要绑定的班级"
       :visible.sync="BindDialogVisible"
-      width="635px"
-
-      style="">
-      <div>
-
-        <!--      <el-select v-model="value1" multiple placeholder="请先选择学院" style="width: 100%;min-width: 100px">-->
-        <!--        &lt;!&ndash;      在这个地方,value是index.也就是被选中的item的索引,最后把这些存储在value1数组中&ndash;&gt;-->
-        <!--        <el-option-->
-        <!--          v-for="(item,index) in checkList"-->
-        <!--          :key=index-->
-        <!--          :label="item.name"-->
-        <!--          :value=index>-->
-        <!--        </el-option>-->
-        <!--      </el-select>-->
-        <!--      <div style="border: 1px solid gainsboro;min-height: 50px;margin-top: 10px;padding: 10px">-->
-        <!--        <el-checkbox-group v-model="checkedItems">-->
-        <!--          &lt;!&ndash;如果value1为空,就显示所有的班级&ndash;&gt;-->
-        <!--          <template v-for="key1 in value1">-->
-        <!--            {{key1}}-->
-        <!--            <el-checkbox v-for="(classInfo,index) in checkList[key1].classesList"-->
-        <!--                         :label="classInfo"-->
-        <!--                         :key="classInfo"-->
-        <!--                         style="font-size: 20px;">-->
-        <!--              {{classInfo}}-->
-        <!--            </el-checkbox>-->
-        <!--          </template>-->
-        <!--        </el-checkbox-group>-->
-
-
-        <!--        <div>-->
-        <!--          已保存的绑定-->
-        <!--          {{alreadyBoundList}}-->
-        <!--        </div>-->
-        <!--      </div>-->
-
-      </div>
+      width="635px">
       <el-transfer filterable v-model="checkedItems"  :data="checkList" :titles="['可选列表','已选列表']" :props="{
       key: 'class_id'}"></el-transfer>
-
       <el-button @click="bindAll" type="primary" style="margin-top: 20px;">绑定班级</el-button>
     </el-dialog>
-
-
-
-    <!--    <BindClasses ref="bindDialog" @bindComplete="bindComplete"></BindClasses>-->
   </div>
 </template>
 
 <script>
   import {mapMutations, mapState} from "vuex"
-  import BindClasses from "./BindClasses";
 
   export default {
     name: "BindOnIt",
@@ -78,7 +34,6 @@
     computed: {
       ...mapState(["multipleSelection", "btnFamily"])
     },
-    components: {BindClasses},
     methods: {
       /**
        * 获取dialog初始数据
