@@ -1,6 +1,6 @@
 <!--用来存放队长操作队伍的相关操作-->
 <template>
-  <el-popover
+    <el-popover
     placement="bottom"
     title="请选择操作:"
     width="200"
@@ -42,6 +42,7 @@
 
 <script>
   import {mapState} from 'vuex'
+  import Login from "../Login";
 
   export default {
     name: "TeamOperation",
@@ -139,7 +140,7 @@
           .then(response => {
             this.util.feedbackInfo(this, response.data)
             if (response.data === 7) {
-              switch (status) {
+              switch (this.operateStatus) {
                 case 1://此时改变的是isDisplay
                   this.isDisplay = !this.isDisplay;
                   break;

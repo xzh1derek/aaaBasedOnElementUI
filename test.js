@@ -785,7 +785,7 @@ let line = "2,10,3,4,5,7,11,10,11,20"
 
 
 function getArr(line) {
-  if (line.length ===0 )  return
+  if (line.length === 0) return
 
   line = line.split(",")
   line = line.sort(function (a, b) {
@@ -801,7 +801,7 @@ function getArr(line) {
   let index = 0
   let returnArr = []
   for (let i = 0; i < line.length; i++) {
-    returnArr[i]=[]
+    returnArr[i] = []
   }
 
 
@@ -818,11 +818,64 @@ function getArr(line) {
     }
   }
   for (let i = 0; i < returnArr.length; i++) {
-    if(returnArr[i]!==[]){
+    if (returnArr[i] !== []) {
       console.log(returnArr[i].join(","))
     }
   }
 
 }
 
-console.log('a'.charCodeAt('0')-'b'.charCodeAt("b"))
+console.log('a'.charCodeAt('0') - 'b'.charCodeAt("b"))
+
+/**
+ * 用闭包实现截留函数
+ * @param func
+ * @param delay
+ * @returns {function(...[*]=)}
+ */
+function throttle(func, delay) {
+  let timer = null;
+  let startTime = Date.parse(new Date());
+
+  return function () {
+    let curTime = Date.parse(new Date());
+    let remaining = delay - (curTime - startTime);
+    let context = this;
+    let args = arguments;
+
+    clearTimeout(timer);
+    if (remaining <= 0) {
+      func.apply(context, args);
+      startTime = Date.parse(new Date());
+    } else {
+      console.log("不能太快")
+    }
+  }
+}
+
+
+function f() {
+  console.log(1)
+}
+
+// let a = throttle(f, 1000);
+// setTimeout(a, 1000)
+
+
+var A = function() {};
+
+var c = new A();
+A.prototype.n = 1;
+A.prototype.m = 1;
+
+A.prototype={
+  m:2,
+  n:3
+}
+
+var b = new A();
+console.log(b.n);
+console.log(b.m);
+
+console.log(c.n);
+console.log(c.m);

@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <el-button @click="export2Excel">导出数据</el-button>
   </div>
 </template>
@@ -70,7 +69,7 @@
     mounted() {
       // 通过switch判断每次导出excel的表格内容
       switch (this.pathname) {
-        case "/teaching" :
+        case "/teaching/courses" :
           this.tHeader = ['学号', '姓名', '班级', '学院', '队伍编号', '队长', '分数', '作业文件'];
           this.innerFilter = ['username', 'name', 'class_id', 'school'];
           this.outerFilter = ['team_id', 'is_leader', 'score', 'file'];

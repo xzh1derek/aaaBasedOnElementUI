@@ -5,11 +5,12 @@
               border
               @selection-change="handleSelectionChange">
       <el-table-column type="selection" fixed></el-table-column>
-      <el-table-column prop="course_code" label="课程代码" width="180"></el-table-column>
+      <el-table-column prop="course_code" label="课程代码" sortable width="180"></el-table-column>
       <el-table-column prop="course_name" label="课程名称" width="180" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="credit" label="学分" width="180"></el-table-column>
+      <el-table-column prop="credit" label="学分"  width="180"></el-table-column>
       <el-table-column prop="hours" label="学时" width="180"></el-table-column>
-      <el-table-column prop="teachers" :formatter="formatTeacherName" label="教师" width="180" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="teachers" :formatter="formatTeacherName" label="教师" width="180"
+                       show-overflow-tooltip></el-table-column>
       <el-table-column prop="is_team" label="是否组队" width="180"></el-table-column>
       <el-table-column prop="max_num" label="组队最大人数" width="180"></el-table-column>
       <el-table-column prop="stu_num" label="学生人数" width="180"></el-table-column>
@@ -44,7 +45,7 @@
 <script>
   import CommonOperation from "../../common/CommonOperation";
   import FormInDialog from "../../common/FormInDialog";
-  import {mapState,mapMutations} from "vuex";
+  import {mapState, mapMutations} from "vuex";
 
   export default {
     name: "CourseList",
@@ -55,15 +56,15 @@
         currentPage: 1,//初始页
         pagesize: 10,//每一页的数量,
         pagerCount: 5,//展示到多少页时 中间显示...，取值在5~21之间
-        editBefore:{},//未改动之前的数据,预填入form中
+        editBefore: {},//未改动之前的数据,预填入form中
       }
     },
-    components: {CommonOperation,FormInDialog },
-    computed:{
-      isReadyForRenovate(){
+    components: {CommonOperation, FormInDialog},
+    computed: {
+      isReadyForRenovate() {
         return this.readyForRenovate
       },
-      ...mapState(["readyForRenovate","btnFamily"])
+      ...mapState(["readyForRenovate", "btnFamily"])
     },
     methods: {
 
@@ -91,9 +92,9 @@
 
 
       handleSelectionChange(val) {
-        let payload={
-          targetKey:"multipleSelection",
-          targetVal:val
+        let payload = {
+          targetKey: "multipleSelection",
+          targetVal: val
         }
 
         this.updateCurrentStatus(payload)
@@ -117,28 +118,29 @@
             });
           })
       },
-      editCourse(row){
-        this.editBefore=this.util.deepClone(row)
-        this.$refs.openFormDialog.diaVisible=true
+      editCourse(row) {
+        this.editBefore = this.util.deepClone(row)
+        this.$refs.openFormDialog.diaVisible = true
 
       },
 
       //格式化老师姓名显示
-      formatTeacherName(){
+      formatTeacherName() {
         //arguments的第三个元素就是本行显示的内容
         return arguments[2].join("　")
       },
-
-
       ...mapMutations(["updateCurrentStatus"])
-    },
-    watch:{
-      isReadyForRenovate(){//如果btnFamily=10 并且readyForRenovate改变了,就更新页面
-        if (this.btnFamily==10)
-        this.initCourseList()
-      },
+    }
+    ,
+    watch: {
+      isReadyForRenovate() {//如果btnFamily=10 并且readyForRenovate改变了,就更新页面
+        if (this.btnFamily == 10)
+          this.initCourseList()
+      }
+      ,
 
-    },
+    }
+    ,
     mounted() {
       //加载页面时,发送请求,获取所有队伍信息
       //初始化时,要先把数据存在数组中

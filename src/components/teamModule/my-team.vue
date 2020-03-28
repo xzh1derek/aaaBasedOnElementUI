@@ -11,18 +11,21 @@
             <el-card>
               <div slot="header" class="clearfix">
                 <span><b>{{team.course.course_name}}</b></span>
-                <TeamOperation v-if="team.leader==token" :is-available="team.available" :is-display="team.display"
-                               :team-id="team.id"></TeamOperation>
-
+                <TeamOperation v-if="team.leader==token" :is-available="team.available" :is-display="team.is_display"
+                               :team-id="team.id">
+                </TeamOperation>
               </div>
               <div class="text item">
-                <el-table :key="index" :data="team.memberDetails" stripe style="width: 100%">
-                  <el-table-column prop="name" label="组员姓名" width="180"></el-table-column>
-                  <el-table-column prop="username" label="学号" width="180"></el-table-column>
+                <el-table :key="index" :data="team.memberDetails" stripe style="width: 100%" >
+                  <el-table-column prop="name" label="组员姓名"  width="180"></el-table-column>
+<!--                  用来找leader的,以后有时间做-->
+<!--                  <el-table-column prop="username" :formatter="findLeader.bind(null,team)" label="学号" width="180">-->
+                  <el-table-column prop="username"  label="学号" width="180"></el-table-column>
                   <el-table-column prop="class_id" label="班级" width="180"></el-table-column>
                   <el-table-column prop="qq" label="qq"></el-table-column>
                   <el-table-column prop="school" label="学院"></el-table-column>
                 </el-table>
+
               </div>
             </el-card>
           </div>
@@ -58,18 +61,21 @@
         token: localStorage.token,
       }
     },
-    watch:{
-      ready4Renovate(){
+    watch: {
+      ready4Renovate() {
         this.getMyTeam()
       }
     },
     computed: {
-      ready4Renovate(){
+      ready4Renovate() {
         return this.readyForRenovate
       },
-      ...mapState(['userInfoData',"readyForRenovate"])
+      ...mapState(['userInfoData', "readyForRenovate"])
     },
     methods: {
+      /**
+       * 获取我的队伍信息
+       */
       getMyTeam() {
         let self = this;
         self.axios({
@@ -84,9 +90,6 @@
               return
             }
             self.myTeamMember = res.data//这里要改
-
-            console.log(self.myTeamMember)
-            // self.myTeamMember = res.data.memberDetails//这里要改
           })
           .catch(error => {
             self.$message({
@@ -99,6 +102,13 @@
       },
 
 
+      //用来找谁是leader,以后有时间做
+      findLeader(team, row, column, cellValue, index) {
+        console.log(arguments)
+        if(arguments[0].leader===arguments[1].row.username){
+          return "backgroundColor:green"
+        }
+      },
     },
     mounted() {
       this.getMyTeam()
