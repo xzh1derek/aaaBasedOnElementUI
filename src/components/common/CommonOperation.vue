@@ -2,7 +2,6 @@
   <div class="outer">
     <el-row>
       <AddNewItem ref="addNew" class="inlineItem"></AddNewItem>
-      <DeleteItem ref="removeItems" class="inlineItem"></DeleteItem>
       <!--      <EditItem class="inlineItem"></EditItem>-->
       <ExportList class="inlineItem"></ExportList>
 
@@ -13,10 +12,7 @@
       <AddSingleStuBtn class="inlineItem"></AddSingleStuBtn>
 
 
-
-
-
-
+      <DeleteItem ref="removeItems" class="inlineItem"></DeleteItem>
       <!--      上传学生Excel  始终时最后一个按键,否则会换行-->
       <UploadFile class="inlineItem"></UploadFile>
     </el-row>
@@ -65,8 +61,20 @@
       },
       ...mapState(["multipleSelection", "btnFamily"])
     },
-    mounted() {
-    }
+    methods:{
+      ...mapMutations(["updateCurrentStatus"])
+    },
+
+    beforeDestroy() {
+      //组件销毁前,先初始化vuex中的状态
+      let payload = {
+        targetKey: "multipleSelection",
+        targetVal: [],
+      };
+      this.updateCurrentStatus(payload)
+      payload.targetKey = "innerMultipleSelection"
+      this.updateCurrentStatus(payload)
+    },
   }
 </script>
 

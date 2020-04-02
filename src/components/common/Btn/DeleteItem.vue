@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button type="danger" @click="dialogVisible = true" :disabled="!isDisabled">删除</el-button>
+    <el-button type="danger" @click="dialogVisible = true" :disabled="isDisabled">删除</el-button>
     <el-dialog
       title="提示"
       :visible.sync="dialogVisible"
@@ -30,48 +30,42 @@
       }
     },
     computed: {
-      getTrunkItems() {
-        return this.trunkItems
-      },
       selectedItems() {
-        return this.multipleSelection
+        if (location.pathname === "/teaching/schedule" || location.pathname === "/teaching/plan") {
+          return this.innerMultipleSelection
+        } else {
+          return this.multipleSelection
+        }
       },
-      ...mapState(["trunkItems", "multipleSelection", "btnFamily", "readyForRenovate"])
+      ...mapState(["multipleSelection", "btnFamily", "readyForRenovate", "innerMultipleSelection"])
     },
     watch: {
-      getTrunkItems() {
-        console.log(this.getTrunkItems)
-        // this.isDisabled=(this.getTrunkItems.length !== 1)
-      },
-
-      selectedItems() {
-        // console.log("this.selectedItem.length:" + this.selectedItems.length)
-        // let length = this.selectedCourse.length;
-        // console.log(this.multipleSelection)
-        // console.log("length:" + length)
-      },
+      //判断删除按钮是否可操作
+      selectedItems(val) {
+        this.isDisabled = val.length !== 1
+      }
     },
     methods: {
       deleteItem() {
         let self = this
-        this.deleteData = this.util.getPropFormListObj(this.multipleSelection, this.propName);//从对象集合中提取username属性
+        // 这里用selectItems是因为不同的情况要删除不同的数据,有时候是操作外表格数据,有时候是操作内表格数据
+        this.deleteData = this.util.getPropFormListObj(this.selectedItems, this.propName);//从对象集合中提取username属性
         this.axios({
           method: "delete",
           url: this.targetUrl,
           params: {
-            courseId: this.multipleSelection[0].id
-            // id: this.trunkItems.id
+            courseId: this.selectedItems[0].id,
+            id: this.selectedItems[0].id
           },
           data: this.deleteData
         })
           .then(response => {
             //成功后改变"readyForRenovate"的状态,list组件监听这个变量.一旦改变,就更新列表
-            let payload={
-              targetKey:"readyForRenovate",
-              targetVal:!this.readyForRenovate
+            let payload = {
+              targetKey: "readyForRenovate",
+              targetVal: !this.readyForRenovate
             };
             this.dialogVisible = false
-            // this.$refs.CourseList.initCourseList();
             this.util.feedbackInfo(self, response.data);
             this.updateCurrentStatus(payload)//改变 "readyForRenovate" ,以达到让 Pagination 刷新页面的目的
           })
@@ -92,6 +86,9 @@
           break;
         case 10 :
           this.targetUrl = "/course/delete";
+          break;
+        case 15 :
+          this.targetUrl = "/project/delete";
           break;
 
       }

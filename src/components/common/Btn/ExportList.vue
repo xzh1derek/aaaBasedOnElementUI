@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-button @click="export2Excel">导出数据</el-button>
+<!--    <el-button @click="export2Excel" :style="{hidden: isDisplay}" :disabled="isDisabled">导出数据</el-button>-->
+    <el-button @click="export2Excel" v-if="isDisplay" :disabled="isDisabled">导出数据</el-button>
   </div>
 </template>
 
@@ -18,10 +19,21 @@
         defaultTitle: "",//用于控制表头
         targetUrl: "",//目的url
         pathname: location.pathname,
+        isDisabled: true,
+        isDisplay:true,
       }
     },
     computed: {
-      ...mapState(["multipleSelection"])
+      selectedItems() {
+        return this.multipleSelection
+      },
+      ...mapState(["multipleSelection", "btnFamily"])
+    },
+    watch: {
+      //判断导出按钮是否可操作
+      selectedItems(val) {
+        this.isDisabled = val.length !== 1
+      }
     },
     methods: {
       formatJson(filterVal, jsonData) {
@@ -68,24 +80,28 @@
 
     mounted() {
       // 通过switch判断每次导出excel的表格内容
-      switch (this.pathname) {
-        case "/teaching/courses" :
+      // switch (this.pathname) {
+      switch (this.btnFamily) {
+        // case "/teaching/courses" :
+        case 10 ://course相关
           this.tHeader = ['学号', '姓名', '班级', '学院', '队伍编号', '队长', '分数', '作业文件'];
           this.innerFilter = ['username', 'name', 'class_id', 'school'];
           this.outerFilter = ['team_id', 'is_leader', 'score', 'file'];
           this.targetUrl = "/course/students/export";
           break;
-        case "/schedule" :
+        // case "/schedule" :
+        case 5 ://module相关
           this.tHeader = ['学号', '姓名', '班级', '学院'];
           this.innerFilter = ['username', 'name', 'class_id', 'school'];
           this.outerFilter = ['team_id', 'is_leader', 'score', 'file'];
           this.targetUrl = "/course/students/export";
           break;
-        case "/course" :
+        case 15 ://project相关
           this.tHeader = ['学号', '姓名', '班级', '学院'];
           this.innerFilter = ['username', 'name', 'class_id', 'school'];
           this.outerFilter = ['team_id', 'is_leader', 'score', 'file'];
           this.targetUrl = "/course/students/export";
+          this.isDisplay=false
           break;
         default:
           break;

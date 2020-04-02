@@ -80,12 +80,62 @@
       </div>
 
     </el-dialog>
-  </div>
 
+
+    <!--    编辑project信息的表单dialog-->
+    <el-dialog title="填写project信息" :visible.sync="editProjectDiaVisible" @close="diaVisible=false">
+      <el-form :model="originData">
+        <el-form-item label="projectID" :label-width="formLabelWidth">
+          <el-col :span=span>
+            <el-input v-model="originData.id" autocomplete="off" required></el-input>
+          </el-col>
+        </el-form-item>
+        <!---->
+        <el-form-item label="project索引" :label-width="formLabelWidth">
+          <el-col :span=span>
+            <el-input v-model="originData.project_index" autocomplete="off"></el-input>
+          </el-col>
+        </el-form-item>
+        <!---->
+        <!---->
+        <el-form-item label="project名称" :label-width="formLabelWidth">
+          <el-col :span=span>
+            <el-input v-model="originData.project_name" autocomplete="off"></el-input>
+          </el-col>
+        </el-form-item>
+        <!---->
+        <el-form-item label="课程号" :label-width="formLabelWidth">
+          <el-col :span=span>
+            <el-input v-model="originData.course_id" autocomplete="off"></el-input>
+          </el-col>
+        </el-form-item>
+        <!---->
+        <el-form-item label="学时" :label-width="formLabelWidth">
+          <el-col :span=span>
+            <el-input v-model="originData.hours" autocomplete="off"></el-input>
+          </el-col>
+        </el-form-item>
+        <!---->
+        <el-form-item label="是否固定" :label-width="formLabelWidth">
+          <el-switch v-model="originData.is_fixed" autocomplete="off"></el-switch>
+        </el-form-item>
+        <!---->
+        <el-form-item label="是否发布" :label-width="formLabelWidth">
+          <el-switch v-model="originData.is_published" autocomplete="off"></el-switch>
+        </el-form-item>
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="diaVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitNewInfo">确 定</el-button>
+      </div>
+    </el-dialog>
+
+  </div>
 </template>
 
 <script>
-  import {mapState,mapMutations} from "vuex"
+  import {mapState, mapMutations} from "vuex"
 
   export default {
     name: "DialogForm",
@@ -93,21 +143,22 @@
       return {
         editStuDiaVisible: false,//编辑学生信息dia的可见度
         editCourseDiaVisible: false,//编辑course信息dia的可见度
-        editModuleDiaVisible: false,////编辑module信息dia的可见度
+        editModuleDiaVisible: false,//编辑module信息dia的可见度
+        editProjectDiaVisible: false,//编辑project信息dia的可见度
         diaVisible: false,//父组件直接改变的属性,再在组件内赋给相应的值
         formLabelWidth: '120px',
         span: 20
       }
     },
-    props: ["originData","targetUrl"],
+    props: ["originData", "targetUrl"],
     computed: {
-      ...mapState(["btnFamily","readyForRenovate"])
+      ...mapState(["btnFamily", "readyForRenovate"])
     },
     methods: {
       //上传新的学生信息
       submitNewInfo() {
-        this.originData.is_published=true;
-        this.originData.teacher=0;
+        // this.originData.is_published = true;
+        // this.originData.teacher = 0;
 
         this.axios({
           method: "post",//一律都是update
@@ -118,9 +169,9 @@
           data: this.originData
         })
           .then(response => {
-            let payload ={
-              targetKey:"readyForRenovate",
-              targetVal:!this.readyForRenovate
+            let payload = {
+              targetKey: "readyForRenovate",
+              targetVal: !this.readyForRenovate
             };
             this.util.feedbackInfo(this, response.data);
             this.diaVisible = false;
@@ -133,6 +184,8 @@
       },
       ...mapMutations(["updateCurrentStatus"])
     },
+
+
     watch: {
       //监控diaVisible的值 组件父组件只需要改变diaVisible的值 组件内部通过btnFamily判断到底要使用哪个dialog
       diaVisible() {
@@ -146,7 +199,9 @@
           case 10://course相关操作
             this.editCourseDiaVisible = this.diaVisible;
             break;
-
+          case 15://project相关操作
+            this.editProjectDiaVisible = this.diaVisible;
+            break;
         }
       }
     },

@@ -1,12 +1,13 @@
 <!--处理一切与绑定有关的逻辑,包括为课程绑定班级等-->
+<!--commonOperation用的是这个-->
 <template>
   <div>
-    <el-button @click="openBindDialog">{{btnText}}</el-button>
+    <el-button @click="openBindDialog" v-if="isDisplay" :disabled="isDisabled">{{btnText}}</el-button>
     <el-dialog
       title="请选择要绑定的班级"
       :visible.sync="BindDialogVisible"
       width="635px">
-      <el-transfer filterable v-model="checkedItems"  :data="checkList" :titles="['可选列表','已选列表']" :props="{
+      <el-transfer filterable v-model="checkedItems" :data="checkList" :titles="['可选列表','已选列表']" :props="{
       key: 'class_id'}"></el-transfer>
       <el-button @click="bindAll" type="primary" style="margin-top: 20px;">绑定班级</el-button>
     </el-dialog>
@@ -29,10 +30,21 @@
         structureUrl: "",//获取要被绑定的数据
         alreadyBoundList: "",//获取已经绑定的班级
         alreadyBoundUrl: "",//获取已经绑定的班级的url
+        isDisabled: true,
+        isDisplay: true
       }
     },
     computed: {
+      selectedItems() {
+        return this.multipleSelection
+      },
       ...mapState(["multipleSelection", "btnFamily"])
+    },
+    watch: {
+      //判断绑定按钮是否可操作
+      selectedItems(val) {
+        this.isDisabled = val.length !== 1
+      }
     },
     methods: {
       /**
@@ -148,23 +160,23 @@
 
     mounted() {//做组件加载早期准备
       switch (this.btnFamily) {
-        case 10:
+        case 10://course相关
           this.btnText = "绑定班级";
           this.structureUrl = "/class";
           this.targetUrl = "/course/bind";
           this.alreadyBoundUrl = "/course/classes";
           break;
-        case 5:
+        case 5://module相关
           this.btnText = "绑定班级";
           this.structureUrl = "";
           this.targetUrl = "";
           this.alreadyBoundUrl = "";
           break;
-        case 0:
-          this.btnText = "绑定班级";
-          this.structureUrl = "";
-          this.targetUrl = "";
-          this.alreadyBoundUrl = "";
+        case 0://学生相关
+          this.isDisplay = false
+          break;
+        case 15://project相关
+          this.isDisplay = false
           break;
       }
     }
