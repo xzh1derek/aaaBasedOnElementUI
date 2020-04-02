@@ -1,13 +1,14 @@
 <template>
   <div>
-    <el-row>
-      <el-button @click="addNewFormData" :disabled="!editDisable">{{(multipleSelection.length!==0&&multipleSelection[0].projects.length===0)?"添加Project":"编辑Project"}}</el-button>
-      <el-button type="primary" :disabled="!editDisable">编辑课程</el-button>
-      <el-button type="primary" :disabled="!editDisable">添加班级</el-button>
-      <el-button type="success">导出</el-button>
-      <el-button type="warning">检索</el-button>
-    </el-row>
-
+    <!--    <el-row>-->
+    <!--      <el-button @click="addNewFormData" :disabled="!editDisable">{{(multipleSelection.length!==0&&multipleSelection[0].projects.length===0)?"添加Project":"编辑Project"}}</el-button>-->
+    <!--      <el-button type="primary" :disabled="!editDisable">编辑课程</el-button>-->
+    <!--      <el-button type="primary" :disabled="!editDisable">添加班级</el-button>-->
+    <!--      <el-button type="success">导出</el-button>-->
+    <!--      <el-button type="warning">检索</el-button>-->
+    <!--    </el-row>-->
+    <CommonOperation></CommonOperation>
+    <!--    新建project的表单-->
     <el-dialog title="填写Project详细信息:" :visible.sync="outerVisible" width="30%">
       <el-form :model="modelFormData">
         <el-form-item label="课程编号" :label-width="formLabelWidth" hidden>
@@ -61,33 +62,37 @@
         <el-button type="primary" @click="createProject">创建Project</el-button>
       </div>
     </el-dialog>
+
+
     <div>
-      <ProjectList ref="ProjectList" @deleteCourseList="initDeleteList"></ProjectList>
+      <ProjectList ref="ProjectList"></ProjectList>
     </div>
   </div>
 </template>
 
 <script>
   import BindClasses from "../../common/Btn/BindClasses";
-  import CourseList from "../Course/CourseList";
   import ProjectList from "./ProjectList";
-  import {mapMutations} from 'vuex'
+  import {mapState,mapMutations} from 'vuex'
+  import CommonOperation from "../../common/CommonOperation";
 
   export default {
     name: "CourseLibrary",
     data() {
       return {
-        outerVisible: false,
-        innerVisible: false,
-        span: 20,
-        formLabelWidth: '100px',
+        outerVisible: false,//
+        innerVisible: false,//
+        span: 20,//
+        formLabelWidth: '100px',//
         courseId: "",
-        multipleSelection: [],
+        multipleSelection: [],//
+
         editDisable: false,
         addDisable: false,
         bindDisable: false,
         deleteDisable: false,
-        projectIndex: 1,
+
+        projectIndex: 1,//
         formData: [],
         modelFormData: {
           project_name: '',
@@ -97,7 +102,7 @@
         },
       };
     },
-    components: {BindClasses, ProjectList},
+    components: {BindClasses, ProjectList, CommonOperation},
     methods: {
       createProject() {
         let pushData = {};
@@ -135,6 +140,7 @@
             console.log(err)
           })
       },
+
       deleteCourse() {
         let self = this
         this.axios({
@@ -151,9 +157,6 @@
           .catch(err => {
             console.log(err)
           })
-      },
-      initDeleteList(data) {
-        this.multipleSelection = data
       },
       addNewFormData() {
         this.outerVisible = true;
@@ -173,7 +176,7 @@
         console.log(this.formData)
 
       },
-      ...mapMutations(["updateVerification"])
+      ...mapMutations(["updateVerification","updateCurrentStatus"])
     },
     watch: {
       selectedProject() {
@@ -201,8 +204,15 @@
       selectedProject() {
         return this.multipleSelection
       },
+      ...mapState(["btnFamily"])
     },
-    mounted() {
+    beforeMount() {
+      // 初始化按键组,15表示当前的页面是project相关
+      let payload = {
+        targetKey:"btnFamily",
+        targetVal:15
+      };
+      this.updateCurrentStatus(payload);
       this.updateVerification("2");
     }
   }

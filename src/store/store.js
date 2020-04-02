@@ -23,9 +23,9 @@ export default new Vuex.Store({
     newMessages: 0,
     activeRoute: 0,
     multipleSelection: [],
+    innerMultipleSelection:[],//记录嵌套内表格被选择的数据
     // verificationCode: "",//用于表示当前进入的是哪个路由,以此来控制显示的按键组
-    trunkItems: null,
-    btnFamily: 10000,//用来控制CommonOperation显示哪些键盘组   0-->stuManagement   5-->module相关  10-->course相关
+    btnFamily: 10000,//用来控制CommonOperation显示哪些键盘组   0-->stuManagement   5-->module相关  10-->course相关   15-->project相关
     readyForRenovate:false,//分页组件通过监听这个变量.确定什么时候获取新的页面数据
     // tableWidth:"100%",
     regExpLibrary:{
@@ -54,10 +54,6 @@ export default new Vuex.Store({
     updateSelection(state, payload) {
       state.multipleSelection = payload
       console.log(state.multipleSelection)
-    },
-    updateTrunk(state, payload) {
-      state.trunkItems = payload
-      console.log(state.trunkItems)
     },
 
 
