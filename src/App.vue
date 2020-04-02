@@ -37,14 +37,8 @@
     components: {navbar,  MainNavBar, SideBar, Login},
     store,
     data() {
-      const item = {
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      };
       return {
 
-        tableData: Array(20).fill(item),
         userInfoToOpe: null,//传给组件的值,通过create钩子函数初始化,这里要写成null,不能写成{},否则会被判为true
         loginUser: "",
 

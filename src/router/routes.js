@@ -12,6 +12,7 @@ import SystemManagement from "../components/Administration/SystemManagement";
 import SchoolClass from "../components/Administration/SchoolClass";
 import StuManagement from "../components/Administration/StuManagement";
 import HostPage from "../components/teamModule/HostPage";
+import BookingExperiment from "../components/chooseCourse/BookingExperiment";
 
 // identity为10时,这个路由是公共路由
 const routes =
@@ -19,7 +20,7 @@ const routes =
     {
       path: '/user/',
       component: PersonalCenter,
-      redirect:"/user/info",
+      redirect: "/user/info",
       meta: {
         identity: 10,
         text: "个人管理",
@@ -63,6 +64,16 @@ const routes =
             key: 2
           }
         },
+        {
+          path: 'choose',
+          component: BookingExperiment,
+          meta: {
+            text: "实验预约",
+            teamleader: true,
+            key: 2
+          }
+        },
+
       ]
     },
 

@@ -1,13 +1,5 @@
 <template>
   <div>
-    <!--    <el-row>-->
-    <!--      <el-button @click="outerVisible=true">添加课程</el-button>-->
-    <!--      <el-button type="primary" :disabled="!editDisable">编辑课程</el-button>-->
-    <!--      <el-button type="primary" :disabled="!editDisable">添加班级</el-button>-->
-    <!--      <el-button type="success">导出</el-button>-->
-    <!--      <el-button type="warning">检索</el-button>-->
-    <!--      <el-button type="danger" @click="deleteCourse" :disabled="!editDisable">删除</el-button>-->
-    <!--    </el-row>-->
     <CommonOperation></CommonOperation>
     <CourseList ref="CourseList" @deleteCourseList="initDeleteList"></CourseList>
   </div>

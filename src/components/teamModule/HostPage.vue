@@ -7,38 +7,7 @@
       <el-col :span="6">
         <userInfo></userInfo>
       </el-col>
-
-<!--      <el-col :span="18">-->
-        <!--        我的消息-->
-<!--        <NewMessage></NewMessage>-->
-<!--      </el-col>-->
     </el-row>
-
-
-    <!--    第二行-->
-<!--    <el-row :gutter="20">-->
-<!--      <el-col :span="12">-->
-
-<!--        <i class="el-icon-message"><span class="subTitle">我的申请</span>-->
-<!--        </i>-->
-<!--      </el-col>-->
-<!--      <el-col :span="12">-->
-<!--        <i class="el-icon-mobile"><span class="subTitle">需要组队的课程</span></i>-->
-<!--      </el-col>-->
-<!--    </el-row>-->
-
-
-<!--    <el-row :gutter="20">-->
-<!--      <el-col :span="12">-->
-<!--        <MyApplication></MyApplication>-->
-<!--      </el-col>-->
-<!--      <el-col :span="12">-->
-<!--        <CreateTeam></CreateTeam>-->
-<!--&lt;!&ndash;        <div class="grid-content bg-purple">本周课表</div>&ndash;&gt;-->
-<!--      </el-col>-->
-<!--    </el-row>-->
-
-
     <!--    第三行-->
     <div id="selectedCoursed">
       <el-row :gutter="20">

@@ -121,7 +121,6 @@
       editCourse(row) {
         this.editBefore = this.util.deepClone(row)
         this.$refs.openFormDialog.diaVisible = true
-
       },
 
       //格式化老师姓名显示
