@@ -183,6 +183,7 @@ export default {
           duration: 1500,
           showClose: true
         });
+        return false
       }
     };
   },
