@@ -42,11 +42,11 @@
        * @newVal :drawer变化后的新值
        * 当drawer为true时,查询当前课程下的所有projects
        */
-      drawer(newVal) {
-        if (newVal === true) {
-          this.getProjects()
-        }
-      }
+      // drawer(newVal) {
+      //   if (newVal === true) {
+      //     this.getProjects()
+      //   }
+      // }
     },
     methods: {
 

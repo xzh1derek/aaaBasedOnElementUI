@@ -27,8 +27,7 @@
         show: false,
         buttonKey: 0,
         throttleFunc: "",//用来保存截留函数
-        compName:""//用来记录当前显示那个组件
-
+        compName: ""//用来记录当前显示那个组件
       }
     },
     components: {MyApplication, CreateTeam},
@@ -53,19 +52,16 @@
        * 确定当前点击要显示的组件名
        * @param targetCompName:要显示的组件名
        */
-      changeCompName(targetCompName){
+      changeCompName(targetCompName) {
         this.compName = targetCompName
         this.throttleFunc()
       }
-
     },
     mounted() {
       //初始化节流函数
       //注意:把带参数的函数当成参数传递时,要使用bind
-      this.throttleFunc= this.util.throttle.call(this, this.showWindow.bind(this), 1000)
+      this.throttleFunc = this.util.throttle.call(this, this.showWindow.bind(this), 1000)
     },
-
-
   }
 </script>
 
