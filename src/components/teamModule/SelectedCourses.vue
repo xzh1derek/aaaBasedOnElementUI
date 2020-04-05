@@ -1,29 +1,40 @@
 <template>
   <div>
-    <div id="container" >
-      <template v-for="course in courseList">
-        <el-card class="box-card" shadow="hover" style="background-color: #f9ffed" >
+    <div id="container">
+      <template v-for="module in moduleList">
+        <el-card class="box-card" shadow="hover" style="background-color: #f9ffed">
           <div slot="header" class="clearfix">
-            <span><b>{{course.course.course_name}}</b></span>
-          </div>
-          <div class="text item">
-            {{'课程编号: ' + course.course.course_code }}
+            <span><b>{{module.project.course.course_name +"　"+module.project.project_name}}</b></span>
           </div>
 
           <div class="text item">
-            {{'学分: ' + course.course.credit }}
+            {{'时间: ' + module.date+"　"+module.time }}
           </div>
 
           <div class="text item">
-            {{'学时: ' + course.course.hours }}
+            {{'地点: ' + module.location }}
+          </div>
+
+
+          <div class="text item">
+            {{'课程编号: ' + module.project.course.course_code }}
           </div>
 
           <div class="text item">
-            是否组队: {{ course.course.is_team?"是":"否" }}
+            {{'学分: ' + module.project.course.credit }}
           </div>
 
-          <div class="text item" v-if="course.course.is_team">
-            组队最大人数: {{ course.course.max_num }}
+          <div class="text item">
+            {{'学时: ' + module.project.course.hours }}
+          </div>
+
+
+          <div class="text item">
+            是否组队: {{ module.project.course.is_team?"是":"否" }}
+          </div>
+
+          <div class="text item" v-if="module.project.course.is_team">
+            组队最大人数: {{ module.project.course.max_num }}
           </div>
 
 
@@ -38,11 +49,36 @@
     name: "SelectedCourses",
     data() {
       return {
-        courseList: JSON.parse(localStorage.userInfo).userCourses
+        // moduleList: JSON.parse(localStorage.userInfo).userCourses
+        moduleList: []
       }
     },
+    methods: {
+      /**
+       * 查询课表
+       */
+      getTimetable() {
+        this.axios({
+          method: "post",
+          url: "/curricula/future",
+          params: {
+            userId: localStorage.token
+          }
+        })
+          .then(response => {
+            if (typeof response.data === 'object') {
+              this.moduleList = response.data
+            } else {
+              this.util.returnErr.call(this, "失败")
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      },
+    },
     mounted() {
-      console.log(this.courseList)
+      this.getTimetable()
     }
   }
 </script>

@@ -13,6 +13,8 @@ import SchoolClass from "../components/Administration/SchoolClass";
 import StuManagement from "../components/Administration/StuManagement";
 import HostPage from "../components/teamModule/HostPage";
 import BookingExperiment from "../components/chooseCourse/BookingExperiment";
+import CurriculaVariableManagement from "../components/CurriculaVariableManagement/CurriculaVariableManagement";
+import MyTimetable from "../components/teachingModule/Timetable/MyTimetable";
 
 // identity为10时,这个路由是公共路由
 const routes =
@@ -89,9 +91,10 @@ const routes =
 
     {
       path: '/teaching/',
+      redirect: "/teaching/courses",
       component: TeachingManagement,
       meta: {
-        text: "教学管理"
+        text: "课程管理"
       },
       children: [
         {
@@ -114,14 +117,24 @@ const routes =
           meta: {
             text: "排课管理"
           }
-        }
+        },
+        {
+          path: 'time',
+          component: MyTimetable,
+          meta: {
+            text: "我的课表"
+          },
+          children: [
+          ]
+
+        },
       ]
 
     },
-
     {
       path: '/school/',
       component: SystemManagement,
+      redirect: "/school/school_classes",
       meta: {
         text: "系统管理",
         teamleader: false,
@@ -156,5 +169,6 @@ const routes =
         key: 7
       }
     },
+
   ];
 export default routes;

@@ -14,7 +14,7 @@
             <el-button type="text">更新资料</el-button>
             <el-button type="text">修改密码</el-button>
           </div>
-          <el-button slot="reference" style="float: right; padding: 3px 0" type="text">修改</el-button>
+          <el-button slot="reference" style="float: right; padding: 3px 0" type="text">修改密码/QQ</el-button>
         </el-popover>
 
       </div>

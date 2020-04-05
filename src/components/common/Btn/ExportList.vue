@@ -14,11 +14,10 @@
       return {
         list: [],//用于存excel数据
         tHeader: "",//用于控制表头
-        outerFilter: "",//用于控制每一列显示json哪个属性
+        outerFilter: "",//用于控制每一列显示json哪个属性,inner和outer的区别就是outer对于外层对象,inner对应内层对象,因为formatJson只能读对象的一层内容,不能读二层内容
         innerFilter: "",//用于控制每一列显示json哪个属性
         defaultTitle: "",//用于控制表头
         targetUrl: "",//目的url
-        pathname: location.pathname,
         isDisabled: true,
         isDisplay:true,
       }
@@ -96,15 +95,20 @@
           this.outerFilter = ['team_id', 'is_leader', 'score', 'file'];
           this.targetUrl = "/course/students/export";
           break;
-        case 15 ://project相关
+        // case 15 ://project相关
+        //   this.tHeader = ['学号', '姓名', '班级', '学院'];
+        //   this.innerFilter = ['username', 'name', 'class_id', 'school'];
+        //   this.outerFilter = ['team_id', 'is_leader', 'score', 'file'];
+        //   this.targetUrl = "/course/students/export";
+        //   this.isDisplay=false
+        //   break;
+        case 20:
           this.tHeader = ['学号', '姓名', '班级', '学院'];
           this.innerFilter = ['username', 'name', 'class_id', 'school'];
           this.outerFilter = ['team_id', 'is_leader', 'score', 'file'];
           this.targetUrl = "/course/students/export";
-          this.isDisplay=false
           break;
         default:
-          break;
       }
     }
   }
