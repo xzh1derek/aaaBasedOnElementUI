@@ -15,6 +15,7 @@ import HostPage from "../components/teamModule/HostPage";
 import BookingExperiment from "../components/chooseCourse/BookingExperiment";
 import CurriculaVariableManagement from "../components/CurriculaVariableManagement/CurriculaVariableManagement";
 import MyTimetable from "../components/teachingModule/Timetable/MyTimetable";
+import UnauthorizedStuList from "../components/CurriculaVariableManagement/UnauthorizedStuList";
 
 // identity为10时,这个路由是公共路由
 const routes =
@@ -131,6 +132,25 @@ const routes =
       ]
 
     },
+
+    {
+      path: '/variable/',
+      redirect: "/variable/management",
+      component: CurriculaVariableManagement,
+      meta: {
+        text: "选课管理"
+      },
+      children: [
+        {
+          path: "management",
+          component: UnauthorizedStuList,
+          meta: {
+            text: "未处理选课"
+          }
+        },
+      ]
+    },
+
     {
       path: '/school/',
       component: SystemManagement,

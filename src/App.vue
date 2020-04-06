@@ -105,7 +105,7 @@
   }
 
   .el-container {
-    background-color: #d1f1ee
+    background-color: #ffffff
   }
 
   #app {

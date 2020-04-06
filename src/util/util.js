@@ -130,13 +130,18 @@ export default {
    * 从对象的集合中获得某一个属性
    * @param objList 母对象集合
    * @param propName 从对象中获取属性的属性名
+   * @param deeperObj 是否要更深层的内容,比如说要取的属性在对象第二层,这时候deeperObj就是第二层对象的名字
    * @returns {Array}
    */
-  getPropFormListObj(objList, propName) {
+  getPropFormListObj(objList, propName, deeperObj) {
     let length = objList.length;
     let arr = [];
     arr.length = length;
     for (let i = 0; i < objList.length; i++) {
+      if (deeperObj) {
+        arr[i] = objList[i][deeperObj][propName]
+        continue
+      }
       arr[i] = objList[i][propName]
     }
     console.log(arr);
