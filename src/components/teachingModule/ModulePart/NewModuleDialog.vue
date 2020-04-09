@@ -14,17 +14,20 @@
         </el-col>
       </el-form-item>
 
-      <el-form-item label="Module时间" :label-width="formLabelWidth">
+
+      <el-form-item label="Module日期" :label-width="formLabelWidth">
         <el-col :span=span>
-          <el-input v-model="form.time" autocomplete="off"></el-input>
+          <el-input v-model="form.dateOfString" autocomplete="off" type="date"></el-input>
         </el-col>
       </el-form-item>
 
-      <el-form-item label="Module时间" :label-width="formLabelWidth">
+      <el-form-item label="Module时间" :label-width="formLabelWidth"  >
         <el-col :span=span>
-          <el-input v-model="form.dateOfString" autocomplete="off"></el-input>
+          <el-input v-model="form.time" autocomplete="off" placeholder="例 14:00-16:00" ></el-input>
         </el-col>
       </el-form-item>
+
+
 
       <el-form-item label="Module地点" :label-width="formLabelWidth">
         <el-col :span=span>

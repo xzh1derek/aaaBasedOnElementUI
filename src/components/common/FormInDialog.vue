@@ -85,15 +85,15 @@
     <!--    编辑project信息的表单dialog-->
     <el-dialog title="填写project信息" :visible.sync="editProjectDiaVisible" @close="diaVisible=false">
       <el-form :model="originData">
-        <el-form-item label="projectID" :label-width="formLabelWidth">
+        <el-form-item label="projectID" :label-width="formLabelWidth" hidden>
           <el-col :span=span>
-            <el-input v-model="originData.id" autocomplete="off" required></el-input>
+            <el-input v-model="originData.id" autocomplete="off" required ></el-input>
           </el-col>
         </el-form-item>
         <!---->
         <el-form-item label="project索引" :label-width="formLabelWidth">
           <el-col :span=span>
-            <el-input v-model="originData.project_index" autocomplete="off"></el-input>
+            <el-input v-model="originData.project_index" autocomplete="off" readonly></el-input>
           </el-col>
         </el-form-item>
         <!---->

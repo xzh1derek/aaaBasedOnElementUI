@@ -42,8 +42,11 @@
     components: {ModuleInfoDialog, StuInfoDialog, CourseInfoDialog, ProjectInfoDialog},
     watch: {
       multipleSelectionComp(val) {
+        if (this.btnFamily === 10) {
+          this.isDisabled=false
+          return
+        }
         if (location.pathname === "/teaching/plan" || location.pathname === "/teaching/schedule") {
-          console.log(val)
           this.isDisabled = val.length !== 1
         }
       }
@@ -63,8 +66,6 @@
     beforeMount() {
       // 在渲染时,初始化每个按键上的文字和目标dialog
       //一定要用beforeMount 或更早的钩子函数,因为mounted时,页面已经被渲染
-
-      console.log(location.pathname)
       switch (this.btnFamily) {
         case 0 :
           this.btnText = "添加学生";
@@ -73,21 +74,20 @@
         case 5 :
           this.btnText = "添加Module";
           this.targetDia = "newModuleDialog";
+          this.isDisabled = true
           break;
         case 10 :
           this.btnText = "添加课程";
           this.targetDia = "newCourseDialog";
+          this.isDisabled = false
           break;
         case 15 :
           this.btnText = "添加project";
           this.targetDia = "newProjectDialog";
+          this.isDisabled = true
           break;
       }
-
-      if (location.pathname === "/teaching/plan" || location.pathname === "/teaching/schedule") {
-        this.isDisabled = true
-      }
-    }
+    },
   }
 </script>
 

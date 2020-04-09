@@ -10,7 +10,8 @@
 
       <!--      添加单个学生-->
       <AddSingleStuBtn class="inlineItem"></AddSingleStuBtn>
-
+      <BindTeacher class="inlineItem"></BindTeacher>
+      <PublishBtn class="inlineItem"></PublishBtn>
 
       <DeleteItem ref="removeItems" class="inlineItem"></DeleteItem>
       <!--      上传学生Excel  始终时最后一个按键,否则会换行-->
@@ -29,10 +30,22 @@
   import ExportList from "./Btn/ExportList";
   import BindBtn from "./Btn/BindBtn";
   import AddSingleStuBtn from "./Btn/AddSingleStuBtn";
+  import BindTeacher from "./Btn/BindTeacher";
+  import PublishBtn from "./Btn/PublishBtn";
 
   export default {
     name: "CommonOperation",
-    components: {BindBtn, AddNewItem, DeleteItem, EditItem, UploadFile, ExportList,AddSingleStuBtn},
+    components: {
+      BindBtn,
+      PublishBtn,
+      BindTeacher,
+      AddNewItem,
+      DeleteItem,
+      EditItem,
+      UploadFile,
+      ExportList,
+      AddSingleStuBtn
+    },
     store,
     data() {
       return {
@@ -61,7 +74,7 @@
       },
       ...mapState(["multipleSelection", "btnFamily"])
     },
-    methods:{
+    methods: {
       ...mapMutations(["updateCurrentStatus"])
     },
 

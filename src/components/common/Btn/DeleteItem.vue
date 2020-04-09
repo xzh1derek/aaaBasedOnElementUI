@@ -61,6 +61,7 @@
         })
           .then(response => {
             //成功后改变"readyForRenovate"的状态,list组件监听这个变量.一旦改变,就更新列表
+            if (response.data===0){
             let payload = {
               targetKey: "readyForRenovate",
               targetVal: !this.readyForRenovate
@@ -68,6 +69,9 @@
             this.dialogVisible = false
             this.util.feedbackInfo(self, response.data);
             this.updateCurrentStatus(payload)//改变 "readyForRenovate" ,以达到让 Pagination 刷新页面的目的
+            }else {
+              this.util.returnErr.call(this,response.data)
+            }
           })
           .catch(err => {
             console.log(err)

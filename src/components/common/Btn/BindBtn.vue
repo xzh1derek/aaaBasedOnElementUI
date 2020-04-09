@@ -2,13 +2,17 @@
 <!--commonOperation用的是这个-->
 <template>
   <div>
-    <el-button @click="openBindDialog" v-if="isDisplay" :disabled="isDisabled">{{btnText}}</el-button>
+    <el-button @click="openBindDialog" v-if="isDisplay" :disabled="checkDisabled">{{btnText}}</el-button>
     <el-dialog
       title="请选择要绑定的班级"
       :visible.sync="BindDialogVisible"
       width="635px">
       <el-transfer filterable v-model="checkedItems" :data="checkList" :titles="['可选列表','已选列表']" :props="{
-      key: 'class_id'}"></el-transfer>
+      key: 'class_id'}" v-if="btnFamily===10"></el-transfer>
+
+
+<!--      <el-transfer filterable v-model="checkedItems" :props="{key:135}" :value="checkList"-->
+<!--                   :titles="['可选列表','已选列表']"></el-transfer>-->
       <el-button @click="bindAll" type="primary" style="margin-top: 20px;">绑定班级</el-button>
     </el-dialog>
   </div>
@@ -35,30 +39,31 @@
       }
     },
     computed: {
-      selectedItems() {
-        return this.multipleSelection
+      checkDisabled() {
+        if (this.btnFamily === 10 && this.multipleSelection.length === 1) {
+          return false
+        } else if (this.btnFamily === 5 && this.innerMultipleSelection.length === 1) {
+          return false
+        } else {
+          return true
+        }
       },
-      ...mapState(["multipleSelection", "btnFamily"])
+      ...mapState(["multipleSelection", "btnFamily", "innerMultipleSelection"])
     },
-    watch: {
-      //判断绑定按钮是否可操作
-      selectedItems(val) {
-        this.isDisabled = val.length !== 1
-      }
-    },
+    watch: {},
     methods: {
       /**
        * 获取dialog初始数据
        */
       initBindList() {
         let self = this
-
-        //获取用来绑定的数据
-        function getInitStructure() {
-          return self.axios({
-            url: self.structureUrl,
-            method: "get",
-          })
+        let params = {}
+        if (self.btnFamily === 10) {
+          params.courseId = self.multipleSelection[0].id//最后都改成id
+        } else if (self.btnFamily === 5) {
+          params.id = self.innerMultipleSelection[0].id
+        } else {
+          return
         }
 
         //获取已经绑定的数据
@@ -66,9 +71,10 @@
           return self.axios({
             url: self.alreadyBoundUrl,
             method: "get",
-            params: {
-              courseId: self.multipleSelection[0].id//最后都改成id
-            }
+            // params: {
+            //   courseId: self.multipleSelection[0].id//最后都改成id
+            // }
+            params: params
           })
         }
 
@@ -77,41 +83,36 @@
           return self.axios({
             url: self.structureUrl,
             method: "get",
+            params: params
           })
         }
 
 
         self.axios.all([getAllClasses(), alreadyBound()])
           .then(self.axios.spread(function (classes, bound) {
+            self.checkList = []
             //当这两个请求都完成的时候会触发这个函数，两个参数分别代表返回的结果
-
-
-            // let list = [];//保存所有的班级id
-            // list.length = classes.data.length
-            //
-            // for (let k = 0; k < classes.data.length; k++) {
-            //   list[k]={
-            //     key:classes.data[k].class_id,
-            //     label:classes.data[k].class_id+"--"+classes.data[k].school.name
-            //   }
-            // }
-            // self.checkList = list;
-
-
-            self.checkList = classes.data;
-
-            console.log(classes.data)
-
-
             var alreadyHave = [];
-            for (let i = 0; i < bound.data.length; i++) {
-              for (let j = 0; j < bound.data[i].classesList.length; j++) {
-                alreadyHave.push(bound.data[i].classesList[j])
+            if (self.btnFamily === 10) {
+              self.checkList = classes.data;
+              // var alreadyHave = [];
+              for (let i = 0; i < bound.data.length; i++) {
+                for (let j = 0; j < bound.data[i].classesList.length; j++) {
+                  alreadyHave.push(bound.data[i].classesList[j])
+                }
               }
+              self.checkedItems = alreadyHave;
+              self.alreadyBoundList = alreadyHave
+              console.log("checkList")
+              console.log(self.checkList)
+            } else if (self.btnFamily === 5) {
+              for (let key in classes.data) {
+                self.checkList.push(classes.data[key].classesList);
+                // console.log(classes.data[key].classesList)
+              }
+              self.checkList = [].concat(...self.checkList)
+              console.log(self.checkList)
             }
-            //
-            self.checkedItems = alreadyHave;
-            self.alreadyBoundList = alreadyHave
           }))
           .catch(err => {
           })
@@ -140,6 +141,8 @@
                 showClose: true
               })
               this.BindDialogVisible = false;
+            } else {
+              this.util.returnErr.call(this, response.data)
             }
           })
           .catch(err => {
@@ -168,8 +171,8 @@
           break;
         case 5://module相关
           this.btnText = "绑定班级";
-          this.structureUrl = "";
-          this.targetUrl = "";
+          this.structureUrl = "/module/classes/";
+          this.targetUrl = "module/bind/";
           this.alreadyBoundUrl = "";
           break;
         case 0://学生相关

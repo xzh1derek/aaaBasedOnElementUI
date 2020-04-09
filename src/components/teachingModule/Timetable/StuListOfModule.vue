@@ -11,6 +11,7 @@
       <el-table-column prop="qq" label="qq"></el-table-column>
       <el-table-column prop="school" label="学院" show-overflow-tooltip></el-table-column>
     </el-table>
+
     <span slot="footer" class="dialog-footer">
       <ExportStuList :stu-info="stuInfo" :time-for-class="timeForClass" :date="date"></ExportStuList>
   </span>

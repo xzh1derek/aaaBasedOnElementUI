@@ -16,13 +16,10 @@
           <ModuleTable :moduleListInfo="moduleListInfo[scope.$index]"></ModuleTable>
         </template>
       </el-table-column>
-
-
       <el-table-column prop="project_index" label="Project索引" width="180"></el-table-column>
       <el-table-column prop="project_name" label="Project名称" width="180"></el-table-column>
       <el-table-column prop="hours" label="Project学时" width="180"></el-table-column>
-      <el-table-column prop="teacher" label="老师" width="180"></el-table-column>
-      <el-table-column prop="is_fixed" label="选课类型" width="180"></el-table-column>
+      <el-table-column prop="is_fixed" :formatter="formatBoolean" label="固定排课?" width="180"></el-table-column>
       <el-table-column prop="course.course_code" label="相关课程编号" width="180"></el-table-column>
       <el-table-column prop="course.course_name" label="相关课程名称" width="180"></el-table-column>
     </el-table>
@@ -50,8 +47,7 @@
         this.axios({
           method: "get",
           url: "/module",
-          params: {
-          }
+          params: {}
         })
           .then(response => {
             //把获取到的值赋值给组件的 moduleListInfo
@@ -66,6 +62,13 @@
         //如果选择了相应的课程,就修改Vuex里的 multipleSelection 内容
         this.updateSelection(data);
       },
+
+      //格式化bool显示
+      formatBoolean() {
+        //arguments的第三个元素就是本行显示的内容
+        return arguments[2] === true ? "是" : "否"
+      },
+
 
       ...mapMutations(['updateSelection'])
     },

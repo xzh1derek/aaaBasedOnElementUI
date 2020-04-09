@@ -5,11 +5,11 @@
         <el-aside width="200px">
           <SideBar v-if="this.loginUser"></SideBar>
         </el-aside>
-        <el-container>
+        <el-container style="min-width: 730px">
           <el-header style="padding: 0;">
             <MainNavBar></MainNavBar>
           </el-header>
-          <el-main style="position: relative">
+          <el-main style="position: relative;min-width: 730px" >
             <router-view></router-view>
           </el-main>
         </el-container>

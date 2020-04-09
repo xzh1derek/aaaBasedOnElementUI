@@ -11,13 +11,13 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="totalItems" class="pageControl">
     </el-pagination>
-<!--    :page-sizes="[9 ,20, 40]"-->
 
   </div>
 </template>
 
 <script>
   import {mapState} from "vuex"
+
   export default {
     name: "Pagination",
     data() {
@@ -25,39 +25,49 @@
         stuList: [],
         totalItems: 1,
         pagesize: 9,//每一页的数量,
-        pageSizes:[9,20,40],
+        pageSizes: [9, 20, 40],
         pagerCount: 5,//展示到多少页时 中间显示...，取值在5~21之间
-
         listInfo: [],
         currentPage: 1,//初始页
       }
     },
-    props: ['targetUrl1', 'targetUrl2'],//url1:获取表单内容的url  url2:获取表单条数的url
-    computed:{
-      renovateCheck(){
+    props: ['targetUrl1', 'targetUrl2', "secondParams"],//url1:获取表单内容的url  url2:获取表单条数的url  secondParams：获取信息时可能需要的第三个参数
+    computed: {
+      renovateCheck() {
         return this.readyForRenovate
       },
-      ...mapState(["readyForRenovate"])
+      getSecondParams(){
+        return this.secondParams
+      },
+      ...mapState(["readyForRenovate", "btnFamily"])
     },
     methods: {
       getItemList() {
+        let params = {
+          page: this.currentPage,
+          rows: this.pagesize
+        }
+        if (this.btnFamily === 10) {
+          params.courseId = this.secondParams
+        }
         return this.axios({
           method: "get",
           url: this.targetUrl1,
-          params: {
-            page: this.currentPage,
-            rows: this.pagesize
-          }
+          params: params
         })
       },
 
       getTotalPages() {
+        let params = {
+          rows: this.pagesize
+        }
+        if (this.btnFamily === 10) {
+          params.courseId = this.secondParams
+        }
         return this.axios({
           method: "get",
           url: this.targetUrl2,
-          params: {
-            rows: this.pagesize
-          }
+          params: params
         })
       },
 
@@ -87,7 +97,11 @@
       listInfo() {
         this.$emit('rewriteList', this.listInfo)
       },
-      renovateCheck(){//监听 readyForRenovate ,如有变化就重新从后台获取数据
+      renovateCheck() {//监听 readyForRenovate ,如有变化就重新从后台获取数据
+        this.freshList()
+      },
+
+      getSecondParams(){
         this.freshList()
       }
     },
@@ -98,5 +112,7 @@
 </script>
 
 <style scoped>
-
+.paginationClass{
+  margin-top: 10px;
+}
 </style>

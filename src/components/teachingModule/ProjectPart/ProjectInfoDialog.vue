@@ -1,6 +1,6 @@
 <!--创建project 表单-->
 <template>
-  <el-dialog title="填写Project详细信息:" :visible.sync="dialogFormVisible" width="30%" v-if="multipleSelection">
+  <el-dialog title="填写Project详细信息:" :visible.sync="dialogFormVisible" width="30%" v-if="btnFamily===15">
     <el-form :model="modelFormData" ref="form">
       <el-form-item label="课程编号" :label-width="formLabelWidth" hidden>
         <el-col :span=span>
@@ -76,7 +76,7 @@
       }
     },
     computed: {
-      ...mapState(["multipleSelection", "readyForRenovate"])
+      ...mapState(["multipleSelection", "btnFamily","readyForRenovate"])
     },
     methods: {
       /**

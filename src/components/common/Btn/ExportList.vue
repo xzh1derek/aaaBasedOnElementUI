@@ -1,7 +1,7 @@
 <template>
   <div>
 <!--    <el-button @click="export2Excel" :style="{hidden: isDisplay}" :disabled="isDisabled">导出数据</el-button>-->
-    <el-button @click="export2Excel" v-if="isDisplay" :disabled="isDisabled">导出数据</el-button>
+    <el-button @click="export2Excel" v-if="isDisplay" :disabled="isDisabled" type="primary">导出名单</el-button>
   </div>
 </template>
 
@@ -95,13 +95,10 @@
           this.outerFilter = ['team_id', 'is_leader', 'score', 'file'];
           this.targetUrl = "/course/students/export";
           break;
-        // case 15 ://project相关
-        //   this.tHeader = ['学号', '姓名', '班级', '学院'];
-        //   this.innerFilter = ['username', 'name', 'class_id', 'school'];
-        //   this.outerFilter = ['team_id', 'is_leader', 'score', 'file'];
-        //   this.targetUrl = "/course/students/export";
-        //   this.isDisplay=false
-        //   break;
+        case 15 ://project相关
+          this.isDisplay=false
+          this.isDisabled=false
+          break;
         case 20:
           this.tHeader = ['学号', '姓名', '班级', '学院'];
           this.innerFilter = ['username', 'name', 'class_id', 'school'];

@@ -18,7 +18,8 @@
             <el-table-column prop="project_index" label="Project索引" width="180"></el-table-column>
             <el-table-column prop="project_name" label="Project名称" width="180"></el-table-column>
             <el-table-column prop="hours" label="Project学时" width="180"></el-table-column>
-            <el-table-column prop="teacher" label="老师" width="180"></el-table-column>
+            <el-table-column prop="is_fixed" label="固定排课?" :formatter="formatBoolean" width="180"></el-table-column>
+            <el-table-column prop="is_published" label="已发布?" :formatter="formatBoolean" width="180"></el-table-column>
             <el-table-column label="操作" width="180">
               <template slot-scope="scope">
                 <el-button @click.native.prevent="editProject(scope.row)" type="text" size="small">编辑</el-button>
@@ -169,6 +170,12 @@
         this.editBefore = this.util.deepClone(row)
         this.$refs.openFormDialog.diaVisible = true
       },
+      //格式化bool显示
+      formatBoolean() {
+        //arguments的第三个元素就是本行显示的内容
+        return arguments[2] === true ?"是":"否"
+      },
+
       ...mapMutations(["updateCurrentStatus"])
     },
     mounted() {

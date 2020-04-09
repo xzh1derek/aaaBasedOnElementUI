@@ -110,7 +110,7 @@
             console.log(response)
             localStorage.setItem("userInfo", JSON.stringify(response.data));
             // localStorage.userInfo = response.data
-            location.href = "/"//登录成功后跳转
+            location.href = "/user/info/"//登录成功后跳转
 
           })
           .catch(err => {
@@ -120,15 +120,15 @@
       },
 
     },
-    created: function() {//监听回车事件
-      let self = this;
-      document.onkeydown = function(e) {
-        let key = window.event.keyCode;
-        if (key === 13) {
-          self.loginSystem();
-        }
-      };
-    },
+    // created: function() {//监听回车事件
+    //   let self = this;
+    //   document.onkeydown = function(e) {
+    //     let key = window.event.keyCode;
+    //     if (key === 13) {
+    //       self.loginSystem();
+    //     }
+    //   };
+    // },
 
   }
 </script>

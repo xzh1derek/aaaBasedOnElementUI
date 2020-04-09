@@ -9,19 +9,20 @@
       <el-table-column prop="course_name" label="课程名称" width="180" show-overflow-tooltip></el-table-column>
       <el-table-column prop="credit" label="学分"  width="180"></el-table-column>
       <el-table-column prop="hours" label="学时" width="180"></el-table-column>
+      <el-table-column prop="is_published" label="是否发布" :formatter="formatBoolean" width="180"></el-table-column>
       <el-table-column prop="teachers" :formatter="formatTeacherName" label="教师" width="180"
                        show-overflow-tooltip></el-table-column>
-      <el-table-column prop="is_team" label="是否组队" width="180"></el-table-column>
       <el-table-column prop="max_num" label="组队最大人数" width="180"></el-table-column>
-      <el-table-column prop="stu_num" label="学生人数" width="180"></el-table-column>
+      <el-table-column prop="stu_num" label="总人数" width="180"></el-table-column>
       <el-table-column prop="project_num" label="项目数" width="180"></el-table-column>
       <el-table-column prop="template" label="模板" width="180"></el-table-column>
       <el-table-column
         fixed="right"
         label="操作"
-        width="100">
+      width="150px">
         <template slot-scope="scope">
           <el-button @click="editCourse(scope.row)" type="text" size="small">编辑</el-button>
+          <el-button @click="openStuListDia(scope.row)" type="text" size="small">学生名单</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -39,6 +40,8 @@
       </el-pagination>
     </div>
     <FormInDialog :origin-data="editBefore" target-url="/course/update" ref="openFormDialog"></FormInDialog>
+    <StuOfCourse ref="stuList" ></StuOfCourse>
+
   </div>
 </template>
 
@@ -46,6 +49,7 @@
   import CommonOperation from "../../common/CommonOperation";
   import FormInDialog from "../../common/FormInDialog";
   import {mapState, mapMutations} from "vuex";
+  import StuOfCourse from "./StuOfCourse";
 
   export default {
     name: "CourseList",
@@ -59,7 +63,7 @@
         editBefore: {},//未改动之前的数据,预填入form中
       }
     },
-    components: {CommonOperation, FormInDialog},
+    components: {CommonOperation, FormInDialog,StuOfCourse},
     computed: {
       isReadyForRenovate() {
         return this.readyForRenovate
@@ -96,7 +100,6 @@
           targetKey: "multipleSelection",
           targetVal: val
         }
-
         this.updateCurrentStatus(payload)
       },
 
@@ -123,10 +126,28 @@
         this.$refs.openFormDialog.diaVisible = true
       },
 
+      /**
+       * 打开学生列表对话框
+       */
+      openStuListDia(row){
+        let payload = {
+          targetKey: "multipleSelection",
+          targetVal: [row]
+        }
+        this.updateCurrentStatus(payload)
+        this.$refs.stuList.dialogVisible = true
+        this.$refs.stuList.courseId = row.id
+      },
+
       //格式化老师姓名显示
       formatTeacherName() {
         //arguments的第三个元素就是本行显示的内容
         return arguments[2].join("　")
+      },
+      //格式化bool显示
+      formatBoolean() {
+        //arguments的第三个元素就是本行显示的内容
+        return arguments[2] === true ?"是":"否"
       },
       ...mapMutations(["updateCurrentStatus"])
     }
