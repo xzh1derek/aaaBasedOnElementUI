@@ -16,6 +16,8 @@ import BookingExperiment from "../components/chooseCourse/BookingExperiment";
 import CurriculaVariableManagement from "../components/CurriculaVariableManagement/CurriculaVariableManagement";
 import MyTimetable from "../components/teachingModule/Timetable/MyTimetable";
 import UnauthorizedStuList from "../components/CurriculaVariableManagement/UnauthorizedStuList";
+import TeacherManagement from "../components/Administration/TeacherManagement";
+import TeamManagement from "../components/Administration/TeamManagement";
 
 // identity为10时,这个路由是公共路由
 const routes =
@@ -125,8 +127,7 @@ const routes =
           meta: {
             text: "我的课表"
           },
-          children: [
-          ]
+          children: []
 
         },
       ]
@@ -173,6 +174,20 @@ const routes =
           component: StuManagement,
           meta: {
             text: "学生管理"
+          }
+        },
+        {
+          path: "teacher",
+          component: TeacherManagement,
+          meta: {
+            text: "教师管理"
+          }
+        },
+        {
+          path: "team",
+          component: TeamManagement,
+          meta: {
+            text: "队伍管理"
           }
         },
       ]

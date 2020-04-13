@@ -17,7 +17,7 @@
 
       <el-form-item label="Module日期" :label-width="formLabelWidth">
         <el-col :span=span>
-          <el-input v-model="form.dateOfString" autocomplete="off" type="date"></el-input>
+          <el-input v-model="form.date" autocomplete="off" type="date"></el-input>
         </el-col>
       </el-form-item>
 
@@ -68,7 +68,7 @@
         form: {
           project_id: '',
           module_index: '',
-          dateOfString: "",
+          date: "",
           time: "",
           location: '',
           stu_num: '',

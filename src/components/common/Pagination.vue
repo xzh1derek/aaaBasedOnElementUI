@@ -36,7 +36,7 @@
       renovateCheck() {
         return this.readyForRenovate
       },
-      getSecondParams(){
+      getSecondParams() {
         return this.secondParams
       },
       ...mapState(["readyForRenovate", "btnFamily"])
@@ -47,8 +47,12 @@
           page: this.currentPage,
           rows: this.pagesize
         }
-        if (this.btnFamily === 10) {
-          params.courseId = this.secondParams
+        if (this.secondParams) {
+          if (!this.secondParams instanceof Object) {
+            params.courseId = this.secondParams
+          } else {
+            params = Object.assign(params, this.secondParams)
+          }
         }
         return this.axios({
           method: "get",
@@ -61,9 +65,16 @@
         let params = {
           rows: this.pagesize
         }
-        if (this.btnFamily === 10) {
-          params.courseId = this.secondParams
+        if (this.secondParams) {
+          if (!this.secondParams instanceof Object) {
+            params.courseId = this.secondParams
+          } else {
+            params = Object.assign(params, this.secondParams)
+          }
         }
+        // if (this.secondParams) {
+        //   params.courseId = this.secondParams
+        // }
         return this.axios({
           method: "get",
           url: this.targetUrl2,
@@ -76,6 +87,8 @@
         this.axios.all([self.getItemList(), self.getTotalPages()])
           .then(self.axios.spread(function (acct, perms) {
             // 两个请求现在都执行完成
+            console.log(self.targetUrl1)
+            console.log(self.targetUrl2)
             self.listInfo = acct.data
             self.totalItems = perms.data
           }));
@@ -101,7 +114,8 @@
         this.freshList()
       },
 
-      getSecondParams(){
+      getSecondParams() {
+        if (location.pathname === "/user/list" || location.pathname === "/school/team") return
         this.freshList()
       }
     },
@@ -112,7 +126,7 @@
 </script>
 
 <style scoped>
-.paginationClass{
-  margin-top: 10px;
-}
+  .paginationClass {
+    margin-top: 10px;
+  }
 </style>

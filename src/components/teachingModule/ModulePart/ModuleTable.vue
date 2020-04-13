@@ -11,6 +11,8 @@
       <el-table-column prop="date" label="日期" width="180"></el-table-column>
       <el-table-column prop="time" label="时间" width="180"></el-table-column>
       <el-table-column prop="location" label="地点" width="180"></el-table-column>
+      <el-table-column prop="class1" label="绑定班级1" width="180"></el-table-column>
+      <el-table-column prop="class2" label="绑定班级2" width="180"></el-table-column>
       <el-table-column prop="cur_num" label="已选课人数" width="180"></el-table-column>
       <el-table-column prop="stu_num" label="学生数" width="180"></el-table-column>
       <el-table-column label="操作" width="180">
