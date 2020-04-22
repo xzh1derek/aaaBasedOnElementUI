@@ -18,6 +18,9 @@ import MyTimetable from "../components/teachingModule/Timetable/MyTimetable";
 import UnauthorizedStuList from "../components/CurriculaVariableManagement/UnauthorizedStuList";
 import TeacherManagement from "../components/Administration/TeacherManagement";
 import TeamManagement from "../components/Administration/TeamManagement";
+import MyTasks from "../components/teamModule/MyTasks";
+import CourseOfMe from "../components/teachingModule/TaskPart/CourseOfMe";
+import CheckWork from "../components/teachingModule/CheckWork";
 
 // identity为10时,这个路由是公共路由
 const routes =
@@ -62,7 +65,7 @@ const routes =
         },
         {
           path: 'task',
-          component: teamList,
+          component: MyTasks,
           meta: {
             text: "实验任务",
             teamleader: true,
@@ -129,6 +132,21 @@ const routes =
           },
           children: []
 
+        },
+        {
+          path: 'task',
+          component: CourseOfMe,
+          meta: {
+            text: "实验任务"
+          },
+
+        },
+        {
+          path: 'check',
+          component: CheckWork,
+          meta: {
+            text: "批改作业"
+          },
         },
       ]
 
