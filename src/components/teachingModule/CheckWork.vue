@@ -1,15 +1,15 @@
 <template>
   <div>
     <el-button type="primary" @click="downloadAll">打包下载</el-button>
-    <el-select v-model="value" placeholder="请选择">
+    <el-select v-model="courseId" placeholder="请选择">
       <el-option
-        v-for="item in options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value">
+        v-for="item in courseList"
+        :key="item.id"
+        :label="item.course_name"
+        :value="item.id">
       </el-option>
     </el-select>
-    <el-button type="primary">查询</el-button>
+    <el-button type="primary" @click="getWorkList">查询</el-button>
     <PreviewPdf :pdf-url="url" ref="previewPdf" ></PreviewPdf>
     <el-table
       :data="workList"
@@ -41,16 +41,39 @@
         courseId: "",
         userId:"",
         url: "",
-        isShow: false
+        isShow: false,
+        courseList:[]
       }
     },
     methods: {
+      getCourseOfTeacher(){
+        this.axios({
+          method: "get",
+          url: "/score/",
+          params: {
+            teacherId:1
+          }
+        })
+          .then(response => {
+            if (response.data instanceof Array){
+              this.courseList = response.data
+            }else{
+              this.util.returnErr.call(this,"数据获取失败,请稍后再试")
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      },
       getWorkList() {
+        if (!this.courseId){
+          return;
+        }
         this.axios({
           method: "get",
           url: "/task/homework/list",
           params: {
-            courseId: 1//到时候要改
+            courseId: this.courseId
           }
         })
           .then(response => {
@@ -78,7 +101,7 @@
           method: "get",
           url: "/task/homework/download/all/",
           params: {
-            courseId:1//到时候要改
+            courseId:this.courseId
           }
         })
           .then(response => {
@@ -90,7 +113,7 @@
       }
     },
     mounted() {
-      this.getWorkList()
+      this.getCourseOfTeacher()
     }
 
   }
