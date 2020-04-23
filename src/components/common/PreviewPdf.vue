@@ -32,7 +32,7 @@
   export default {
 
     name: "PreviewPdf",
-    props: [],
+    props: ["scoreBefore"],
     data() {
       return {
         isShow: false,
