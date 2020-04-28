@@ -25,7 +25,7 @@
       style="position: fixed;right: 0">
 
       我的消息
-      {{newMessageCount===0?null:"( "+newMessageCount+" )"}}
+      {{ userInfoData.new_message==0?null:"( "+userInfoData.new_message+" )"}}
     </el-menu-item>
 
   </el-menu>
@@ -33,7 +33,7 @@
 
 <script>
   import routes from "../../router/routes";
-  import {mapMutations} from "vuex";
+  import {mapState, mapMutations} from "vuex";
   import store from '../../store/store'
 
   export default {
@@ -43,21 +43,15 @@
       return {
         mainRouterSet: routes,
         mainActiveIndex: "",
-        newMessageCount: JSON.parse(localStorage.userInfo).new_message//获取当前未读消息的数目
+        // newMessageCount: localStorage.userInfo.new_message//获取当前未读消息的数目
       }
     },
     computed: {
-      // getMessage(){
-      //   return localStorage.userInfo.new_message
-      // }
+      ...mapState(["userInfoData"])
     },
     methods: {
       sout(event) {
-        this.newMessageCount=0
         this.newActiveRoute(event.$attrs.activeRoute)
-      },
-      getMessage() {
-        return localStorage.userInfo.new_message
       },
       ...mapMutations(["newActiveRoute"])
     },
@@ -66,6 +60,9 @@
       this.mainActiveIndex = window.location.pathname;
     },
     mounted() {
+      this.mainRouterSet = this.mainRouterSet.filter(item => {
+        return  item.meta.nav === true
+      })
     }
   }
 </script>

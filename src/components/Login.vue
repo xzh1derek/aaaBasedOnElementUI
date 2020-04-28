@@ -24,12 +24,15 @@
 
 <script>
 
+  import {teacherMenu,studentMenu}  from "../router/RouterAvailable";
+
   document.onkeydown = function (event) {
     var e = event || window.event || arguments.callee.caller.arguments[0];
     if (e && e.keyCode === 13) { // 按 Esc
-
     }
   };
+
+  import {mapActions} from 'vuex'
 
   export default {
     name: "login",
@@ -42,94 +45,68 @@
       }
     },
     methods: {
-      initInformation() {
-        var self = this
-
-        function getUserInfo() {
-          return self.axios({
-            method: "post",
-            url: "/userInfo",
-            params: {
-              userId: localStorage.token//得改
-            }
-          })
-        }
-
-        function getTeamInfo() {
-          return self.axios({
-            method: "get",
-            url: "/search",
-            params: {
-              leader: localStorage.token//得改
-            }
-          })
-        }
-
-        self.axios.all([getUserInfo(), getTeamInfo()])
-          .then(self.axios.spread(function (acct, perms) {
-            //当这两个请求都完成的时候会触发这个函数，两个参数分别代表返回的结果
-            self.initUserInfo(acct.data);
-            if (perms.data) {
-              self.updateTeam(perms.data);
-            }
-            self.userInfoToOpe = self.userInfoData//更改vuex里面的数据据
-          }))
-          .catch(err => {
-            localStorage.token = ""
-          })
-      },
 
 
       loginSystem() {
+        if (localStorage.token1){
+          if (localStorage.identity === "teacher"){
+            this.$router.addRoutes(teacherMenu)
+            this.$router.options.routes.push.apply(this.$router.options.routes,
+              teacherMenu)
+          }else if (localStorage.identity === "student") {
+            this.$router.addRoutes(studentMenu)
+            this.$router.options.routes.push.apply(this.$router.options.routes,
+              studentMenu)
+          }
+          this.$emit("loginSuccessful")
+          this.getUserInfo()
+
+          console.log(this.$router)
+          this.$router.push({path: location.pathname})
+          return
+        }
+
+
         let self = this
         this.axios({
           method: "post",
           url: "/login",
           params: {
             username: this.form.username,
-            // password: this.$md5(this.form.password),
             password: this.form.password,
           }
         })
           .then((response) => {
-            console.log("登录成功")
-            console.log(response)
-            localStorage.token = self.form.username//先把用户账号存起来
+            if (response.data instanceof Object) {
+              localStorage.token = self.form.username//先把用户账号存起来
+              localStorage.token1 = response.data.token//先把用户账号存起来
+              localStorage.identity = response.data.identity//先把用户账号存起来
+              if (response.data.identity === "teacher"){
+                this.$router.addRoutes(teacherMenu)
+                this.$router.options.routes.push.apply(this.$router.options.routes,
+                  teacherMenu)
+              }else if (response.data.identity === "student") {
+                this.$router.addRoutes(studentMenu)
+                this.$router.options.routes.push.apply(this.$router.options.routes,
+                  studentMenu)
+              }
+              this.$emit("loginSuccessful")
+              this.getUserInfo()
 
-            if (response.data === "f" || response.data === "n") {
-              localStorage.token = "";
-              self.$message({
-                message: "登录失败,账号或密码错误",
-                type: "error",
-                duration: 1500,
-                showClose: true
-              })
-              return;
+              console.log(this.$router)
+              this.$router.push({path: "/user/info/"})
             }
-
-            console.log(response)
-            localStorage.setItem("userInfo", JSON.stringify(response.data));
-            // localStorage.userInfo = response.data
-            location.href = "/user/info/"//登录成功后跳转
-
           })
           .catch(err => {
             console.log("有错误")
             console.log(err)
           })
       },
-
+      ...mapActions(["getUserInfo"])
     },
-    // created: function() {//监听回车事件
-    //   let self = this;
-    //   document.onkeydown = function(e) {
-    //     let key = window.event.keyCode;
-    //     if (key === 13) {
-    //       self.loginSystem();
-    //     }
-    //   };
-    // },
-
+    mounted() {
+      this.loginSystem()
+    }
   }
 </script>
 

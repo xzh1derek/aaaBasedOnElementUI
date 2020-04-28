@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from '../http/http'
 
 Vue.use(Vuex);
 
@@ -13,6 +14,7 @@ export default new Vuex.Store({
       teamleader: "",//队长学号
       applicationStatus: "",//application_status为"0"时显示“申请未处理”，为其他非空字符串时显示“申请未通过：”+该字符串。（为空时不显示）
       invitation_id: 0,
+      new_message:"",
       leader: false,
       available: true,
       display: false,
@@ -92,6 +94,20 @@ export default new Vuex.Store({
     },
     updateData(state) {
       state.applicationStatus = "0"
+    }
+  },
+  actions:{
+    getUserInfo(content){
+      axios({
+        method: "get",
+        url: "/userInfo/",
+      })
+        .then(response => {
+          content.commit("initUserInfo",response.data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 })

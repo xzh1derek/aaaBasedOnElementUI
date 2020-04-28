@@ -11,13 +11,9 @@
 
 
     <el-menu-item>
-      <div @click="isCollapse=!isCollapse">
-        <i class="el-icon-d-arrow-right"></i>
-        <span slot="title">展开/关闭菜单</span>
-      </div>
+        <img src="/static/image/logo_tran@50px.png" alt="西安电子科技大学" @click="toHomepage" style="width: 100%;height: 100%" >
     </el-menu-item>
 
-    <!--    <template v-for="(operation,index) in childRoute" v-if="index === activeRoute">-->
     <template v-for="(operation,index) in childRoute" v-if="index === activeRoute &&　operation.children">
       <el-submenu index="1">
         <template slot="title">
@@ -53,7 +49,7 @@
     data() {
       return {
         isCollapse: false,
-        childRoute: routes,
+        childRoute: routes.filter(item=> item.meta.nav===true),
         mainActiveIndex: ""
       };
     },
@@ -70,12 +66,25 @@
       toogleCollapse(event) {
       },
       logOut() {
-        // localStorage.token = "";
-        // localStorage.teamleader = ""
-        localStorage.clear()
-        history.go(0)
+        this.axios({
+          method: "post",
+          url: "/logout",
+        })
+          .then(response => {
+            if (response.data === 0){
+              localStorage.clear()
+              history.go(0)
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+
       },
 
+      toHomepage() {
+  this.$router.push("/user/info/")
+      }
     },
     beforeCreate() {
       this.childRoute = this.routes
@@ -87,6 +96,11 @@
     created() {
       // this.mainActiveIndex = window.location.hash.substring(1);
       this.mainActiveIndex = window.location.pathname;
+    },
+    beforeMount() {
+      // this.childRoute = this.routes.filter(item => {
+      //   return
+      // })
     }
   }
 </script>

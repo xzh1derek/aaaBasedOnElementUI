@@ -25,7 +25,6 @@
                   <el-table-column prop="qq" label="qq"></el-table-column>
                   <el-table-column prop="school" label="学院"></el-table-column>
                 </el-table>
-
               </div>
             </el-card>
           </div>
@@ -50,12 +49,13 @@
   import TeamButton from "./TeamButton";
 
   export default {
-    name: "my-team",
+    name: "myTeam",
+    // components: {CreateTeam, MyApplication, TeamButton},
     components: {CreateTeam, TeamOperation, MyApplication, TeamButton},
     data() {
       return {
         myTeamMember: [],
-        show: "true",
+        show: true,
         available: "true",
         input: "",//与输入邀请人学号的输入框绑定,
         token: localStorage.token,
@@ -99,15 +99,6 @@
               showClose: true
             })
           })
-      },
-
-
-      //用来找谁是leader,以后有时间做
-      findLeader(team, row, column, cellValue, index) {
-        console.log(arguments)
-        if(arguments[0].leader===arguments[1].row.username){
-          return "backgroundColor:green"
-        }
       },
     },
     mounted() {
