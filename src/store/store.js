@@ -23,7 +23,7 @@ export default new Vuex.Store({
       leader: "init",
     },
     newMessages: 0,
-    activeRoute: 0,
+    activeRoute: 0,//用于主导航和侧边导航联动
     multipleSelection: [],
     innerMultipleSelection:[],//记录嵌套内表格被选择的数据
     // verificationCode: "",//用于表示当前进入的是哪个路由,以此来控制显示的按键组

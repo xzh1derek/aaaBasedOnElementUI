@@ -235,8 +235,16 @@ import CheckWork from "../components/teachingModule/CheckWork";
 const routes =
   [
     {
+      path: '/',
+      redirect:'/user/info/',
+      meta: {
+        nav:false
+      }
+    },
+    {
       path: '/login',
       component: Login,
+      name:"login",
       meta: {
         text: "登录",
         nav:false

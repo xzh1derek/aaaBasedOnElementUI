@@ -13,4 +13,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 /mianjing.js
+/test.js
 /testFile.js

@@ -1,6 +1,5 @@
 <template>
   <el-menu
-    :default-active="mainActiveIndex"
     class="el-menu-vertical-demo"
     :collapse="isCollapse"
     background-color="#2a3f54"
@@ -8,10 +7,8 @@
     active-text-color="#ffd04b"
     router
     style="height: 100vh;">
-
-
     <el-menu-item>
-        <img src="/static/image/logo_tran@50px.png" alt="西安电子科技大学" @click="toHomepage" style="width: 100%;height: 100%" >
+      <img src="/static/image/logo_tran@50px.png" alt="西安电子科技大学" @click="toHomepage" style="width: 100%;height: 70%">
     </el-menu-item>
 
     <template v-for="(operation,index) in childRoute" v-if="index === activeRoute &&　operation.children">
@@ -49,29 +46,20 @@
     data() {
       return {
         isCollapse: false,
-        childRoute: routes.filter(item=> item.meta.nav===true),
-        mainActiveIndex: ""
+        childRoute: routes.filter(item => item.meta.nav === true),
       };
     },
     computed: {
       ...mapState(["activeRoute"])
     },
     methods: {
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      toogleCollapse(event) {
-      },
       logOut() {
         this.axios({
           method: "post",
           url: "/logout",
         })
           .then(response => {
-            if (response.data === 0){
+            if (response.data === 0) {
               localStorage.clear()
               history.go(0)
             }
@@ -79,28 +67,16 @@
           .catch(err => {
             console.log(err)
           })
-
       },
-
       toHomepage() {
-  this.$router.push("/user/info/")
+        this.$router.push("/user/info/")
       }
     },
     beforeCreate() {
       this.childRoute = this.routes
     },
-
     mounted() {
-
-    },
-    created() {
-      // this.mainActiveIndex = window.location.hash.substring(1);
-      this.mainActiveIndex = window.location.pathname;
-    },
-    beforeMount() {
-      // this.childRoute = this.routes.filter(item => {
-      //   return
-      // })
+      console.log(this)
     }
   }
 </script>

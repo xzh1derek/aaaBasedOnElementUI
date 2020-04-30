@@ -43,7 +43,6 @@
       return {
         mainRouterSet: routes,
         mainActiveIndex: "",
-        // newMessageCount: localStorage.userInfo.new_message//获取当前未读消息的数目
       }
     },
     computed: {
@@ -56,13 +55,14 @@
       ...mapMutations(["newActiveRoute"])
     },
     created() {
-      // this.mainActiveIndex = window.location.hash.substring(1);
-      this.mainActiveIndex = window.location.pathname;
+      this.mainActiveIndex = window.location.pathname.match(/\/\w+\//)[0];
     },
     mounted() {
       this.mainRouterSet = this.mainRouterSet.filter(item => {
         return  item.meta.nav === true
       })
+      let routerArr = this.util.getPropFormListObj(this.mainRouterSet,"path")
+      this.newActiveRoute(routerArr.indexOf(this.mainActiveIndex))
     }
   }
 </script>
