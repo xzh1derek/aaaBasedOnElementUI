@@ -67,14 +67,14 @@
         }
         if (this.secondParams) {
           if (!this.secondParams instanceof Object) {
+            console.log("aaa")
             params.courseId = this.secondParams
           } else {
+            console.log("bbb")
             params = Object.assign(params, this.secondParams)
           }
         }
-        // if (this.secondParams) {
-        //   params.courseId = this.secondParams
-        // }
+        console.log(params)
         return this.axios({
           method: "get",
           url: this.targetUrl2,
@@ -83,14 +83,39 @@
       },
 
       freshList() {
-        let self = this
-        this.axios.all([self.getItemList(), self.getTotalPages()])
-          .then(self.axios.spread(function (acct, perms) {
+        let _self = this
+        var params1 = {
+          page: _self.currentPage,
+          rows: _self.pagesize,
+        }
+        if (_self.secondParams) {
+          if (!(_self.secondParams instanceof Object)) {
+            params1.courseId = this.secondParams
+          } else {
+            params1 = Object.assign(params1, _self.secondParams)
+          }
+        }
+        function getItemList() {
+          return _self.axios({
+            method: "get",
+            url: _self.targetUrl1,
+            params: params1
+          })
+        }
+        function getTotalPages() {
+          return _self.axios({
+            method: "get",
+            url: _self.targetUrl2,
+            params: params1
+          })
+        }
+
+
+        _self.axios.all([getItemList(),getTotalPages()])
+          .then(_self.axios.spread(function (acct, perms) {
             // 两个请求现在都执行完成
-            console.log(self.targetUrl1)
-            console.log(self.targetUrl2)
-            self.listInfo = acct.data
-            self.totalItems = perms.data
+            _self.listInfo = acct.data
+            _self.totalItems = perms.data
           }));
       },
 

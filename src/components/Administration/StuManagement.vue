@@ -37,6 +37,7 @@
 <template v-if="!showPagination">
     <Pagination @rewriteList="getListData" :second-params="stuInfo" target-url1="/students/search/"
                 target-url2="/students/search/pages"
+                ref="searchPagination"
     ></Pagination>
 </template>
     <FormInDialog ref="openFormDialog" :origin-data=editBefore target-url="/students/update"></FormInDialog>
@@ -93,9 +94,9 @@
       },
 
       editStu(row) {
-        this.editBefore = row
-        this.$refs.openFormDialog.editStuDiaVisible = true
-        // console.log(row)
+        this.editBefore = Object.assign({},row)
+        // this.$refs.openFormDialog.editStuDiaVisible = true
+        this.$refs.openFormDialog.diaVisible = true
       },
 
 
@@ -123,7 +124,11 @@
       },
       searchStu(data) {
         this.stuInfo = data
-        this.showPagination = false
+        if (this.showPagination){
+          this.showPagination= false
+        }else {
+          this.$refs.searchPagination.freshList()
+        }
       },
       showAll() {
         this.showPagination = true

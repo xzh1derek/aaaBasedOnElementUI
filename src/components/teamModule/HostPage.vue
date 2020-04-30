@@ -24,6 +24,7 @@
         <!--      已选课程-->
         <el-col :span="24">
           <selectedCourses></selectedCourses>
+          <ModuleManagement v-if="identity==='teacher'"></ModuleManagement>
         </el-col>
       </el-row>
     </div>
@@ -36,10 +37,15 @@
 <script>
   import userInfo from "../userInfo";
   import SelectedCourses from "./SelectedCourses";
+  import ModuleManagement from "../teachingModule/Timetable/ModuleManagement";
+  import {mapState} from "vuex";
 
   export default {
     name: "HostPage",
-    components: {userInfo, SelectedCourses},
+    components: {userInfo, SelectedCourses,ModuleManagement},
+    computed:{
+      ...mapState(["identity"])
+    }
   }
 </script>
 

@@ -14,7 +14,6 @@
           </div>
           <el-button slot="reference" style="float: right; padding: 3px 0" type="text">修改密码/QQ</el-button>
         </el-popover>
-
       </div>
       <div class="text item">
         学号 : {{userInfoData.username}}
@@ -29,7 +28,6 @@
         QQ : {{userInfoData.qq}}
       </div>
     </el-card>
-
   </div>
 </template>
 

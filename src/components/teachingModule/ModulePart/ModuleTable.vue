@@ -21,19 +21,12 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog
-      title="提示"
-      :visible.sync="dialogVisible"
-      width="30%">
-      <BindClasses :bind-id="moduleId"   structure-url="/module/classes" limit="1"></BindClasses>
-    </el-dialog>
+
 
   </div>
 </template>
 
 <script>
-  import BindClasses from "../../common/Btn/BindClasses";
-  // import store from '../../store/store'
   import {mapState, mapMutations} from "vuex";
   export default {
     name: "ModuleTable",
@@ -42,10 +35,8 @@
     data() {
       return {
         moduleId: "",
-        dialogVisible:false
       }
     },
-    components: {BindClasses},
     computed: {
       ...mapState(["innerMultipleSelection"])
     },
@@ -62,9 +53,7 @@
         this.updateCurrentStatus(payload)
       },
       getModuleId(row) {
-        console.log(row)
         this.moduleId = row.id;
-        this.dialogVisible=true
       },
       ...mapMutations(["updateCurrentStatus"])
     },

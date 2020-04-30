@@ -8,11 +8,11 @@
         </el-col>
       </el-form-item>
 
-      <el-form-item label="Module批次" :label-width="formLabelWidth">
-        <el-col :span=span>
-          <el-input v-model="form.module_index" autocomplete="off"></el-input>
-        </el-col>
-      </el-form-item>
+      <!--      <el-form-item label="Module批次" :label-width="formLabelWidth">-->
+      <!--        <el-col :span=span>-->
+      <!--          <el-input v-model="form.module_index" autocomplete="off"></el-input>-->
+      <!--        </el-col>-->
+      <!--      </el-form-item>-->
 
 
       <el-form-item label="Module日期" :label-width="formLabelWidth">
@@ -21,12 +21,21 @@
         </el-col>
       </el-form-item>
 
-      <el-form-item label="Module时间" :label-width="formLabelWidth"  >
+      <el-form-item label="Module时间" :label-width="formLabelWidth">
         <el-col :span=span>
-          <el-input v-model="form.time" autocomplete="off" placeholder="例 14:00-16:00" ></el-input>
+          <!--          <el-input v-model="form.time" autocomplete="off" placeholder="例 14:00-16:00" ></el-input>-->
+          <el-time-picker
+            is-range
+            v-model="form.time"
+            range-separator="至"
+            start-placeholder="开始时间"
+            end-placeholder="结束时间"
+            placeholder="选择时间范围"
+            value-format="HH:mm"
+            style="width: 100%">
+          </el-time-picker>
         </el-col>
       </el-form-item>
-
 
 
       <el-form-item label="Module地点" :label-width="formLabelWidth">
@@ -68,8 +77,12 @@
         form: {
           project_id: '',
           module_index: '',
+          hasChanged: false,
           date: "",
-          time: "",
+          time: [
+            "14:00",
+            "16:00"
+          ],
           location: '',
           stu_num: '',
         },
@@ -78,6 +91,10 @@
           module_index: '',
           location: '',
           stu_num: '',
+          time: [
+            "14:00",
+            "16:00"
+          ],
         },
         submittedData: [],
         formLabelWidth: '100px',
@@ -93,7 +110,9 @@
         //点击提交之后,要先把当前的内容存进要提交的数据里
         let result = this.util.deepClone(this.form)
         result.project_id = this.multipleSelection[0].id
-        this.submittedData.push(result)
+        // this.submittedData.push(result)
+        result.time = result.time.join("-")
+        this.submittedData[0] = result
 
 
         let self = this;
@@ -104,17 +123,15 @@
           data: this.submittedData
         })
           .then(response => {
-            //固定排课时,需要选班级
-            console.log(response)
-            if (this.multipleSelection[0].is_fixed) {
-              this.$emit("showInner", response.data)
-            } else {
-              this.$emit("closeOuter")
-            }
+            if (response.data === 0) {
+              this.util.feedbackInfo(this, 0)
 
-            this.form = this.formInit
-            //
-            // this.$refs.CourseList.initCourseList();
+              this.form = this.formInit
+              this.$emit("closeOuter")
+              this.$emit("hasChanged")
+            } else {
+              this.util.returnErr.call(this, response.data)
+            }
           })
           .catch(err => {
             console.log(err)

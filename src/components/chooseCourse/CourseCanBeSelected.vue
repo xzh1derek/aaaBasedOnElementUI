@@ -1,7 +1,7 @@
 <!--查询可选课程列表-->
 <template>
   <div>
-    <el-table :data="courseList" style="width: 100%" height="80vh">
+    <el-table :data="courseList" border stripe style="width: 100%" height="80vh">
       <el-table-column prop="course_code" label="课程编号" width="180">
       </el-table-column>
       <el-table-column prop="course_name" label="课程名" width="180">

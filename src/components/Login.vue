@@ -24,7 +24,7 @@
 
 <script>
 
-  import {teacherMenu,studentMenu}  from "../router/RouterAvailable";
+  import {teacherMenu, studentMenu} from "../router/RouterAvailable";
 
   document.onkeydown = function (event) {
     var e = event || window.event || arguments.callee.caller.arguments[0];
@@ -32,7 +32,7 @@
     }
   };
 
-  import {mapActions} from 'vuex'
+  import {mapActions, mapMutations} from 'vuex'
 
   export default {
     name: "login",
@@ -48,20 +48,23 @@
 
 
       loginSystem() {
-        if (localStorage.token1){
-          if (localStorage.identity === "teacher"){
+        if (localStorage.token1) {
+          if (localStorage.identity === "teacher") {
             this.$router.addRoutes(teacherMenu)
             this.$router.options.routes.push.apply(this.$router.options.routes,
               teacherMenu)
-          }else if (localStorage.identity === "student") {
+          } else if (localStorage.identity === "student") {
             this.$router.addRoutes(studentMenu)
             this.$router.options.routes.push.apply(this.$router.options.routes,
               studentMenu)
           }
           this.$emit("loginSuccessful")
           this.getUserInfo()
-
-          console.log(this.$router)
+          let payload = {
+            targetKey: "identity",
+            targetVal: localStorage.identity
+          }
+          this.updateCurrentStatus(payload);
           this.$router.push({path: location.pathname})
           return
         }
@@ -81,17 +84,22 @@
               localStorage.token = self.form.username//先把用户账号存起来
               localStorage.token1 = response.data.token//先把用户账号存起来
               localStorage.identity = response.data.identity//先把用户账号存起来
-              if (response.data.identity === "teacher"){
+              if (response.data.identity === "teacher") {
                 this.$router.addRoutes(teacherMenu)
                 this.$router.options.routes.push.apply(this.$router.options.routes,
                   teacherMenu)
-              }else if (response.data.identity === "student") {
+              } else if (response.data.identity === "student") {
                 this.$router.addRoutes(studentMenu)
                 this.$router.options.routes.push.apply(this.$router.options.routes,
                   studentMenu)
               }
               this.$emit("loginSuccessful")
-              this.getUserInfo()
+              let payload = {
+                targetKey: "identity",
+                targetVal: response.data.identity
+              }
+              this.updateCurrentStatus(payload);
+              this.getUserInfo();
 
               console.log(this.$router)
               this.$router.push({path: "/user/info/"})
@@ -102,10 +110,13 @@
             console.log(err)
           })
       },
+      ...mapMutations(["updateCurrentStatus"]),
       ...mapActions(["getUserInfo"])
     },
     mounted() {
-      this.loginSystem()
+      if (localStorage.token1) {
+        this.loginSystem()
+      }
     }
   }
 </script>

@@ -48,15 +48,15 @@
       </el-table-column>
     </el-table>
 
-
-    <Pagination ref="pageSize" @rewriteList="getListData" target-url1="/foyer" target-url2="/foyer/pages"
-                v-if="showPagination"></Pagination>
-    <div v-if="!showPagination">
-    <Pagination ref="pageSizeForSearchTeam" @rewriteList="getListData" target-url1="/foyer/search/course/"
-                target-url2="/foyer/search/course/pages/"
-                :second-params="courseId"
-                v-if="!showPagination"
-    ></Pagination>
+    <div v-if="!isShowLeader">
+      <Pagination ref="pageSize" @rewriteList="getListData" target-url1="/foyer" target-url2="/foyer/pages"
+                  v-if="showPagination"></Pagination>
+      <div v-if="!showPagination">
+        <Pagination ref="pageSizeForSearchTeam" @rewriteList="getListData" target-url1="/foyer/search/course/"
+                    target-url2="/foyer/search/course/pages/"
+                    :second-params="courseId"
+        ></Pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -80,7 +80,8 @@
         show: false,
         searchType: "2",
         courseNameList: [],
-        courseId: ""
+        courseId: "",
+        isShowLeader:false
       }
     },
     components: {Pagination},
@@ -92,6 +93,7 @@
       search(newVal) {
         if (!newVal) {
           this.teamListInfo = this.teamListInfoBackUp
+          this.isShowLeader=false
           this.showPagination = true
         }
       }
@@ -163,6 +165,7 @@
         if (!this.util.validateSomething.call(this, val, this.regExpLibrary.schoolIdReg)) {
           return
         }
+
         this.axios({
           url: "/foyer/search/leader/",
           method: "get",
@@ -171,7 +174,7 @@
           }
         })
           .then(response => {
-            this.showPagination = false
+            this.isShowLeader = true
             this.teamListInfo = response.data
           })
           .catch(err => {
@@ -212,8 +215,9 @@
 
 
       getTeamOfCourse() {
+        this.isShowLeader=false
         this.showPagination = false
-        this.$refs.pageSizeForSearchTeam.freshList()
+        // this.$refs.pageSizeForSearchTeam.freshList()
 
       }
     },

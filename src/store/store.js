@@ -29,10 +29,10 @@ export default new Vuex.Store({
     // verificationCode: "",//用于表示当前进入的是哪个路由,以此来控制显示的按键组
     btnFamily: 10000,//用来控制CommonOperation显示哪些键盘组   0-->stuManagement   5-->module相关  10-->course相关   15-->project相关
     readyForRenovate:false,//分页组件通过监听这个变量.确定什么时候获取新的页面数据
-    // tableWidth:"100%",
     regExpLibrary:{
        schoolIdReg : /^[12]\d[012]\d{8}$/ //验证学号的正则表达式
-    }
+    },
+    identity:"student"
   },
 
   mutations: {
