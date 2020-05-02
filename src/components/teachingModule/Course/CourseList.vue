@@ -7,7 +7,7 @@
       <el-table-column type="selection" fixed></el-table-column>
       <el-table-column prop="course_code" label="课程代码" sortable width="180"></el-table-column>
       <el-table-column prop="course_name" label="课程名称" width="180" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="credit" label="学分"  width="180"></el-table-column>
+      <el-table-column prop="credit" label="学分" width="180"></el-table-column>
       <el-table-column prop="hours" label="学时" width="180"></el-table-column>
       <el-table-column prop="is_published" label="是否发布" :formatter="formatBoolean" width="180"></el-table-column>
       <el-table-column prop="teachers" :formatter="formatTeacherName" label="教师" width="180"
@@ -19,7 +19,7 @@
       <el-table-column
         fixed="right"
         label="操作"
-      width="150px">
+        width="150px">
         <template slot-scope="scope">
           <el-button @click="editCourse(scope.row)" type="text" size="small">编辑</el-button>
           <el-button @click="openStuListDia(scope.row)" type="text" size="small">学生名单</el-button>
@@ -40,7 +40,7 @@
       </el-pagination>
     </div>
     <FormInDialog :origin-data="editBefore" target-url="/course/update" ref="openFormDialog"></FormInDialog>
-    <StuOfCourse ref="stuList" ></StuOfCourse>
+    <StuOfCourse ref="stuList"></StuOfCourse>
 
   </div>
 </template>
@@ -63,7 +63,7 @@
         editBefore: {},//未改动之前的数据,预填入form中
       }
     },
-    components: {CommonOperation, FormInDialog,StuOfCourse},
+    components: {CommonOperation, FormInDialog, StuOfCourse},
     computed: {
       isReadyForRenovate() {
         return this.readyForRenovate
@@ -129,7 +129,7 @@
       /**
        * 打开学生列表对话框
        */
-      openStuListDia(row){
+      openStuListDia(row) {
         let payload = {
           targetKey: "multipleSelection",
           targetVal: [row]
@@ -147,7 +147,7 @@
       //格式化bool显示
       formatBoolean() {
         //arguments的第三个元素就是本行显示的内容
-        return arguments[2] === true ?"是":"否"
+        return arguments[2] === true ? "是" : "否"
       },
       ...mapMutations(["updateCurrentStatus"])
     }
@@ -156,11 +156,8 @@
       isReadyForRenovate() {//如果btnFamily=10 并且readyForRenovate改变了,就更新页面
         if (this.btnFamily == 10)
           this.initCourseList()
-      }
-      ,
-
-    }
-    ,
+      },
+    },
     mounted() {
       //加载页面时,发送请求,获取所有队伍信息
       //初始化时,要先把数据存在数组中

@@ -3,7 +3,7 @@
     <template v-if=isLogin>
       <el-container style="height: 100vh;width: 100vw;">
         <el-aside width="200px">
-          <SideBar v-if="this.loginUser"></SideBar>
+          <SideBar ></SideBar>
         </el-aside>
         <el-container style="min-width: 730px">
           <el-header style="padding: 0;">
@@ -17,7 +17,7 @@
     </template>
 
     <template v-else>
-      <Login></Login>
+      <Login @loginSuccessful="isLogin=true"></Login>
     </template>
   </div>
 </template>
@@ -27,7 +27,6 @@
 
   import navbar from "./components/teamModule/navbar";
   import store from './store/store'
-  import {mapState, mapMutations} from 'vuex'
   import MainNavBar from "./components/Nav/MainNavBar";
   import SideBar from "./components/Nav/SideBar";
   import Login from "./components/Login";
@@ -38,61 +37,29 @@
     store,
     data() {
       return {
-
         userInfoToOpe: null,//传给组件的值,通过create钩子函数初始化,这里要写成null,不能写成{},否则会被判为true
         loginUser: "",
-
+        isLogin:false
       }
     },
     watch: {
-      $route(to, from) {//监听路由变化
-      }
+
     },
     computed: {
-      isLogin() {
-        if (localStorage.token) {
-          return true
-        } else {
-          return false
-        }
-      },
-      ...mapState(['userInfoData'])
+      // isLogin() {
+      //   if (localStorage.token1) {
+      //     return true
+      //   } else {
+      //     return false
+      //   }
+      // },
     },
-    methods: {
-      ...mapMutations(['initUserInfo', "updateTeam"])
-    },
+
     beforeMount() {
-      this.loginUser = localStorage.token
-      var self = this
-
-      // 当用户登陆后，再查询用户信息
-      if (this.loginUser) {
-
-        function getUserInfo() {
-          return self.axios({
-            method: "post",
-            url: "/userInfo",
-            params: {
-              userId: self.loginUser
-            }
-          })
-        }
-
-        self.axios.all([getUserInfo()])
-          .then(self.axios.spread(function (acct) {
-            //当这两个请求都完成的时候会触发这个函数，两个参数分别代表返回的结果
-            self.initUserInfo(acct.data);
-          }))
-          .catch(err => {
-            console.log(err)
-          })
+      this.loginUser = localStorage.token1
       }
-      // } else {
-      //   如果用户没有登录,那么直接返回登录界面
-      // location.href = "#/login"
-      // }
     }
-  }
+
 </script>
 
 <style>

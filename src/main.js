@@ -47,6 +47,6 @@ new Vue({
     }
   },
   mounted(){
-    window.addEventListener('load', e => this.updateUserInfo())
+    // window.addEventListener('load', e => this.updateUserInfo())
   }
 });

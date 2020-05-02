@@ -8,18 +8,18 @@
       :visible.sync="BindDialogVisible"
       width="635px">
       <el-transfer filterable v-model="checkedItems" :data="checkList" :titles="['可选列表','已选列表']" :props="{
-      key: 'class_id'}" v-if="btnFamily===10"></el-transfer>
+      key: 'class_id'}"></el-transfer>
 
 
-<!--      <el-transfer filterable v-model="checkedItems" :props="{key:135}" :value="checkList"-->
-<!--                   :titles="['可选列表','已选列表']"></el-transfer>-->
+      <!--      <el-transfer filterable v-model="checkedItems" :props="{key:135}" :value="checkList"-->
+      <!--                   :titles="['可选列表','已选列表']"></el-transfer>-->
       <el-button @click="bindAll" type="primary" style="margin-top: 20px;">绑定班级</el-button>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import {mapMutations, mapState} from "vuex"
+  import {mapState} from "vuex"
 
   export default {
     name: "BindOnIt",
@@ -48,7 +48,7 @@
           return true
         }
       },
-      ...mapState(["multipleSelection", "btnFamily", "innerMultipleSelection"])
+      ...mapState(["multipleSelection", "btnFamily", "innerMultipleSelection","readyForRenovate"])
     },
     watch: {},
     methods: {
@@ -111,6 +111,12 @@
                 // console.log(classes.data[key].classesList)
               }
               self.checkList = [].concat(...self.checkList)
+
+              for (let i = 0; i < self.checkList.length; i++) {
+                self.checkList[i] = {
+                  class_id: self.checkList[i]
+                }
+              }
               console.log(self.checkList)
             }
           }))
@@ -127,12 +133,14 @@
           method: "post",
           url: this.targetUrl,
           params: {
-            id: this.multipleSelection[0].id
+            // id: this.multipleSelection[0].id
+            id: this.btnFamily === 10 ? this.multipleSelection[0].id : this.innerMultipleSelection[0].id
           },
           data: this.checkedItems,
         })
           .then(response => {
             if (response.data === 0) {
+              this.BindDialogVisible = false;
               // this.$emit("bindComplete");//向父组件传递事件
               this.$message({
                 message: "操作成功",
@@ -140,7 +148,11 @@
                 duration: 1500,
                 showClose: true
               })
-              this.BindDialogVisible = false;
+              let payload = {
+                targetKey:"readyForRenovate",
+                targetUrl:!this.readyForRenovate
+              }
+
             } else {
               this.util.returnErr.call(this, response.data)
             }
@@ -172,7 +184,7 @@
         case 5://module相关
           this.btnText = "绑定班级";
           this.structureUrl = "/module/classes/";
-          this.targetUrl = "module/bind/";
+          this.targetUrl = "/module/bind/";
           this.alreadyBoundUrl = "";
           break;
         case 0://学生相关

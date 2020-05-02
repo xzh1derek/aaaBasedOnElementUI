@@ -36,7 +36,7 @@
       renovateCheck() {
         return this.readyForRenovate
       },
-      getSecondParams(){
+      getSecondParams() {
         return this.secondParams
       },
       ...mapState(["readyForRenovate", "btnFamily"])
@@ -47,8 +47,12 @@
           page: this.currentPage,
           rows: this.pagesize
         }
-        if (this.btnFamily === 10) {
-          params.courseId = this.secondParams
+        if (this.secondParams) {
+          if (!this.secondParams instanceof Object) {
+            params.courseId = this.secondParams
+          } else {
+            params = Object.assign(params, this.secondParams)
+          }
         }
         return this.axios({
           method: "get",
@@ -61,9 +65,16 @@
         let params = {
           rows: this.pagesize
         }
-        if (this.btnFamily === 10) {
-          params.courseId = this.secondParams
+        if (this.secondParams) {
+          if (!this.secondParams instanceof Object) {
+            console.log("aaa")
+            params.courseId = this.secondParams
+          } else {
+            console.log("bbb")
+            params = Object.assign(params, this.secondParams)
+          }
         }
+        console.log(params)
         return this.axios({
           method: "get",
           url: this.targetUrl2,
@@ -72,12 +83,39 @@
       },
 
       freshList() {
-        let self = this
-        this.axios.all([self.getItemList(), self.getTotalPages()])
-          .then(self.axios.spread(function (acct, perms) {
+        let _self = this
+        var params1 = {
+          page: _self.currentPage,
+          rows: _self.pagesize,
+        }
+        if (_self.secondParams) {
+          if (!(_self.secondParams instanceof Object)) {
+            params1.courseId = this.secondParams
+          } else {
+            params1 = Object.assign(params1, _self.secondParams)
+          }
+        }
+        function getItemList() {
+          return _self.axios({
+            method: "get",
+            url: _self.targetUrl1,
+            params: params1
+          })
+        }
+        function getTotalPages() {
+          return _self.axios({
+            method: "get",
+            url: _self.targetUrl2,
+            params: params1
+          })
+        }
+
+
+        _self.axios.all([getItemList(),getTotalPages()])
+          .then(_self.axios.spread(function (acct, perms) {
             // 两个请求现在都执行完成
-            self.listInfo = acct.data
-            self.totalItems = perms.data
+            _self.listInfo = acct.data
+            _self.totalItems = perms.data
           }));
       },
 
@@ -101,7 +139,8 @@
         this.freshList()
       },
 
-      getSecondParams(){
+      getSecondParams() {
+        if (location.pathname === "/user/list" || location.pathname === "/school/team") return
         this.freshList()
       }
     },
@@ -112,7 +151,7 @@
 </script>
 
 <style scoped>
-.paginationClass{
-  margin-top: 10px;
-}
+  .paginationClass {
+    margin-top: 10px;
+  }
 </style>

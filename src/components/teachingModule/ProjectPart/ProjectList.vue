@@ -9,7 +9,7 @@
       <!--      嵌套的表格-->
       <el-table-column type="expand" label="Project相关" width="180">
         <template slot-scope="scope">
-          <el-table :data=projectListInfo[scope.$index].projects size="mini"
+          <el-table :data=projectListInfo[pagesize*(currentPage-1)+scope.$index].projects size="mini"
                     @selection-change=handleInnerSelectionChange
                     :header-cell-style="{background:'#eef1f6',color:'#606266'}"
                     :cell-style="cellStyle"

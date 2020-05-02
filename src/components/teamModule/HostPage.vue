@@ -24,6 +24,7 @@
         <!--      已选课程-->
         <el-col :span="24">
           <selectedCourses></selectedCourses>
+          <ModuleManagement v-if="identity==='teacher'"></ModuleManagement>
         </el-col>
       </el-row>
     </div>
@@ -35,15 +36,16 @@
 
 <script>
   import userInfo from "../userInfo";
-  import MyApplication from "./MyApplication";
-  import NewMessage from "../Nav/NewMessage";
   import SelectedCourses from "./SelectedCourses";
-  import CreateTeam from "./CreateTeam";
+  import ModuleManagement from "../teachingModule/Timetable/ModuleManagement";
+  import {mapState} from "vuex";
 
   export default {
     name: "HostPage",
-    components: {userInfo, MyApplication, NewMessage, SelectedCourses,CreateTeam}
-
+    components: {userInfo, SelectedCourses,ModuleManagement},
+    computed:{
+      ...mapState(["identity"])
+    }
   }
 </script>
 
@@ -85,7 +87,7 @@
     background-color: #f9fafc;
   }
 
-  .subTitle{
+  .subTitle {
     color: #737373;
   }
 </style>

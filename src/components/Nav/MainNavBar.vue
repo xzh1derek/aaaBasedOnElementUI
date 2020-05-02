@@ -25,7 +25,7 @@
       style="position: fixed;right: 0">
 
       我的消息
-      {{newMessageCount===0?null:"( "+newMessageCount+" )"}}
+      {{ userInfoData.new_message==0?null:"( "+userInfoData.new_message+" )"}}
     </el-menu-item>
 
   </el-menu>
@@ -33,7 +33,7 @@
 
 <script>
   import routes from "../../router/routes";
-  import {mapMutations} from "vuex";
+  import {mapState, mapMutations} from "vuex";
   import store from '../../store/store'
 
   export default {
@@ -43,29 +43,26 @@
       return {
         mainRouterSet: routes,
         mainActiveIndex: "",
-        newMessageCount: JSON.parse(localStorage.userInfo).new_message//获取当前未读消息的数目
       }
     },
     computed: {
-      // getMessage(){
-      //   return localStorage.userInfo.new_message
-      // }
+      ...mapState(["userInfoData"])
     },
     methods: {
       sout(event) {
-        this.newMessageCount=0
         this.newActiveRoute(event.$attrs.activeRoute)
-      },
-      getMessage() {
-        return localStorage.userInfo.new_message
       },
       ...mapMutations(["newActiveRoute"])
     },
     created() {
-      // this.mainActiveIndex = window.location.hash.substring(1);
-      this.mainActiveIndex = window.location.pathname;
+      this.mainActiveIndex = window.location.pathname.match(/\/\w+\//)[0];
     },
     mounted() {
+      this.mainRouterSet = this.mainRouterSet.filter(item => {
+        return  item.meta.nav === true
+      })
+      let routerArr = this.util.getPropFormListObj(this.mainRouterSet,"path")
+      this.newActiveRoute(routerArr.indexOf(this.mainActiveIndex))
     }
   }
 </script>
