@@ -31,8 +31,8 @@
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitNewInfo">确 定</el-button>
         <el-button @click="editStuDiaVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitNewInfo">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -87,7 +87,7 @@
       <el-form :model="originData">
         <el-form-item label="projectID" :label-width="formLabelWidth" hidden>
           <el-col :span=span>
-            <el-input v-model="originData.id" autocomplete="off" required></el-input>
+            <el-input v-model="originData.id" autocomplete="off" required ></el-input>
           </el-col>
         </el-form-item>
         <!---->
@@ -157,6 +157,9 @@
     methods: {
       //上传新的学生信息
       submitNewInfo() {
+        // this.originData.is_published = true;
+        // this.originData.teacher = 0;
+
         this.axios({
           method: "post",//一律都是update
           url: this.targetUrl,
@@ -166,15 +169,14 @@
           data: this.originData
         })
           .then(response => {
-            if (response.data == 0) {
-              this.diaVisible = false;
-              let payload = {
-                targetKey: "readyForRenovate",
-                targetVal: !this.readyForRenovate
-              };
-              this.util.feedbackInfo(this, response.data);
-              this.updateCurrentStatus(payload)//改变readyForRenovate的值,刷新界面
-            }
+            let payload = {
+              targetKey: "readyForRenovate",
+              targetVal: !this.readyForRenovate
+            };
+            this.util.feedbackInfo(this, response.data);
+            this.diaVisible = false;
+            this.updateCurrentStatus(payload)//改变readyForRenovate的值,刷新界面
+
           })
           .catch(err => {
             console.log(err)
@@ -186,10 +188,7 @@
 
     watch: {
       //监控diaVisible的值 组件父组件只需要改变diaVisible的值 组件内部通过btnFamily判断到底要使用哪个dialog
-      diaVisible(val) {
-        // if (!val){
-        //   return
-        // }
+      diaVisible() {
         switch (this.btnFamily) {
           case 0://学生相关操作
             this.editStuDiaVisible = this.diaVisible;

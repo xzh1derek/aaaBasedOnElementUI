@@ -2,7 +2,7 @@
 <template>
   <div>
 
-    <CommonOperation ></CommonOperation>
+    <CommonOperation></CommonOperation>
 
     <el-table :data=moduleListInfo
               style="width: 100%"
@@ -30,7 +30,7 @@
   import ModuleTable from "./ModuleTable";
   import CommonOperation from "../../common/CommonOperation";
   import store from '../../../store/store'
-  import {mapMutations, mapState} from "vuex";
+  import {mapMutations} from "vuex";
 
   export default {
     name: "ModuleList",
@@ -41,19 +41,6 @@
       }
     },
     components: {ModuleTable, CommonOperation},
-    computed: {
-      isReadyForRenovate() {
-        return this.readyForRenovate
-      },
-      ...mapState(["readyForRenovate"])
-    },
-    watch: {
-      isReadyForRenovate() {//如果btnFamily=10 并且readyForRenovate改变了,就更新页面
-        if (this.btnFamily == 5)
-          console.log("got it")
-          this.getModuleList()
-      },
-    },
     methods: {
       //获取所有的module
       getModuleList() {
@@ -81,6 +68,8 @@
         //arguments的第三个元素就是本行显示的内容
         return arguments[2] === true ? "是" : "否"
       },
+
+
       ...mapMutations(['updateSelection'])
     },
     mounted() {

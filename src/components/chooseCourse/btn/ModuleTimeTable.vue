@@ -1,12 +1,14 @@
 <template>
   <div style="margin-bottom: 10px">
 
+    <!--    <el-button type="primary" @click="changeUrl('/curricula/future/')">我的实验</el-button>-->
     <el-button type="primary" @click="showWindow('/curricula/future/')" title="未完成的实验">我的实验</el-button>
+    <!--    <el-button type="success" @click="changeUrl('/curricula/all/')">历史实验</el-button>-->
     <el-button type="success" @click="showWindow('/curricula/all/')" title="所有实验,包括已完成和未完成的实验">历史实验</el-button>
     <!--    用来展示点击结果-->
     <el-collapse-transition>
       <div v-show="show" class="transition-box" style="padding: 10px">
-        <el-table :data="tableData" stripe border style="width: 100%">
+        <el-table :data="tableData" style="width: 100%">
           <el-table-column prop="project.course.course_name" label="课程名" width="180"></el-table-column>
           <el-table-column prop="project.project_name" label="projectName" width="180"></el-table-column>
           <el-table-column prop="project.hours" label="学时"></el-table-column>

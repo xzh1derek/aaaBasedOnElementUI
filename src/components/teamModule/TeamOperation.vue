@@ -42,6 +42,7 @@
 
 <script>
   import {mapState} from 'vuex'
+  import Login from "../Login";
 
   export default {
     name: "TeamOperation",

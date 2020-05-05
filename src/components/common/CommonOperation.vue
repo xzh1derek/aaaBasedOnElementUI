@@ -1,6 +1,6 @@
 <template>
   <div class="outer">
-    <el-row >
+    <el-row>
       <AddNewItem ref="addNew" class="inlineItem"></AddNewItem>
       <!--      <EditItem class="inlineItem"></EditItem>-->
       <ExportList class="inlineItem"></ExportList>
@@ -97,7 +97,6 @@
   }
 
   .outer {
-    /*background-color: #fff;*/
     margin-bottom: 10px;
   }
 </style>

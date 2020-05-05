@@ -1,5 +1,4 @@
 import axios from 'axios'
-import el from "element-ui/src/locale/lang/el";
 
 // http 配置
 axios.defaults.timeout = 5000;
@@ -8,11 +7,7 @@ axios.defaults.timeout = 5000;
 // http request 拦截器
 axios.interceptors.request.use(
   config => {
-    if (localStorage.token1) {
-      config.headers.token = localStorage.token1
-    }else {
-      config.headers.token = "1"
-    }
+    // console.log(config);
     return config;  //添加这一行
   },
   err => {
@@ -23,13 +18,6 @@ axios.interceptors.request.use(
 // http response 拦截器
 axios.interceptors.response.use(
   response => {
-    if(response.data=="登录状态已过期，请重新登录"){
-      window.localStorage.clear()
-      // console.log(12346)
-      history.pushState(null,null,"/login")
-    }else{
-      // console.log(response.data)
-    }
     return response
   },
   error => {
@@ -40,8 +28,7 @@ axios.interceptors.response.use(
     //       alert("账号或者密码错误");
     //   }
     // }
-    // return Promise.reject(error.response.data)
-    return Promise.reject(error.response)
+    return Promise.reject(error.response.data)
   },
 );
 

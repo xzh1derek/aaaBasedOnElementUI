@@ -1,7 +1,7 @@
 <!--保存所有由登录教师发布的Module-->
 <template>
   <div>
-    <el-table :data="moduleList" style="width: 100%" height="80vh" stripe border>
+    <el-table :data="moduleList" style="width: 100%" height="80vh" stripe="true">
       <el-table-column prop="project.course.course_name" label="课程名" width="180"
                        show-overflow-tooltip></el-table-column>
       <el-table-column prop="project.project_name" label="projectName" width="180"
@@ -54,7 +54,7 @@
           method: "get",
           url: url,
           params: {
-            // teacherId: 1
+            teacherId: 1
           }
         })
           .then(response => {
